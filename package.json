@@ -1,0 +1,44 @@
+{
+  "name": "application-core",
+  "title": "Application Core",
+  "description": "Application core skeleton",
+  "version": "0.0.0",
+  "homepage": "https://github.com/goliatone/application-core",
+  "author": {
+    "name": "goliatone",
+    "email": "hello@goliatone.com",
+    "url": "http://goliatone.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/goliatone/application-core.git"
+  },
+  "bugs": {
+    "url": "https://github.com/goliatone/application-core/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/goliatone/application-core/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "index",
+  "bin": "bin/application-core",
+  "engines": {
+    "node": ">= 6.3"
+  },
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha test/*_test.js",
+    "dtest": "./node_modules/mocha/bin/mocha test/*_test.js -G -w --reporter spec --slow 500"
+  },
+  "dependencies": {
+    "gextend": "^0.3.0"
+  },
+  "devDependencies": {
+    "mocha-sinon": "^1.1.4",
+    "chai": "^2.2.0",
+    "sinon": "^1.14.1",
+    "mocha": "^2.2.4"
+  },
+  "keywords": []
+}
