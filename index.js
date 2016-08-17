@@ -1,4 +1,4 @@
 /**
  * Exports application-core main library
  */
-module.exports = require('./lib/application-core');
+module.exports.Application = require('./lib/application');
