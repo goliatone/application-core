@@ -59,3 +59,4 @@ results
 npm-debug.log
 node_modules
 */.repl_history
+*/.caretaker_*
