@@ -7,10 +7,6 @@ var config = Application.loadConfig({}, true);
 
 var app = new Application({config});
 
-//move to config and autoload
-app.loadDirectory('./modules/*.js');
-//move to config and autoload
-app.loadHanlders('./handlers/*.js');
 //use ioc
 app.register(require('debug')('application-core'), 'debug');
 
