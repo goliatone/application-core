@@ -1,6 +1,6 @@
 # Application Core
 
-Application core skeleton
+Application core source code.
 
 ## Getting Started
 Install the module with: `npm install application-core`
@@ -10,17 +10,8 @@ var application_core = require('application-core');
 application_core.awesome(); // "awesome"
 ```
 
-## Documentation
-_(Coming soon)_
-
 ## Examples
-_(Coming soon)_
-
-## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
-
-## Release History
-_(Nothing yet)_
+See examples dir.
 
 ## License
 Copyright (c) 2016 goliatone  
