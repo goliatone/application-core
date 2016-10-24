@@ -1,0 +1,5 @@
+"uuid","name","description","index","floorplan","parent"
+"932476A7-D3E0-4336-AB2F-03204606EE9F","DC01","DC Gramercy","100","",""
+"B1205714-E664-4FBC-8D5C-0759A16663B8","NY15-3FL","NYC Chelsea 3rd Floor","200","","57fcfa755351cee4e3a75da5"
+"","NY15-4FL","NYC Chelsea 4th Floor","200","","57fcfa755351cee4e3a75da5"
+"","NY15-5FL","NYC Chelsea 5th Floor","200","57fd388e5f519d3a045621e7","57fcfa755351cee4e3a75da5"
