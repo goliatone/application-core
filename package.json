@@ -32,6 +32,8 @@
     "dtest": "./node_modules/mocha/bin/mocha test/*_test.js -G -w --reporter spec --slow 500"
   },
   "dependencies": {
+    "csv-parse": "^1.1.7",
+    "csv-stringify": "^1.0.4",
     "debug": "^2.2.0",
     "english-time-mirror": "0.0.9",
     "gextend": "^0.3.0",
