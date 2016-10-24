@@ -5,9 +5,13 @@ Application core source code.
 ## Getting Started
 Install the module with: `npm install application-core`
 
-```javascript
-var application_core = require('application-core');
-application_core.awesome(); // "awesome"
+## Documentation
+
+* `module`:
+```js
+module.exports.init = function(app, config){
+
+};
 ```
 
 ## Examples
