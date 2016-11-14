@@ -17,5 +17,4 @@ app.on('run.post', function(){
     this.logger.debug('--------');
 });
 
-setTimeout(function(){app.run()}, 0)
-// app.run();
+app.run();
