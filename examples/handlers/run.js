@@ -1,6 +1,6 @@
 'use strict';
 
 module.exports = function runHanlder(){
-    this.getLogger('transform').info('Transform module');
     this.logger.warn('runHandler: Running application!!');
+    this.getLogger('transform').info('Calling transform logger from runHandler');
 };
