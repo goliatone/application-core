@@ -10,6 +10,16 @@ var app = new Application({config});
 //use ioc
 
 
+app.onceRegistered('dispatcher', ()=>{
+    app.chainEvents(['run.pre', 'run',], ['error']).then(()=>{
+        console.log('A) RUN.PRE AND RUN DONE!');
+    }).catch();
+
+    app.chainEvents(['run.pre', 'run', 'run.post'], ['error']).then(()=>{
+        console.log('B) RUN.PRE, RUN AND RUN.POST DONE!');
+    });
+});
+
 app.on('run.post', function(){
     this.register(require('debug')('application-core'), 'debug');
     this.logger.debug('--------');
