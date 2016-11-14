@@ -11,10 +11,11 @@ var app = new Application({config});
 
 
 app.on('run.post', function(){
-    app.register(require('debug')('application-core'), 'debug');
-    this.logger.log('--------');
-    this.logger.log(this.name);
-    this.logger.log('--------');
+    this.register(require('debug')('application-core'), 'debug');
+    this.logger.debug('--------');
+    this.logger.debug(this.name);
+    this.logger.debug('--------');
 });
 
-app.run();
+setTimeout(function(){app.run()}, 0)
+// app.run();

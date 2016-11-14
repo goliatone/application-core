@@ -1,3 +1,3 @@
 module.exports.init = function(app, config){
-    console.log('Pubsub module', config);
+    app.getLogger('pubsub').info('Pubsub module loaded: %s', JSON.stringify(config));
 };
