@@ -7,25 +7,30 @@ var config = Application.loadConfig({}, true);
 
 var app = new Application({config});
 
-//use ioc
-
-
 app.onceRegistered('dispatcher', ()=>{
     app.chainEvents(['run.pre', 'run',], ['error']).then(()=>{
-        console.log('A) RUN.PRE AND RUN DONE!');
+        app.logger.debug('A) RUN.PRE AND RUN DONE!');
     }).catch();
 
     app.chainEvents(['run.pre', 'run', 'run.post'], ['error']).then(()=>{
-        console.log('B) RUN.PRE, RUN AND RUN.POST DONE!');
+        app.logger.debug('B) RUN.PRE, RUN AND RUN.POST DONE!');
     });
+});
+
+app.once('run.complete', function(e){
+    console.log('hook.complte', e);
 });
 
 app.on('run.post', function(){
     this.register(require('debug')('application-core'), 'debug');
-    this.logger.debug('--------');
-    this.logger.debug(this.name);
-    this.logger.debug('--------');
+    app.logger.debug('--------');
+    app.logger.debug(this.name);
+    app.logger.debug(this.nicename);
+    app.logger.debug('--------');
 });
 
-// app.on('bootstrap.ready', app.run);
-app.run();
+
+app.once('coreplugins.ready', ()=>{
+    app.run();
+});
+// app.run();
