@@ -7,5 +7,6 @@ module.exports = {
     },
     options: {
         prompt: '\u001b[33m${app.name} > \u001b[39m'
-    }
+    },
+    port: 9090
 };
