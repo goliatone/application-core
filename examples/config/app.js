@@ -3,7 +3,7 @@ module.exports = {
     environment: 'development',
     loaders: {
         modules: './modules',
-        // handlers: './handlers'
-        handlers: './handlers/*.js'
+        handlers: './handlers'
+        // handlers: './handlers/*.js'
     }
 };
