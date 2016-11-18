@@ -28,6 +28,7 @@
     "node": ">= 6.3"
   },
   "scripts": {
+    "path": "npm version patch && npm publish && git push --tags && git push origin master",
     "test": "./node_modules/mocha/bin/mocha test/*_test.js",
     "dtest": "./node_modules/mocha/bin/mocha test/*_test.js -G -w --reporter spec --slow 500"
   },
