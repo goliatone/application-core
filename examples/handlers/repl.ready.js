@@ -4,6 +4,6 @@
  * the REPLs context.
  */
 module.exports = function replReady(repl){
-    this.logger.warn('REPL ready');
+    this.getLogger('repl').warn('command: repl.ready');
     repl.context.app = this;
 };

@@ -6,17 +6,15 @@ Application core source code.
 Install the module with: `npm install application-core`
 
 ## Documentation
-
-* `module`:
-```js
-module.exports.init = function(app, config){
-
-};
-```
+Documentation can be found [here][docs]
 
 ## Examples
-See examples dir.
+Examples can be found [here][examples]
 
 ## License
 Copyright (c) 2016 goliatone  
 Licensed under the MIT license.
+
+
+[docs]: ./docs
+[examples]: ./examples
