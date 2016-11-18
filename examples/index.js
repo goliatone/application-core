@@ -27,6 +27,8 @@ app.on('run.post', function(){
     app.logger.debug(this.name);
     app.logger.debug(this.nicename);
     app.logger.debug('--------');
+
+    app.logger.error('This is sample error!!');
 });
 
 
