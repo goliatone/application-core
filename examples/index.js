@@ -7,6 +7,8 @@ var config = Application.loadConfig({}, true);
 
 var app = new Application({config});
 
+console.log(app.banner);
+
 app.onceRegistered('dispatcher', ()=>{
     app.chainEvents(['run.pre', 'run',], ['error']).then(()=>{
         app.logger.debug('A) RUN.PRE AND RUN DONE!');
