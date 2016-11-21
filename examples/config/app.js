@@ -8,6 +8,5 @@ module.exports = {
     loaders: {
         modules: './modules',
         commands: './commands'
-        // handlers: './handlers/*.js'
     }
 };
