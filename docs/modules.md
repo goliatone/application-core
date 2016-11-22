@@ -22,6 +22,9 @@ module.exports.init = function(core, config){
 };
 ```
 
+
+```js
 core.once('users.registered', function(){
 
 });
+```
