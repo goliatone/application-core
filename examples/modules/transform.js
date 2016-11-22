@@ -1,16 +1,16 @@
 /*jshint esversion:6*/
 'use strict';
-module.exports.init = function(app, config){
+module.exports.init = function(core, config){
 
     var transform = {
         apply: function(){}
     };
 
-    app.resolve('pubsub').then(()=>{
-        app.getLogger('transform').info('Transform solved dependency.');
+    core.resolve('pubsub').then(()=>{
+        core.getLogger('transform').info('Transform solved dependency.');
     });
 
-    app.getLogger('transform').info('Transform module loaded.');
+    core.getLogger('transform').info('Transform module loaded.');
 
     return transform;
 };
