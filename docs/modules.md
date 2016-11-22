@@ -1,6 +1,8 @@
 ### Modules
-Modules follow a simple convention, they should export an init function that takes two arguments, an instance of `app-core` and a configuration object.
+Modules follow a simple convention: they should export an init function that take an instance of `app-core` and a configuration object as arguments.
+
 Your module does not need to return anything, but if it does it should be either an object or a Promise.
+
 If you return an object, you then will be able to access it through the application instance- `app[moduleName]`.
 If you return a `Promise` instance, then once it resolves the process is the same.
 
@@ -14,12 +16,12 @@ The modules instantiation follows a simple registration process.
 
 **./modules/users.js**
 ```js
-module.exports.init = function(app, config){
+module.exports.init = function(core, config){
     ...
     return users;
 };
 ```
 
-app.once('users.registered', function(){
+core.once('users.registered', function(){
 
 });
