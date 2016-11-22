@@ -20,10 +20,14 @@ app.onceRegistered('dispatcher', ()=>{
 });
 
 app.once('run.complete', function(e){
-    console.log('hook.complte', e);
+    console.log('run.complete: ', e);
 });
 
-app.on('run.post', function(){
+app.once('run.pre', function(e){
+    console.log('run.pre: ', e);
+});
+
+app.once('run.post', function(){
     this.register(require('debug')('application-core'), 'debug');
     app.logger.debug('--------');
     app.logger.debug(this.name);
