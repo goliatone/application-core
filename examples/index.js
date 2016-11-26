@@ -20,11 +20,12 @@ app.onceRegistered('dispatcher', ()=>{
 });
 
 app.once('run.complete', function(e){
-    console.log('run.complete: ', e);
+    app.logger.debug('run.complete: ', e);
 });
 
 app.once('run.pre', function(e){
-    console.log('run.pre: ', e);
+    app.logger.debug('run.pre: ', e);
+    app.logger.debug('TEST LOGGER: %s', e, {age:23, name:'Pepe Rone'});
 });
 
 app.once('run.post', function(){
@@ -35,7 +36,7 @@ app.once('run.post', function(){
     app.logger.debug('--------');
 
     let err = new Error('This is a sample error!!!');
-    app.logger.error(err.stack);
+    //app.logger.error(err.stack);
 });
 
 
