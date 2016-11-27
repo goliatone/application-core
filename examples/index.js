@@ -19,6 +19,11 @@ app.onceRegistered('dispatcher', ()=>{
     });
 });
 
+app.onceRegistered('logger', ()=>{
+    // app.logger.mute('core', 'app');
+    // app.logger.focus('data-manager');
+});
+
 app.once('run.complete', function(e){
     app.logger.debug('run.complete: ', e);
 });
@@ -35,6 +40,9 @@ app.once('run.post', function(){
     app.logger.debug(this.nicename);
     app.logger.debug('--------');
 
+    console.log('------------------');
+    console.log('here, here, here');
+    console.log('------------------');
     let err = new Error('This is a sample error!!!');
     //app.logger.error(err.stack);
 });
