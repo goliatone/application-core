@@ -1,0 +1,6 @@
+╔═════════════════════════════════════════════════════════════════════╗
+║                      poke-repl remote console √                    ║
+║                                                                    ║
+║              All connections are monitored and recorded            ║
+║      Disconnect \u001b[1mINMEDIATELY\u001b[22m if you are not an authorized user      ║
+╚════════════════════════════════════════════════════════════════════╝
