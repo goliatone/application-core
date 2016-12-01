@@ -9,6 +9,5 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "poke-repl": "^0.7.0"
   }
 }
