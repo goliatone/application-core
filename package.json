@@ -2,7 +2,7 @@
   "name": "application-core",
   "title": "Application Core",
   "description": "Application core skeleton",
-  "version": "0.4.7",
+  "version": "0.5.3",
   "homepage": "https://github.com/goliatone/application-core",
   "author": {
     "name": "goliatone",
@@ -33,6 +33,7 @@
     "dtest": "./node_modules/mocha/bin/mocha test/*_test.js -G -w --reporter spec --slow 500"
   },
   "dependencies": {
+    "bluebird": "^3.4.6",
     "csv-parse": "^1.1.7",
     "csv-stringify": "^1.0.4",
     "debug": "^2.2.0",
@@ -40,11 +41,11 @@
     "gextend": "^0.3.0",
     "glob": "^7.0.5",
     "human-time": "0.0.1",
-    "in": "^0.8.0",
-    "poke-repl": "^0.5.0",
+    "in": "^0.10.0",
+    "noop-console": "^0.4.0",
+    "poke-repl": "^0.7.0",
     "simple-config-loader": "^0.7.0",
-    "winston": "^2.2.0",
-    "winston-meta-wrapper": "^1.2.0"
+    "winston": "^2.2.0"
   },
   "devDependencies": {
     "mocha-sinon": "^1.1.4",

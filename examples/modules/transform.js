@@ -12,6 +12,7 @@ module.exports.init = function(core, config){
 
     core.getLogger('transform').info('Transform module loaded.');
 
-    return transform;
+    return new Promise(function(resolve, reject) {
+        resolve(transform);
+    });
 };
-module.exports.priority = -1;
