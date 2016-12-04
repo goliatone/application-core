@@ -10,6 +10,16 @@ Following simple conventions on how files are named and where are placed **Kiko*
 
 The heart of **Kiko** is the [application context](#application-core), which you can extend directly with custom logic or indirectly with plugins[ as building blocks].
 
+
+## Main interface
+The core concept is this:
+
+```js
+function(context, config){}
+```
+
+https://nodejs.org/en/docs/guides/anatomy-of-an-http-transaction/
+
 ### Project Layout
 
 ```mark
@@ -106,6 +116,7 @@ options:
 * wrapConsole
 
 #### REPL
+poke-repl
 
 #### Dispatcher
 
@@ -120,7 +131,8 @@ Hooks provide lifecycle events
 A `hook` is an event with a lifecycle to which you can attach listeners to.
 
 Core hooks and module hooks.
-The application context has one `hook`.
+
+After the application context is configured and wired it will fire the run `hook`.
 
 
 ##### Chained Events
