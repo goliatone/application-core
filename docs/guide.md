@@ -1,12 +1,14 @@
 ## Kiko
 
-**Kiko** provides a structure to quickly prototype applications of any type, providing a set of guidelines and conventions to ease development. **Kiko** aims to be a workflow rather than a framework,
+**Kiko** provides a structure to quickly prototype Node.js applications of _any type_, providing a set of guidelines and conventions to ease development.
 
-The heart of **Kiko** is the [application-core](#application-core), which you can textend with custom logic and with plugins. Kiko will take care of basic things like configuration management, logging, dependency management, and it provides a nice REPL.
+In a way **Kiko** aims to be more of a workflow rather than a framework or a library, providing a common application structure regardless if the application is web, desktop, or data focused.
 
-Conventions on how files are named and where they are placed are used to do auto-loading, auto-configuration, and auto-wiring.
+**Kiko** provides basic tools which are useful in any context like configuration management, logging, dependency management, and it provides a nice REPL.
 
+Following simple conventions on how files are named and where are placed **Kiko** will auto-load, auto-configure, and auto-wire components.
 
+The heart of **Kiko** is the [application context](#application-core), which you can extend directly with custom logic or indirectly with plugins[ as building blocks].
 
 ### Project Layout
 
@@ -28,8 +30,6 @@ Conventions on how files are named and where they are placed are used to do auto
 |    └── seed.create.js
 └── index.js
 ```
-
-
 
 ### Configuration
 
@@ -59,15 +59,17 @@ module.exports = {
 };
 ```
 
-
-
 **Kiko** provides a convenience method to collect this configuration files.
 
 ```javascript
 var Application = require('kiko').Application;
 
+/*
+ * Autload and merge files inside
+ * `config/`
+ */
 var config = Application.loadConfig({
-
+    //...default values
 }, true);
 
 var app = new Application({config});
@@ -115,6 +117,11 @@ The `dispatcher` module extends the `application-core` with two distinct behavio
 Hooks provide lifecycle events
 
 ##### Hooks
+A `hook` is an event with a lifecycle to which you can attach listeners to.
+
+Core hooks and module hooks.
+The application context has one `hook`.
+
 
 ##### Chained Events
 
