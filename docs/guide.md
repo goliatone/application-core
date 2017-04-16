@@ -1,14 +1,14 @@
 ## Kiko
 
-**Kiko** provides a structure to quickly prototype Node.js applications of _any type_, providing a set of guidelines and conventions to ease development.
+**core.io** provides a structure to quickly prototype Node.js applications of _any type_, providing a set of guidelines and conventions to ease development.
 
-In a way **Kiko** aims to be more of a workflow rather than a framework or a library, providing a common application structure regardless if the application is web, desktop, or data focused.
+In a way **core.io** aims to be more of a workflow rather than a framework or a library, providing a common application structure regardless if the application is web, desktop, or data focused.
 
-**Kiko** provides basic tools which are useful in any context like configuration management, logging, dependency management, and it provides a nice REPL.
+**core.io** provides basic tools which are useful in any context like configuration management, logging, dependency management, and it provides a nice REPL.
 
-Following simple conventions on how files are named and where are placed **Kiko** will auto-load, auto-configure, and auto-wire components.
+Following simple conventions on how files are named and where are placed **core.io** will auto-load, auto-configure, and auto-wire components.
 
-The heart of **Kiko** is the [application context](#application-core), which you can extend directly with custom logic or indirectly with plugins[ as building blocks].
+The heart of **core.io** is the [application context](#application-core), which you can extend directly with custom logic or indirectly with plugins[ as building blocks].
 
 
 ## Main interface
@@ -69,7 +69,7 @@ module.exports = {
 };
 ```
 
-**Kiko** provides a convenience method to collect this configuration files.
+**core.io** provides a convenience method to collect this configuration files.
 
 ```javascript
 var Application = require('kiko').Application;
