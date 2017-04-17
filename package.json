@@ -44,7 +44,7 @@
     "in": "^0.10.0",
     "noop-console": "^0.4.0",
     "poke-repl": "^0.8.0",
-    "simple-config-loader": "^0.9.0",
+    "simple-config-loader": "^0.10",
     "winston": "^2.2.0"
   },
   "devDependencies": {
