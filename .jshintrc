@@ -23,7 +23,7 @@
     "forin": false,
     "plusplus": false,
     "node": true,
-    "esversion": "6",
+    "esversion": 6,
     "globals":{
         "describe": true,
         "it": true
