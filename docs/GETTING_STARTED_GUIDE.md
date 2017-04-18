@@ -129,7 +129,9 @@ var config = App.loadConfig({
     //...default values
 }, true);
 
-var app = new App({config});
+var app = new App({
+    config: config
+});
 ```
 
 ### Modules
