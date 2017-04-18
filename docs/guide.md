@@ -85,10 +85,15 @@ var config = Application.loadConfig({
 var app = new Application({config});
 ```
 
+#### Application configuration file
 
+* banner: String|Function
+
+The `./config/app.js` is different than other configuration files in that application will extend itself with the object like if it was a mixin.
 
 ### Modules
 
+* alias: if a module exports an alias property, it will be used to register the module instead of the default given name.
 
 
 #### Core modules
