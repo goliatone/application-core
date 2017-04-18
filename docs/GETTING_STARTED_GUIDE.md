@@ -98,11 +98,19 @@ module.exports = {
 };
 ```
 
-*  `config/repl.js`:
+* `config/repl.js`:
 
 ```javascript
 module.exports = {
   prompt: '${app.name}'
+};
+```
+
+There is also the possibility of processing the contents of a configuration file after it has been merged and loaded. If you export a function named `afterSolver` it will be called after all dependencies have been resolved. The function will be called with the whole configuration object.
+
+```js
+module.exports.afterSolver = function(config) {
+    config.set('amqp.amqp', require('amqp'));
 };
 ```
 
@@ -121,7 +129,9 @@ var config = App.loadConfig({
     //...default values
 }, true);
 
-var app = new App({config});
+var app = new App({
+    config: config
+});
 ```
 
 ### Modules
@@ -130,7 +140,7 @@ var app = new App({config});
 
 #### Core modules
 
-This is the list of core modules bundled with Kiko:
+This is the list of core modules bundled with **core.io**:
 
 * Logger
 * REPL
@@ -147,13 +157,74 @@ This is the list of core modules bundled with Kiko:
 
 
 #### Logger
+The logger module wraps [winston][winston] providing a default setup and extending it with some extra functionality.
+
+You can request a new logger by using the `getLogger(id:String)` function.
+
+You can wrap the `console` so it has the same output as the regular logger output and also you can apply filters.
+
+You can have an active logger, so that only the log output of a given logger is shown.
+
+You can mute all output.
 
 options:
-* muteConsole
+* muteConsole: Uses [noop-console][noop-console] module.
 * wrapConsole
+* handlingExceptions
+
+You can set this values by default using the `./config/logger.js` configuration file or you can interact with the logger through the [REPL](#repl).
 
 #### REPL
-poke-repl
+
+**core.io** bundles a REPL module that enables remote interaction with your application over a terminal window. You get access to the application instance, models, and any functionality that you decide to expose.
+
+Some of the features:
+* firewall
+* basic auth
+* TLS
+
+You can customize the connection banner, the prompt, and more. A sample configuration file looks like this:
+
+```js
+'use strict';
+
+let header = require('fs').readFileSync('./config/repl-banner.txt', 'utf-8');
+
+module.exports = {
+    enabled: true,
+    metadata: {
+        name: '${app.name}',
+        version: '${package.version}',
+        environment: '${app.environment}',
+    },
+    firewall: {
+        rules: [
+            {ip: '', subnet: 14, rule: 'ACCEPT'}
+        ]
+    },
+    auth: {
+       enabled: true,
+       users:[{
+           username: 'admin',
+           password: 'secret!'
+       }]
+   },
+   tls: {
+       key:  './tls/client/private-key.pem',
+        cert: './tls/client/certificate.pem',
+        ca: [
+            './tls/server/certificate.pem'
+        ]
+   },
+    options: {
+        prompt: '\u001b[33m ${app.name} > \u001b[39m',
+        // header: header
+    },
+    port: process.env.NODE_REPL_PORT,
+};
+```
+
+You can learn more about the module at the repository, [poke-repl][poke].
 
 #### Dispatcher
 
@@ -183,6 +254,35 @@ After the application context is configured and wired it will fire the run `hook
 ### Application Core
 
 
+## External modules
+
+There is a list of modules that are not bundled by default but that provide great functionality albeit functionality that might not always be needed for every application.
+
+* [core.io-persistence][core-persistence]
+* [core.io-express-server][core-server]
+* [core.io-data-manager][core-data]
+* [core.io-filesync][core-sync]
+* [core.io-express-auth][core-auth]
+* [core.io-express-crud][core-crud]
+
+
+
+TODO:
+- [ ] Make a list of reserved words
+
+
+
+<!-- LINKS -->
+
+[core-auth]:https://github.com/goliatone/core.io-express-auth
+[core-server]:https://github.com/goliatone/core.io-express-server
+[core-data]:https://github.com/goliatone/core.io-data-manager
+[core-sync]:https://github.com/goliatone/core.io-filesync
+[core-persistence]:https://github.com/goliatone/core.io-persistence
+[core-crud]:https://github.com/goliatone/core.io-crud
+
 [node]:http://nodejs.org/
 [core.io-cli]:https://www.npmjs.com/package/core.io-cli
 [scl]:https://github.com/goliatone/simple-config-loader
+[poke]:https://github.com/goliatone/poke-repl
+[noop-console]:https://github.com/goliatone/noop-console
