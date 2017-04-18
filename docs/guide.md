@@ -221,6 +221,8 @@ Each module has to provide an `init` function which will take two arguments; `co
 
 Inside the `init` function is where you would perform all the wiring needed for the module to integrate with your application. Some modules will extend the application by providing new functionality. See [extending context](#extending-context) for more information and examples.
 
+`init` acts as a middle tier between **core.io** and external libraries.
+
 ```js
 module.exports.init = function(context, config) {
     const repl = require('poke-repl');
