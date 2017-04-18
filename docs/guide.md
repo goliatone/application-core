@@ -4,7 +4,7 @@
 
 In a way **core.io** aims to be a workflow rather than a framework or a library, providing a common application structure regardless if the application is web, desktop, or data focused.
 
-**core.io** provides basic tools which are useful in any context like configuration management, logging, dependency management, and it provides a nice REPL.
+**core.io** provides basic tools which are useful in any context like configuration management, logging, dependency management, a REPL.
 
 Following simple conventions on how files are named and where are placed **core.io** will auto-load, auto-configure, and auto-wire components.
 
@@ -22,12 +22,19 @@ The heart of **core.io** is the [application context](#application-core), which 
 ### Run
 
 ## Reference
+
 ### Application
+#### Application Context
+#### Application Lifecycle
+
 ### Configuration
+
 ### Modules
 #### Core Modules
 #### Extended Modules
+
 ### Commands
+
 ### Autoloading
 #### Module Loader
 #### Commands Loader
@@ -117,13 +124,13 @@ For convenience **core.io** wraps the `config` object with some a `get` and `set
 This is so that you can access a deep object without fear of some object in the path not being defined. It also enables you to provide a default value for such cases.
 
 ```js
-let environment = config.get('environment', 'production');
+let environment = context.config.get('environment', 'production');
 ```
 
 It's more useful when you need to access a deeply nested object:
 
 ```js
-let prompt = config.get('repl.options.prompt', 'poke-repl >');
+let prompt = context.config.get('repl.options.prompt', 'poke-repl >');
 ```
 
 #### Module configuration
@@ -148,9 +155,9 @@ If you have a configuration file that has the same name as a given module's `mod
 
 Another aspect in which **core.io** tries to simplify the configuration process is by how it supports different development environments, like **staging**, **development**, **production**, etc.
 
-In short, it does not.
+In short: _it does not_.
 
-To be more precise it takes a very pragmatic stance and does not provide any way to directly manage different environments but has some recommendations that make having configuration files per environment unnecessary.
+To be more precise, **core.io** takes a very pragmatic stance and does not provide any way to (directly) manage different environments but has some recommendations that make having configuration files per environment unnecessary.
 
 A lot of the things that need to change on each environment are _secrets_ like service tokens or user keys. You can manage those by using `process.env` and environment variables.
 
@@ -190,10 +197,12 @@ Lastly but more importantly, you can **BYOS**- bring your own solution- and use 
 
 
 ### CLI
+
 ### Modules
 #### REPL
 #### Logger
 #### Dispatcher
+
 ### Autoloading
 ### Extending Application Context
 ### Environment Variables
