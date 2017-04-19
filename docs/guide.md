@@ -199,9 +199,24 @@ Lastly but more importantly, you can **BYOS**- bring your own solution- and use 
 ### CLI
 
 ### Modules
-#### REPL
+Anatomy of a module.
 
-#### Logger
+#### Modules Names
+* sanitizeName:
+
+* moduleid: If no module id is provided in the configuration file, the sanitized name will be used.
+
+* alias: Modules can export an `alias` property that will be used instead of the filename.
+
+Conventions around modules names:
+* configuration file: matching configuration files will de passed to module
+* child logger: receives the name of the module.
+
+
+#### Core Modules
+##### REPL
+
+##### Logger
 
 **core.io** provides a logger to the application context as `context.logger` and is the module with the highest priority, meaning it will be available on first run. Under the hood the logger wraps [winston][winston] and extends it with some extra features:
 
@@ -233,7 +248,7 @@ When you are initializing your modules, in the `init` function, you can access t
 
 
 
-##### Configuration
+###### Configuration
 
 The default configuration for the logger includes three different transports:
 * Console: log level **silly**.
@@ -242,7 +257,7 @@ The default configuration for the logger includes three different transports:
 
 To override the default configuration you can create a `./config/logger.js` configuration file.
 
-#### Dispatcher
+##### Dispatcher
 
 ### Autoloading
 ### Extending Application Context
