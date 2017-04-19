@@ -200,7 +200,9 @@ Lastly but more importantly, you can **BYOS**- bring your own solution- and use 
 
 ### Modules
 #### REPL
+
 #### Logger
+
 **core.io** provides a logger to the application context as `context.logger` and is the module with the highest priority, meaning it will be available on first run. Under the hood the logger wraps [winston][winston] and extends it with some extra features:
 
 * child loggers
@@ -225,7 +227,9 @@ INFO  [23:28:48] ├── dispatcher   : Created logger "dispatcher"...
 DEBUG [23:28:48] ├── dispatcher   : Module "dispatcher" ready...
 ```
 
-Each application has at least two loggers; core and app.
+Each application has at least two loggers; core and app. Using the built in logger is optional, however if you decide to log from within your modules is a good idea to use the same provided logger.
+
+When you are initializing your modules, in the `init` function, you can access the logger using the `context.getLogger`
 
 
 
