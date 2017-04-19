@@ -201,6 +201,43 @@ Lastly but more importantly, you can **BYOS**- bring your own solution- and use 
 ### Modules
 #### REPL
 #### Logger
+**core.io** provides a logger to the application context as `context.logger` and is the module with the highest priority, meaning it will be available on first run. Under the hood the logger wraps [winston][winston] and extends it with some extra features:
+
+* child loggers
+* filters
+* the ability to mute all output
+* the ability to have focus one child logger
+* it can optionally wrap the console so that it has the same format
+* it can disable `console` output
+
+When a module is loaded a child logger is created and assigned to the module. You access child loggers via the `context.logger.getLogger(loggerId)` method, where `loggerId` is the name of the logger.
+
+Each call to `getLogger` will return the same instance, and it's output is identified by the logger's name:
+
+```
+INFO  [23:28:48] ├── core         : Created logger "core"...
+INFO  [23:28:48] ├── app          : Created logger "app"...
+INFO  [23:28:48] ├── console      : Created logger "console"...
+WARN  [23:28:48] ├── core         : Register: we are going to override plugin logger
+INFO  [23:28:48] ├── core         : Mount Handler: module "errors" mounted...
+INFO  [23:28:48] ├── core         : Mount Handler: module "dispatcher" mounted...
+INFO  [23:28:48] ├── dispatcher   : Created logger "dispatcher"...
+DEBUG [23:28:48] ├── dispatcher   : Module "dispatcher" ready...
+```
+
+Each application has at least two loggers; core and app.
+
+
+
+##### Configuration
+
+The default configuration for the logger includes three different transports:
+* Console: log level **silly**.
+* File Exceptions: catch and log uncaughtException events
+* File Debug: Log level debug. Disabled by default in production.
+
+To override the default configuration you can create a `./config/logger.js` configuration file.
+
 #### Dispatcher
 
 ### Autoloading
@@ -419,3 +456,4 @@ After all configuration files are [loaded](#configuration-loader) and it's [conf
 [ioc]:https://en.wikipedia.org/wiki/Inversion_of_control
 [envset]:https://github.com/goliatone/envset
 [mixin]:https://www.joezimjs.com/javascript/javascript-mixins-functional-inheritance/
+[winston]:https://github.com/winstonjs/winston
