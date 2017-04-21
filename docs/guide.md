@@ -2,13 +2,16 @@
 
 **core.io** provides a structure to quickly prototype Node.js applications of _any type_, providing a set of guidelines and conventions to ease development.
 
-In a way **core.io** aims to be a workflow rather than a framework or a library, providing a common application structure regardless if the application is web, desktop, or data focused.
+In a way **core.io** aims to be a workflow rather than a framework by providing a common application structure regardless if the application is web, desktop, or data focused.
 
-**core.io** provides basic tools which are useful in any context like configuration management, logging, dependency management, a REPL.
+**core.io** provides basic building blocks which are useful in any context and help with command tasks like configuration management, logging, dependency management and more basic needs of most applications.
+
+The heart of **core.io** is the [application context](#application-core), which you can extend directly with custom logic or indirectly with modules.
+
+Modules are intended to encapsulate code and make it portable. They also serve as glue to integrate libraries into your project.
 
 Following simple conventions on how files are named and where are placed **core.io** will auto-load, auto-configure, and auto-wire components.
 
-The heart of **core.io** is the [application context](#application-core), which you can extend directly with custom logic or indirectly with plugins[ as building blocks].
 
 
 1. [Getting Started](#getting-started)
@@ -43,13 +46,43 @@ The heart of **core.io** is the [application context](#application-core), which 
 
 ## Concepts
 
-A lot of the nomenclature used here is being used rather loosely, instead of making up new words we try to reuse terms already in use elsewhere which might be similar enough to provide some context if we are familiar with them.
+A lot of the nomenclature in this document is being used rather loosely, instead of making up new words we try to reuse terms already in use elsewhere which might refer to similar enough concepts to provide context to those who are familiar with them.
 
-**core.io** prefers to be pragmatic over correct, and often times takes the shortest path or the naive approach to solve problems as they come and not before. That is, all features are here because they are being used extensively and provide a clear benefit.
+**core.io** prefers to be pragmatic over correct, and often times takes the shortest path or the naive approach to solve problems as they come and not before there are such problems. That is, all features are here because they are being used extensively and provide a clear benefit.
 
 **core.io** main goal is to speed up development and to provide a solid platform to quickly build complex prototypes with the least amount of friction. One way to achieve this is to promote code reuse by providing a plug-and-play module system.
 
 Don't get too hung up on the terms and how they differ from the use by frameworks or languages you are familiar with.
+
+### Mixins and overrides
+Through most classes in **core.io** we follow this pragmatic convention:
+
+```js
+class MyClass {
+    constructor(options) {
+        options = extend({}, MyClass.DEFAULTS, options);
+        if(options.autoinitialize) {
+            this.init(options);
+        }
+    }
+
+    init(options={}) {
+        extend(this, options);
+    }
+}
+
+MyClass.DEFAULTS = {
+    getName: function() {
+
+    },
+    name: 'MyClass'
+};
+```
+
+This is simple, powerful, and can be somehow dangerous if you don't fully understand how it works.
+
+It's purpose is to give the developer total control over the behavior of `MyClass` with everything that it entails. Use with responsibility.
+
 
 ### Application Context
 
@@ -66,8 +99,10 @@ An example of this would be the following hypothetical module:
 
 ```js
 module.exports.init = function(context, config) {
+    const crud = new Crud(config);
+
     return context.resolve('persistence', 'server').then(() => {
-        context.provide('crud', crud.initialize(context.server));
+        context.provide(crud.moduleId, crud.initialize(context.server));
     }).catch(context.handleModuleError.bind(true));
 };
 ```
@@ -82,7 +117,7 @@ module.exports.init = function(context, config) {
 
 While the intention of **core.io** is to adhere to the idea of convention over configuration, you still have full control over most aspects of your application by overriding the provided default values.
 
-**core.io** configuration process is purportedly simple, a **core.io** application takes an options object and **core.io** does not really care how you produce that object.
+**core.io** configuration process is purportedly simple, a **core.io** application takes an options object with configuration and overrdies. **core.io** does not really care how you produce that object.
 
 However, the Application class provides you with a helpful method to collect, merge, and resolve dependencies of configuration files located in the `./cofig` folder of projects.
 
@@ -124,18 +159,20 @@ For convenience **core.io** wraps the `config` object with some a `get` and `set
 This is so that you can access a deep object without fear of some object in the path not being defined. It also enables you to provide a default value for such cases.
 
 ```js
+//Get the value of "environment", return "production" if undefined.
 let environment = context.config.get('environment', 'production');
 ```
 
 It's more useful when you need to access a deeply nested object:
 
 ```js
+//Get the value of "repl.options.prompt", return "poke-repl >" if undefined.
 let prompt = context.config.get('repl.options.prompt', 'poke-repl >');
 ```
 
 #### Module configuration
 
-When **core.io** registers a module, first it will require the module and then will look for a key in `context.config` that matches the modules `moduleId`. It will then call `module.init` with a reference to the value of this key.
+When **core.io** registers a module, first it will `require` the module and then will look for a key in `context.config` that matches the module's [moduleId](#modules-names). It will then call `module.init` with a reference to the value of this key.
 
 ```js
 let moduleId = 'persistence';
@@ -199,7 +236,19 @@ Lastly but more importantly, you can **BYOS**- bring your own solution- and use 
 ### CLI
 
 ### Modules
-Anatomy of a module.
+A Node.js package is a convenient way to organize, distribute and reuse source code between Node.js programs.
+
+A Node.js module is anything that can loaded with `require`.
+
+**core.io** modules are intended to encapsulate logic in a way that can be reused between projects, in that sense **core.io** modules are similar to [npm packages][npm-packages].
+
+Perhaps the modules contain logic specific to your application since modules are used to integrate packages into the application.  
+
+
+#### Defining a **core.io** Module
+**core.io** modules need to conform to a simple interface.
+
+
 
 #### Modules Names
 * sanitizeName:
@@ -214,6 +263,10 @@ Conventions around modules names:
 
 
 #### Core Modules
+Core modules are optional and can be replaced by any module as long as it provides the same interface.
+
+Some are optional, like the REPL module. If you dont needed you can remove it from the list of `coremodules` using the configuration object that you pass to the application instance during the initialization of your program, in the entry point file.
+
 ##### REPL
 
 ##### Logger
@@ -326,6 +379,8 @@ https://nodejs.org/en/docs/guides/anatomy-of-an-http-transaction/
 └── index.js
 ```
 
+The entry point file is named `index.js` by default/convention, but basically you can use anything that would work in a `npm start` script.
+
 ### Configuration
 
 Configuration files located in the [`config/`](#configuration-loader) folder of projects will be merged together in a single object, which will be available at runtime on as a property of your application instance, i.e. `core.config`.
@@ -370,6 +425,13 @@ var config = Application.loadConfig({
 var app = new Application({config});
 ```
 
+#### Configuration Extra Properties
+
+The configuration process attaches two properties to the config object:
+
+* package: contents of `package.json` file minus the **readme**
+* environment: value of `process.env.NODE_ENV`
+
 #### Application configuration file
 
 * banner: String|Function
@@ -383,11 +445,24 @@ The `./config/app.js` is different than other configuration files in that applic
 
 #### Core modules
 
-This is the list of core modules bundled with Kiko:
+This is the list of core modules bundled with **core.io**:
 
 * Logger
-* REPL
+* Errors
+* Monitoring
 * Dispatcher
+* REPL
+
+Core modules are loaded first and made available for all user modules. You can override this list using a `coremodules` key in the configuration object you initialize your instance with:
+
+```js
+var config = Application.loadConfig({
+    coremodules: ['./logger', './errors', './dispatcher']
+}, true);
+
+var app = new Application({config});
+```
+Here we removed the [monitoring](#monitoring-module) and the [REPL](#repl-module).
 
 ### Autoloading
 
@@ -398,7 +473,28 @@ Autoloading refers to the fact that **core.io** will take files placed in specif
 ##### Commands Loader
 
 ##### Configuration Loader
+
 ###### Solving Configuration Dependencies
+Configuration files can have interpolated values where you reference the value of any attribute of the configuration object using the attribute's keypath.
+
+You reference objects or properties by their keypath. A keypath is a string representing the location of a piece of data.
+
+```js
+var data = {
+    user: {
+        name: 'Peperone',
+        address: {
+            city: 'New York'
+        }
+    }
+};
+```
+
+You can reference strings or objects using two different syntaxes:
+
+* Object interpolation: `@{user}` or `@{user.address}`
+* String interpolation: `${user.name}` or `${user.address.city}`
+
 
 
 #### Logger
@@ -407,8 +503,95 @@ options:
 * muteConsole
 * wrapConsole
 
+#### Banner
+In development mode, when the application boots there is a banner that shows up in the output. You can customize it using any online ASCII generator [like this one][ascii-art].
+
+The banner can display any information using [configuration interpolated values](#solving-configuration-dependencies).
+To customize the banner you need to create a file `./config/banner.txt` with your ASCII art and then reference it from `./config/app.js`.
+
+```javascript
+const banner = require('fs').readFileSync('./config/banner.txt', 'utf-8');
+
+module.exports = {
+    banner,
+    name: 'AppCore',
+    environment: process.env.NODE_ENV
+};
+```
+
+
+An example banner could look like this:
+```
+[32m------------------------------------------------------------------
+------------------------------------------------------------------
+
+     **                       ******                          **
+    ****    ******  ******   **////**                        /**
+   **//**  /**///**/**///** **    //   ******  ******  ***** /**
+  **  //** /**  /**/**  /**/**        **////**//**//* **///**/**
+ **********/****** /****** /**       /**   /** /** / /*******/**
+/**//////**/**///  /**///  //**    **/**   /** /**   /**//// //
+/**     /**/**     /**      //****** //****** /***   //****** **
+//      // //      //        //////   //////  ///     ////// //
+
+
+           Name: ${app.name}
+        Version: ${package.version}
+    Environment: ${environment}
+----------------------------------------    v${package.version}    ------------
+------------------------------------------------------------------
+[39m
+```
+
+And it would render like this:
+```
+------------------------------------------------------------------
+------------------------------------------------------------------
+
+     **                       ******                          **
+    ****    ******  ******   **////**                        /**
+   **//**  /**///**/**///** **    //   ******  ******  ***** /**
+  **  //** /**  /**/**  /**/**        **////**//**//* **///**/**
+ **********/****** /****** /**       /**   /** /** / /*******/**
+/**//////**/**///  /**///  //**    **/**   /** /**   /**//// //
+/**     /**/**     /**      //****** //****** /***   //****** **
+//      // //      //        //////   //////  ///     ////// //
+
+
+           Name: AppCore
+        Version: 0.0.1
+    Environment: development
+----------------------------------------    v0.0.1    ------------
+------------------------------------------------------------------
+```
+
 #### REPL
-poke-repl
+
+The built in REPL exposes the application context and you can access it as `app`, and through it you can access all the modules and the configuration object.
+
+You can expose properties and functions by extending the REPL instance.
+
+```js
+context.resolve('repl').then((repl) => {
+    repl.context.myCustomCommand = function() {
+        console.log('TODO: We should really thing of a better example!');
+    };
+});
+```
+
+##### Banner
+You can customize the banner that is displayed in the console output during initialization of your application. Mostly is about aesthetics but you can use it to display some useful information regarding the connection.
+
+```
+╔═════════════════════════════════════════════════════════════════════╗
+║                      poke-repl remote console √                    ║
+║                                                                    ║
+║              All connections are monitored and recorded            ║
+║      Disconnect \u001b[1mINMEDIATELY\u001b[22m if you are not an authorized user      ║
+╚════════════════════════════════════════════════════════════════════╝
+```
+
+There is an example [here][poke-repl-banner]
 
 #### Dispatcher
 
@@ -457,6 +640,8 @@ Default values:
 
 One of the main functions of **core.io** is to manage your application's lifecycle. **core.io** takes over during boot and after it's duties are completed will give focus to your application.
 
+0) Call entry point file
+
 1) Load Configuration
 
 2) Load Core Modules
@@ -476,3 +661,6 @@ After all configuration files are [loaded](#configuration-loader) and it's [conf
 [envset]:https://github.com/goliatone/envset
 [mixin]:https://www.joezimjs.com/javascript/javascript-mixins-functional-inheritance/
 [winston]:https://github.com/winstonjs/winston
+[npm-packages]:https://docs.npmjs.com/how-npm-works/packages
+[poke-repl-banner]:https://github.com/goliatone/poke-repl/tree/master/examples
+[ascii-art]:http://www.network-science.de/ascii/
