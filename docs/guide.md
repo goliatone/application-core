@@ -199,7 +199,19 @@ Lastly but more importantly, you can **BYOS**- bring your own solution- and use 
 ### CLI
 
 ### Modules
-Anatomy of a module.
+A Node.js package is a convenient way to organize, distribute and reuse source code between Node.js programs.
+
+A Node.js module is anything that can loaded with `require`.
+
+**core.io** modules are intended to encapsulate logic in a way that can be reused between projects, in that sense **core.io** modules are similar to [npm packages][npm-packages].
+
+Perhaps the modules contain logic specific to your application since modules are used to integrate packages into the application.  
+
+
+#### Defining a **core.io** Module
+**core.io** modules need to conform to a simple interface.
+
+
 
 #### Modules Names
 * sanitizeName:
@@ -370,6 +382,13 @@ var config = Application.loadConfig({
 var app = new Application({config});
 ```
 
+#### Configuration Extra Properties
+
+The configuration process attaches two properties to the config object:
+
+* package: contents of `package.json` file minus the **readme**
+* environment: value of `process.env.NODE_ENV`
+
 #### Application configuration file
 
 * banner: String|Function
@@ -383,11 +402,13 @@ The `./config/app.js` is different than other configuration files in that applic
 
 #### Core modules
 
-This is the list of core modules bundled with Kiko:
+This is the list of core modules bundled with **core.io**:
 
 * Logger
 * REPL
 * Dispatcher
+
+Core modules are loaded first and made available for all user modules.
 
 ### Autoloading
 
@@ -398,7 +419,28 @@ Autoloading refers to the fact that **core.io** will take files placed in specif
 ##### Commands Loader
 
 ##### Configuration Loader
+
 ###### Solving Configuration Dependencies
+Configuration files can have interpolated values where you reference the value of any attribute of the configuration object using the attribute's keypath.
+
+You reference objects or properties by their keypath. A keypath is a string representing the location of a piece of data.
+
+```js
+var data = {
+    user: {
+        name: 'Peperone',
+        address: {
+            city: 'New York'
+        }
+    }
+};
+```
+
+You can reference strings or objects using two different syntaxes:
+
+* Object interpolation: `@{user}` or `@{user.address}`
+* String interpolation: `${user.name}` or `${user.address.city}`
+
 
 
 #### Logger
@@ -407,8 +449,95 @@ options:
 * muteConsole
 * wrapConsole
 
+#### Banner
+In development mode, when the application boots there is a banner that shows up in the output. You can customize it using any online ASCII generator [like this one][ascii-art].
+
+The banner can display any information using [configuration interpolated values](#solving-configuration-dependencies).
+To customize the banner you need to create a file `./config/banner.txt` with your ASCII art and then reference it from `./config/app.js`.
+
+```javascript
+const banner = require('fs').readFileSync('./config/banner.txt', 'utf-8');
+
+module.exports = {
+    banner,
+    name: 'AppCore',
+    environment: process.env.NODE_ENV
+};
+```
+
+
+An example banner could look like this:
+```
+[32m------------------------------------------------------------------
+------------------------------------------------------------------
+
+     **                       ******                          **
+    ****    ******  ******   **////**                        /**
+   **//**  /**///**/**///** **    //   ******  ******  ***** /**
+  **  //** /**  /**/**  /**/**        **////**//**//* **///**/**
+ **********/****** /****** /**       /**   /** /** / /*******/**
+/**//////**/**///  /**///  //**    **/**   /** /**   /**//// //
+/**     /**/**     /**      //****** //****** /***   //****** **
+//      // //      //        //////   //////  ///     ////// //
+
+
+           Name: ${app.name}
+        Version: ${package.version}
+    Environment: ${environment}
+----------------------------------------    v${package.version}    ------------
+------------------------------------------------------------------
+[39m
+```
+
+And it would render like this:
+```
+------------------------------------------------------------------
+------------------------------------------------------------------
+
+     **                       ******                          **
+    ****    ******  ******   **////**                        /**
+   **//**  /**///**/**///** **    //   ******  ******  ***** /**
+  **  //** /**  /**/**  /**/**        **////**//**//* **///**/**
+ **********/****** /****** /**       /**   /** /** / /*******/**
+/**//////**/**///  /**///  //**    **/**   /** /**   /**//// //
+/**     /**/**     /**      //****** //****** /***   //****** **
+//      // //      //        //////   //////  ///     ////// //
+
+
+           Name: AppCore
+        Version: 0.0.1
+    Environment: development
+----------------------------------------    v0.0.1    ------------
+------------------------------------------------------------------
+```
+
 #### REPL
-poke-repl
+
+The built in REPL exposes the application context and you can access it as `app`, and through it you can access all the modules and the configuration object.
+
+You can expose properties and functions by extending the REPL instance.
+
+```js
+context.resolve('repl').then((repl) => {
+    repl.context.myCustomCommand = function() {
+        console.log('TODO: We should really thing of a better example!');
+    };
+});
+```
+
+##### Banner
+You can customize the banner that is displayed in the console output during initialization of your application. Mostly is about aesthetics but you can use it to display some useful information regarding the connection.
+
+```
+╔═════════════════════════════════════════════════════════════════════╗
+║                      poke-repl remote console √                    ║
+║                                                                    ║
+║              All connections are monitored and recorded            ║
+║      Disconnect \u001b[1mINMEDIATELY\u001b[22m if you are not an authorized user      ║
+╚════════════════════════════════════════════════════════════════════╝
+```
+
+There is an example [here][poke-repl-banner]
 
 #### Dispatcher
 
@@ -476,3 +605,6 @@ After all configuration files are [loaded](#configuration-loader) and it's [conf
 [envset]:https://github.com/goliatone/envset
 [mixin]:https://www.joezimjs.com/javascript/javascript-mixins-functional-inheritance/
 [winston]:https://github.com/winstonjs/winston
+[npm-packages]:https://docs.npmjs.com/how-npm-works/packages
+[poke-repl-banner]:https://github.com/goliatone/poke-repl/tree/master/examples
+[ascii-art]:http://www.network-science.de/ascii/
