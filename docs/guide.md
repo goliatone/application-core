@@ -581,6 +581,12 @@ context.resolve('repl').then((repl) => {
 });
 ```
 
+#### REPL Configuration Options
+
+* enabled: Boolean Default true.
+
+You can disable the REPL by setting the `enabled` property to `false`.
+
 ##### Banner
 You can customize the banner that is displayed in the console output during initialization of your application. Mostly is about aesthetics but you can use it to display some useful information regarding the connection.
 
