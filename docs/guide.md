@@ -251,11 +251,13 @@ Perhaps the modules contain logic specific to your application since modules are
 
 
 #### Modules Names
-* sanitizeName:
+* sanitizeName: It ensures the resulting string is a valid JavaScript variable name.
+
+* alias: Modules can export an `alias` property that will be used instead of the filename.
 
 * moduleid: If no module id is provided in the configuration file, the sanitized name will be used.
 
-* alias: Modules can export an `alias` property that will be used instead of the filename.
+
 
 Conventions around modules names:
 * configuration file: matching configuration files will de passed to module
