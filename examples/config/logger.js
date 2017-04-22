@@ -3,6 +3,7 @@
 
 module.exports = {
     dirname: '.',
+    wrapConsole: true,
     filenamePrefix: '${app.name}'
 };
 
