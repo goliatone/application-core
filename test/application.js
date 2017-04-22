@@ -1,19 +1,26 @@
 'use strict';
+const test = require('tape');
 
-var assert = require('chai').assert;
-var sinon = require('sinon');
-var path = require('path');
-var fixture = path.resolve.bind(path, __dirname, 'fixtures');
+const Application = require('..').Application;
+// Application.DEFAULTS.autoinitialize = false;
 
-sinon.assert.expose(assert, { prefix: '' });
+test('Application should expose DEFAULTS', (t) => {
+    t.ok(Application.DEFAULTS, 'Application.DEFAULTS is defined');
+    t.end();
+});
 
-var Core = require('..').Application;
+test('Application instances extend Application.DEFAULTS', (t) =>{
+    let app = new Application();
 
-describe('application-core', function(){
-
-    describe('constructor', function(){
-        it('should provide a DEFAULTS object', function(){
-            assert.isObject(Core.DEFAULTS);
-        });
+    Object.keys(Application.DEFAULTS).map((key)=>{
+        t.ok(app[key] !== undefined, 'match ' + key);
     });
+    t.end();
+});
+
+test('Application instances extend Application.DEFAULTS', (t) =>{
+    let app = new Application();
+
+    
+    t.end();
 });
