@@ -23,6 +23,11 @@ test('getModuleName given a path should return the name of a file', (t)=>{
     t.end();
 });
 
+test('getModuleName given a path should return the name of a file', (t)=>{
+    t.equals(getModuleName(''), '', 'Correct filename');
+    t.end();
+});
+
 test('getPathToMain should return the path to main process file', (t)=>{
     t.ok(getPathToMain(), getPathToMain());
     t.end();
