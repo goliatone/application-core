@@ -147,7 +147,7 @@ test.only('The event sent through a hook can be modified', (t)=>{
         e.pre = true;
     });
 
-    emitter.on('run.post', (e)=>{
+    emitter.on('run.post', (e)=> {
         e.post = true;
     });
 
