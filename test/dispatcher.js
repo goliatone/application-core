@@ -139,7 +139,7 @@ test('The hook method should trigger hooks', (t)=>{
     emitter.hook('run', {});
 });
 
-test.only('The event sent through a hook can be modified', (t)=>{
+test.skip('The event sent through a hook can be modified', (t)=>{
     let emitter = new EventEmitter();
     emitter.hook = Dispatcher.createHook(emitter);
 
