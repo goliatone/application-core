@@ -49,6 +49,7 @@ test('Init gets executed only once after calling all initializers', (t) =>{
 
 test('We can configure banner using the "banner" conf property', (t)=>{
     let NOOP = function(){};
+    let logger = noopc(console);
     let log = sinon.spy(console, 'log');
 
     let app = new Application({
@@ -61,6 +62,7 @@ test('We can configure banner using the "banner" conf property', (t)=>{
     });
 
     log.restore();
+    logger._restore();
     t.equals(log.callCount, 1, 'should be called once');
     t.equals(log.firstCall.args[0], 'test', 'should be called with expected text');
     t.end();
@@ -239,8 +241,10 @@ test.skip('onErrorHandler will not exit if the Error is not critical', (t)=>{
 
 test('handleModuleError should throw an error', (t)=>{
     let NOOP = function(){};
+    // let logger = noopc({});
 
     let app = new Application({
+        // _logger: logger,
         _registerListeners: NOOP,
         _setupLongStackTraces: NOOP,
         _configure: NOOP,
@@ -248,7 +252,7 @@ test('handleModuleError should throw an error', (t)=>{
         _mount: NOOP
     });
 
-    t.throws(()=>{
+    t.throws(()=> {
         app.handleModuleError('test', new Error('test'));
     });
 
@@ -257,9 +261,10 @@ test('handleModuleError should throw an error', (t)=>{
 
 test('handleModuleError should not throw an error it it was handled by the module', (t)=>{
     let NOOP = function(){};
-
+    // let logger = noopc({});
 
     let app = new Application({
+        // _logger: logger,
         _registerListeners: NOOP,
         _setupLongStackTraces: NOOP,
         _configure: NOOP,
@@ -268,9 +273,9 @@ test('handleModuleError should not throw an error it it was handled by the modul
     });
 
     t.doesNotThrow(()=> {
-        let error = new Error('test');
+        let error = {};
         error.handledByModule = true;
-        app.handleModuleError('test', error);
+        t.notOk(app.handleModuleError('test', error), 'all good');
     });
 
     t.end();
