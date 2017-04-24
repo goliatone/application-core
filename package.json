@@ -30,7 +30,7 @@
   "scripts": {
     "patch": "npm version patch && npm publish && git push --tags && git push origin master",
     "test": "bogota",
-    "dtest": "tape-watch test/**/*.js -p tap-spec"
+    "dtest": "watch bogota test/"
   },
   "dependencies": {
     "bluebird": "^3.4.6",
@@ -49,12 +49,12 @@
     "winston": "^2.2.0"
   },
   "devDependencies": {
+    "bogota": "^2.0.4",
     "proxyquire": "^1.7.11",
     "sinon": "^1.17.7",
-    "bogota": "^2.0.4",
     "tap-spec": "^4.1.1",
     "tape": "^4.6.3",
-    "tape-watch": "^2.3.0"
+    "watch": "^1.0.2"
   },
   "keywords": []
 }
