@@ -29,7 +29,7 @@
   },
   "scripts": {
     "patch": "npm version patch && npm publish && git push --tags && git push origin master",
-    "test": "tape test/**/*.js | tap-spec",
+    "test": "bogota",
     "dtest": "tape-watch test/**/*.js -p tap-spec"
   },
   "dependencies": {
@@ -51,6 +51,7 @@
   "devDependencies": {
     "proxyquire": "^1.7.11",
     "sinon": "^1.17.7",
+    "bogota": "^2.0.4",
     "tap-spec": "^4.1.1",
     "tape": "^4.6.3",
     "tape-watch": "^2.3.0"
