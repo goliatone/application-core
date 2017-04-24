@@ -185,3 +185,93 @@ test('_setupLongStackTraces should have effects outside production', (t)=> {
     t.equals(app._setupLongStackTraces(), undefined, 'should return undefined');
     t.end();
 });
+
+test('onceRegistered will call the handler immediately if the module is registered', (t)=>{
+    let NOOP = function(){};
+    let handler = sinon.spy();
+
+    let app = new Application({
+        _registerListeners: NOOP,
+        _setupLongStackTraces: NOOP,
+        _configure: NOOP,
+        _showBanner: NOOP,
+        _mount: NOOP
+    });
+    app._modules['test'] = {};
+    app.onceRegistered('test', handler);
+    t.equals(handler.callCount, 1, 'should be called once');
+    t.end();
+});
+
+test('onceRegistered will call the handler once the module is registered', (t)=>{
+    let NOOP = function(){};
+
+    let app = new Application({
+        _registerListeners: NOOP,
+        _setupLongStackTraces: NOOP,
+        _configure: NOOP,
+        _showBanner: NOOP,
+        _mount: NOOP
+    });
+
+    app.onceRegistered('test', ()=>{
+        t.pass('should be called once');
+        t.end();
+    });
+
+    app.emit('test.' + app.registerReadyEvent);
+
+});
+
+test.skip('onErrorHandler will not exit if the Error is not critical', (t)=>{
+    let NOOP = function(){};
+
+    let app = new Application({
+        _registerListeners: NOOP,
+        _setupLongStackTraces: NOOP,
+        _configure: NOOP,
+        _showBanner: NOOP,
+        _mount: NOOP
+    });
+
+    t.end();
+});
+
+test('handleModuleError should throw an error', (t)=>{
+    let NOOP = function(){};
+
+    let app = new Application({
+        _registerListeners: NOOP,
+        _setupLongStackTraces: NOOP,
+        _configure: NOOP,
+        _showBanner: NOOP,
+        _mount: NOOP
+    });
+
+    t.throws(()=>{
+        app.handleModuleError('test', new Error('test'));
+    });
+
+    t.end();
+});
+
+test('handleModuleError should not throw an error it it was handled by the module', (t)=>{
+    let NOOP = function(){};
+
+
+    let app = new Application({
+        _registerListeners: NOOP,
+        _setupLongStackTraces: NOOP,
+        _configure: NOOP,
+        _showBanner: NOOP,
+        _mount: NOOP
+    });
+
+    t.doesNotThrow(()=> {
+        let error = new Error('test');
+        error.handledByModule = true;
+        app.handleModuleError('test', error);
+    });
+
+    t.end();
+});
