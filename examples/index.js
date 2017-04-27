@@ -41,8 +41,8 @@ app.once('run.post', function() {
     console.log('here, here, here');
     console.log('------------------');
 
-    let err = new Error('This is a sample error!!!');
-    app.logger.error(err.stack);
+    // let err = new Error('This is a sample error!!!');
+    // app.logger.error(err.stack);
 });
 
 

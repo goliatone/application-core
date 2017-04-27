@@ -29,8 +29,8 @@
   },
   "scripts": {
     "patch": "npm version patch && npm publish && git push --tags && git push origin master",
-    "test": "./node_modules/mocha/bin/mocha test/*_test.js",
-    "dtest": "./node_modules/mocha/bin/mocha test/*_test.js -G -w --reporter spec --slow 500"
+    "test": "bogota",
+    "dtest": "watch bogota test/"
   },
   "dependencies": {
     "bluebird": "^3.4.6",
@@ -49,10 +49,12 @@
     "winston": "^2.2.0"
   },
   "devDependencies": {
-    "mocha-sinon": "^1.1.4",
-    "chai": "^2.2.0",
-    "sinon": "^1.14.1",
-    "mocha": "^2.2.4"
+    "bogota": "^2.0.4",
+    "proxyquire": "^1.7.11",
+    "sinon": "^1.17.7",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.6.3",
+    "watch": "^1.0.2"
   },
   "keywords": []
 }
