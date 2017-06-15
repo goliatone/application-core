@@ -8,11 +8,9 @@ In a way **core.io** aims to be a workflow rather than a framework by providing 
 
 The heart of **core.io** is the [application context](#application-core), which you can extend directly with custom logic or indirectly with modules.
 
-Modules are intended to encapsulate code and make it portable. They also serve as glue to integrate libraries into your project.
+Modules are intended to encapsulate code and make it portable. They also serve as glue to integrate libraries like Socket.IO or AMQP into your project.
 
-Following simple conventions on how files are named and where are placed **core.io** will auto-load, auto-configure, and auto-wire components.
-
-
+Following simple conventions on how files are named and where those files are placed **core.io** will auto-load, auto-configure, and auto-wire components always leaving you the choice to override defaults or create custom modules to replace core functionality.
 
 1. [Getting Started](#getting-started)
 2. [Reference](#reference)
@@ -46,15 +44,18 @@ Following simple conventions on how files are named and where are placed **core.
 
 ## Concepts
 
-A lot of the nomenclature in this document is being used rather loosely, instead of making up new words we try to reuse terms already in use elsewhere which might refer to similar enough concepts to provide context to those who are familiar with them.
+A lot of the nomenclature in this document is being used rather loosely, instead of making up new words we try to reuse terms already in use elsewhere which might refer to similar enough concepts to provide context to those who are familiar with them. If you are learning be mindful that some concepts are stretched or directly misused to fit the narrative. Be warned.
 
-**core.io** prefers to be pragmatic over correct, and often times takes the shortest path or the naive approach to solve problems as they come and not before there are such problems. That is, all features are here because they are being used extensively and provide a clear benefit.
+**core.io** prefers to be _pragmatic_ rather than _correct_, and often times takes the shortest path or a naive approach to solve problems as they come as opposed to engineer for imagined-future-problems. That is, all features part of **core.io** are there because they are being used extensively and provide a clear benefit by solving an specific problem.
 
-**core.io** main goal is to speed up development and to provide a solid platform to quickly build complex prototypes with the least amount of friction. One way to achieve this is to promote code reuse by providing a plug-and-play module system.
+**core.io** main goal is to **speed up development and to provide a solid platform to quickly build complex prototypes with the least amount of friction**. One way to achieve this is to promote code reuse by providing a plug-and-play module system.
+
+The spirit is reminiscent of HMVC with Commands and a Front Controller.  
 
 Don't get too hung up on the terms and how they differ from the use by frameworks or languages you are familiar with.
 
 ### Mixins and overrides
+
 Through most classes in **core.io** we follow this pragmatic convention:
 
 ```js
@@ -72,28 +73,44 @@ class MyClass {
 }
 
 MyClass.DEFAULTS = {
+    autoinitialize: true,
     getName: function() {
-
+        return this.name;
     },
     name: 'MyClass'
 };
+```
+
+Generally speaking, things in `DEFAULTS` are intended to provide sane defaults but explicitly show what things are expected to be overriden by the developer.
+
+You can also use the `options` object to extend the base object with new functions and variables.
+
+In the previous example, a new instance of `MyClass` will have a `getName` method made available to it.
+
+```js
+let myInstance = new MyClass({
+    myCustomMethod: function(){
+        console.log(this.name);
+    }
+});
+myInstance.getName();
+myInstance.myCustomMethod();  
 ```
 
 This is simple, powerful, and can be somehow dangerous if you don't fully understand how it works.
 
 It's purpose is to give the developer total control over the behavior of `MyClass` with everything that it entails. Use with responsibility.
 
-
 ### Application Context
 
-During the initialization phase of modules **core.io** will call the module's
-`init` method with two arguments. The first argument is an instance of your application, this instance is called the application context and the convention is to name the argument `context`.
+During the initialization phase of modules **core.io** will call the module's exported
+`init` method with two arguments. The first argument is an instance of your application, this instance is called the application context and the convention through the source code, examples, and documentation is to name the argument `context`.
 
-**core.io** intends to not pollute the global namespace and modules should not have strong dependencies on **core.io** beyond the `init` function.
+**core.io** intends to keep the global namespace unpolluted so modules should not have strong dependencies on **core.io** beyond the `init` function.
 
-This context acts a little bit like an [IOC][ioc] container in that is intended to make your code modular and provide a point to extend your application at runtime.
+This context acts a little bit like an [IOC][ioc] container in that is intended to make your code modular and provide a point to extend your application at runtime at the same time that it provides access to features added by other modules.
 
-You will use it to `resolve` dependencies at runtime, and to `provide` new capabilities to your application.
+You will use this `context` to `resolve` dependencies at runtime, and to `provide` new capabilities to your application.
 
 An example of this would be the following hypothetical module:
 
@@ -102,10 +119,16 @@ module.exports.init = function(context, config) {
     const crud = new Crud(config);
 
     return context.resolve('persistence', 'server').then(() => {
-        context.provide(crud.moduleId, crud.initialize(context.server));
+        context.provide('crud', crud.initialize(context.server));
     }).catch(context.handleModuleError.bind(true));
 };
 ```
+
+This module declares two dependencies; `persistence`, and `server`. Modules are  resolved asynchronously so the `then` code will be executed after both `persistence`, and `server` are available.
+
+`context.provide` will expose a `crud` property and make it available to toher parts of your code.
+
+**NOTE**: Instead of the `"crud"` string we recommend you use `moduleId` which is part of the `config` object. You will learn later how to configure a module, but for now, know that if the configuration you provide does not include a `moduleId` property, then **core.io** will use the default name of the module.
 
 #### register
 #### resolve
@@ -115,17 +138,17 @@ module.exports.init = function(context, config) {
 
 ### Configuration
 
-While the intention of **core.io** is to adhere to the idea of convention over configuration, you still have full control over most aspects of your application by overriding the provided default values.
+While the intention of **core.io** is to adhere to the idea of convention over configuration, it still grants you, the developer, full control over most aspects of _your_ application by letting you override default values.
 
-**core.io** configuration process is purportedly simple, a **core.io** application takes an options object with configuration and overrdies. **core.io** does not really care how you produce that object.
+**core.io** configuration process is purportedly simple, a **core.io** application takes an options object with configuration parameters and overrides. **core.io** does not really care how you come up with that object.
 
-However, the Application class provides you with a helpful method to collect, merge, and resolve dependencies of configuration files located in the `./cofig` folder of projects.
+However, the `Application` class provides a helper static method to collect, merge, and resolve dependencies of configuration files that are located in the `./cofig` folder of a project.
 
 The resulting configuration object will be made available at runtime on the application context as `context.config`.
 
-When you create a new application instance you can pass an options object to it's constructor.
+When you create a new `Application` instance you can pass an `options` object to it's constructor.
 
-This options object has two purposes. If you define a configuration key, it's value will be added to `context.config`.
+This `options` object has two purposes. If you define a configuration key, it's value will be added to `context.config`.
 
 All other keys in this object will extend the application instance, like a [mixin][mixin]. The application instance extends itself with this object in it's `init` method which is called directly from the constructor.
 
@@ -154,13 +177,14 @@ app.myCustomMethod({});
 
 #### Configuration instance
 
-For convenience **core.io** wraps the `config` object with some a `get` and `set` methods.
+For convenience **core.io** wraps the `config` object with a `get` and `set` methods.
 
 This is so that you can access a deep object without fear of some object in the path not being defined. It also enables you to provide a default value for such cases.
 
 ```js
-//Get the value of "environment", return "production" if undefined.
-let environment = context.config.get('environment', 'production');
+//Get the value of "environment" defined in config/app.js
+//return "production" if undefined.
+let environment = context.config.get('app.environment', 'production');
 ```
 
 It's more useful when you need to access a deeply nested object:
@@ -174,6 +198,8 @@ let prompt = context.config.get('repl.options.prompt', 'poke-repl >');
 
 When **core.io** registers a module, first it will `require` the module and then will look for a key in `context.config` that matches the module's [moduleId](#modules-names). It will then call `module.init` with a reference to the value of this key.
 
+Pseudo code to illustrate:
+
 ```js
 let moduleId = 'persistence';
 let config = this.config.get(moduleId, {});
@@ -182,13 +208,11 @@ module.init(this, config);
 
 #### Configuration Files
 
-`Application.loadConfig` will load all configuration files found inside the `./config` directory.
+`Application.loadConfig` will load all configuration files found inside the `./config` directory of your application.
 
 It will then load the files, and merge them in a single object using the file name as a key.
 
 If you have a configuration file that has the same name as a given module's `moduleId` then the contents of that file will be passed to the module during the initialization phase.
-
-If your configuration file exports an `afterSolver` function it will be called once the configuration **solve** routine has been concluded.
 
 In a configuration file you can reference values from the same configuration object or from other configuration objects. Using two different syntaxes you can reference strings or objects:
 
@@ -215,7 +239,7 @@ module.exports = {
 };
 ```
 
-There is also the possibility of processing the contents of a configuration file after it has been merged and loaded. Configuration files are regular JavaScript files, which means you can build different logic into them.
+There is also the possibility of processing the contents of a configuration file **after** it has been merged and loaded.
 
 If you export a function named `afterSolver` it will be called after all dependencies have been resolved. The function will be called with the whole configuration object.
 
@@ -224,6 +248,8 @@ module.exports.afterSolver = function(config) {
     config.set('amqp.amqp', require('amqp'));
 };
 ```
+
+Configuration files are regular JavaScript files, which means you can build different logic into them.
 
 Under the hood **core.io** uses the [simple config loader][scl] package. You can read more in the packages repository.
 
@@ -248,23 +274,27 @@ var app = new App({
 });
 ```
 
+You can specify the path from where to look for the configuration files.
+
 #### Supporting Different Environments
 
-Another aspect in which **core.io** tries to simplify the configuration process is by how it supports different development environments, like **staging**, **development**, **production**, etc.
+Another aspect in which **core.io** tries to simplify the configuration process is by _how_ it supports different development environments, like **staging**, **development**, **production**, etc.
 
 In short: _it does not_.
 
-To be more precise, **core.io** takes a very pragmatic stance and does not provide any way to (directly) manage different environments but has some recommendations that make having configuration files per environment unnecessary.
+To be more precise, **core.io** takes a very pragmatic stance and does not provide any way to (directly) manage different environments but has some _recommendations_ that make having configuration files per environment unnecessary.
 
-A lot of the things that need to change on each environment are _secrets_ like service tokens or user keys. You can manage those by using `process.env` and environment variables.
+A lot of the things that need to change on each environment are _secrets_ like service tokens or user keys. We chose to manage those by using `process.env` and environment variables.
 
-If you use the provided `Application.loadConfig` then your configuration files are javascript files which, obviously, can have logic in it.
+If you use the provided `Application.loadConfig` then your configuration files are javascript files which, obviously, can have logic in it. Meaning that you can check the value of `process.env.NODE_ENV` and export different objects based on that value.
 
 Another benefit of `Application.loadConfig` is that you can reference other parts of you configuration files and solve them at runtime, making your configuration files modular.
 
 You can also make use of the `afterSolver` facility which gets access to the merged configuration object. In it you can access the `environment` key which holds the value of the current environment and modify your configuration file at runtime.
 
-Ideally your configuration files should be lightweight on the logic in order to reduce possible errors and keep things simple, but you are free to do as you please.
+Case in point, you have options.
+
+Ideally your configuration files should be logic lightweight in order to reduce possible errors and keep things simple, but you are free to do as you please.
 
 You can also use an environment manger like [envset][envset] to dynamically populate your `process.env` variables. All you need is an `.envset` file where you define your environments, environment variables and their values:
 
@@ -288,27 +318,33 @@ NODE_POSTGRES_PSWD=postgres
 NODE_POSTGRES_USER=postgres
 ```
 
-If you use `.envset` remember to add it to your `.gitignore` file.
+
+**NOTE**: If you use `.envset` remember to add it to your `.gitignore` file.
 
 Lastly but more importantly, you can **BYOS**- bring your own solution- and use whatever configuration system you prefer.
-
 
 ### CLI
 
 ### Modules
 A Node.js package is a convenient way to organize, distribute and reuse source code between Node.js programs.
 
-A Node.js module is anything that can loaded with `require`.
+A Node.js module is anything that can be loaded with `require`.
 
 **core.io** modules are intended to encapsulate logic in a way that can be reused between projects, in that sense **core.io** modules are similar to [npm packages][npm-packages].
 
-Perhaps the modules contain logic specific to your application since modules are used to integrate packages into the application.  
-
+Perhaps the modules contain logic specific to your application since modules are used to integrate packages into the application. You could think about **modules** as plugins or middleware.
 
 #### Defining a **core.io** Module
+
 **core.io** modules need to conform to a simple interface.
 
+* They need to expose an `init` function.
+* The init function will be given two arguments: `context` and `config`.
+
+For the most part, that's it. There are more options like exporting an `alias` or a `priority` property.
+
 #### Modules Names
+
 * sanitizeName: It ensures the resulting string is a valid JavaScript variable name.
 
 * alias: Modules can export an `alias` property that will be used instead of the filename.
@@ -319,11 +355,13 @@ Conventions around modules names:
 * configuration file: matching configuration files will de passed to module
 * child logger: receives the name of the module.
 
-
 #### Core Modules
+
 Core modules are optional and can be replaced by any module as long as it provides the same interface.
 
-Some are optional, like the REPL module. If you dont needed you can remove it from the list of `coremodules` using the configuration object that you pass to the application instance during the initialization of your program, in the entry point file.
+Some are optional, like the REPL module. If you don't needed or don' want a REPL you can remove it from the list of `coremodules` using the configuration object that you pass to the application instance during the initialization of your program, in the entry point file.
+
+The most likely scenario is that you might want to enable it during development but not on production.
 
 ##### REPL
 
@@ -363,7 +401,8 @@ You can have an active logger, so that only the log output of a given logger is 
 
 You can mute all output.
 
-options:
+Options:
+
 * muteConsole: Uses [noop-console][noop-console] module.
 * wrapConsole
 * handlingExceptions
@@ -373,6 +412,7 @@ You can set this values by default using the `./config/logger.js` configuration 
 ###### Configuration
 
 The default configuration for the logger includes three different transports:
+
 * Console: log level **silly**.
 * File Exceptions: catch and log uncaughtException events
 * File Debug: Log level debug. Disabled by default in production.
@@ -385,8 +425,6 @@ To override the default configuration you can create a `./config/logger.js` conf
 ### Extending Application Context
 ### Environment Variables
 #### Envset
-
-## Project Structure
 
 ---
 ## Main interface
@@ -427,24 +465,45 @@ context.provide(name, capability);
 
 https://nodejs.org/en/docs/guides/anatomy-of-an-http-transaction/
 
+## Project Structure
+
+One of the main goals of **core.io** is to provide a consistent way to structure your projects. **core.io** organizes your code by placing them under predetermined directories that will group files with a similar role.
+
+That is to say, all modules will live under a **modules** directory, all configuration files under a **config** directory, etc.
+
+By default it will create three directories; config, modules, and commands. It will also create an **index.js** file, a **package.json** file, and a `taskfile` file.
+
+`package.json` is a standard **Node.js** file with no special properties.
+
+`taskfile` is a bash file that follows [the Taskfile specification][taskfile] and is used to provide simple tasks. Is provided as a convenience, some projects might warrant a more sophisticated- and complex!- task runner or bundler.
+
+`index.js` is the application entry point, i.e. you could start your application by calling `node index.js`. You can extend you main `Application` instance here, however is recommended that you do so by leveraging modules instead.
+
 ### Project Layout
 
 ```mark
 .
 ├── config
+|    ├── app.banner.txt
 |    ├── app.js
 |    ├── logger.js
+|    ├── repl-banner.txt
 |    ├── repl.js
 |    ├── ...
-|    └── persistence.js
+|    └── persistence.js (*)
+|
 ├── modules
 |    ├── dashboard
 |    ├── admin
 |    └── persistence.js
+|
 ├── commands
 |    ├── run.post.js
 |    ├── user.create.js
 |    └── seed.create.js
+|
+├── package.json
+├── taskfile
 └── index.js
 ```
 
@@ -785,6 +844,12 @@ After all configuration files are [loaded](#configuration-loader) and it's [conf
 5) Run Hook
 
 6) Initialize App Runtime
+
+
+
+
+
+
 
 
 [core-persistence]:https://github.com/goliatone/core.io-persistence
