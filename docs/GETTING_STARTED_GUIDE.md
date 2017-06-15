@@ -63,50 +63,6 @@ You should see the banner ASCII art followed by the logger output in your termin
 $ envset development -- npm start
 ```
 
-
-
-### Structure of a project
-
-One of the main goals of **core.io** is to provide a consistent way to structure your projects. **core.io** organizes your code by placing them under predetermined directories that will group files with a similar role.
-
-That is to say, all modules will live under a **modules** directory, all configuration files under a **config** directory, etc.
-
-By default it will create three directories; config, modules, and commands. It will also create an **index.js** file, a **package.json** file, and a `taskfile` file.
-
-`package.json` is a standard **Node.js** file with no special properties.
-
-`taskfile` is a bash file that follows [the Taskfile specification][taskfile] and is used to provide simple tasks. Is provided as a convenience, some projects might warrant a more sophisticated- and complex!- task runner or bundler.
-
-`index.js` is the application entry point, i.e. you could start your application by calling `node index.js`. You can extend you main `Application` instance here, however is recommended that you do so by leveraging modules instead.
-
-```mark
-.
-├── config
-|    ├── app.banner.txt
-|    ├── app.js
-|    ├── logger.js
-|    ├── repl-banner.txt
-|    ├── repl.js
-|    ├── ...
-|    └── persistence.js (*)
-|
-├── modules
-|    ├── dashboard
-|    ├── admin
-|    └── persistence.js
-|
-├── commands
-|    ├── run.post.js
-|    ├── user.create.js
-|    └── seed.create.js
-|
-|   package.json
-└── index.js
-```
-
-### Configuration
-
-
 <!-- LINKS -->
 
 [core-persistence]:https://github.com/goliatone/core.io-persistence
