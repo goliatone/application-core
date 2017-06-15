@@ -1,4 +1,6 @@
 ### Modules
+A module adds a specific feature to an existing application context, providing a means to extend your application with specific behavior for a given project in an encapsulated way, thus maximizing the amount of code you can reuse between applications.
+
 Modules follow a simple convention: they should export an init function that take an instance of `app-core` and a configuration object as arguments.
 
 Your module does not need to return anything, but if it does it should be either an object or a Promise.
@@ -10,13 +12,15 @@ Once the module is registered, the app instance will emit an event: `moduleName 
 
 Once all core plugins are loaded, the application emits the event `coreplugins.registered`.
 
+#### Module instantiation
+
 The modules instantiation follows a simple registration process.
 
 * users module:
 
 **./modules/users.js**
 ```js
-module.exports.init = function(core, config){
+module.exports.init = function(core, config) {
     ...
     return users;
 };
@@ -24,7 +28,7 @@ module.exports.init = function(core, config){
 
 
 ```js
-core.once('users.registered', function(){
+core.once('users.registered', function() {
 
 });
 ```
