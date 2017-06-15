@@ -188,6 +188,64 @@ It will then load the files, and merge them in a single object using the file na
 
 If you have a configuration file that has the same name as a given module's `moduleId` then the contents of that file will be passed to the module during the initialization phase.
 
+If your configuration file exports an `afterSolver` function it will be called once the configuration **solve** routine has been concluded.
+
+In a configuration file you can reference values from the same configuration object or from other configuration objects. Using two different syntaxes you can reference strings or objects:
+
+* Strings: `${app.name}`
+* Objects: `@{app.locals}`
+
+The configuration **solve** routine will solve all cross references between configuration files. It runs after merging all files into a single object.
+
+As an example, `${app.name}` will be resolved to `config.app.name`:
+
+* `config/app.js`:
+
+```javascript
+module.exports = {
+  name: 'MyApplication'
+};
+```
+
+* `config/repl.js`:
+
+```javascript
+module.exports = {
+  prompt: '${app.name}'
+};
+```
+
+There is also the possibility of processing the contents of a configuration file after it has been merged and loaded. If you export a function named `afterSolver` it will be called after all dependencies have been resolved. The function will be called with the whole configuration object.
+
+```js
+module.exports.afterSolver = function(config) {
+    config.set('amqp.amqp', require('amqp'));
+};
+```
+
+Under the hood **core.io** uses the [simple config loader][scl] package. You can read more in the packages repository.
+
+**core.io** provides a convenience method to collect this configuration files.
+
+```javascript
+var App = require('core.io').Application;
+
+/*
+ * Autload and merge files inside
+ * `config/`
+ */
+var config = App.loadConfig({
+    //...default values
+}, true);
+
+var app = new App({
+    //Top level attributes will extend the application
+    //instance.
+    myCustomMethod: function(){},
+    config: config
+});
+```
+
 #### Supporting Different Environment
 
 Another aspect in which **core.io** tries to simplify the configuration process is by how it supports different development environments, like **staging**, **development**, **production**, etc.
@@ -248,16 +306,12 @@ Perhaps the modules contain logic specific to your application since modules are
 #### Defining a **core.io** Module
 **core.io** modules need to conform to a simple interface.
 
-
-
 #### Modules Names
 * sanitizeName: It ensures the resulting string is a valid JavaScript variable name.
 
 * alias: Modules can export an `alias` property that will be used instead of the filename.
 
 * moduleid: If no module id is provided in the configuration file, the sanitized name will be used.
-
-
 
 Conventions around modules names:
 * configuration file: matching configuration files will de passed to module
@@ -299,9 +353,20 @@ DEBUG [23:28:48] ├── dispatcher   : Module "dispatcher" ready...
 
 Each application has at least two loggers; core and app. Using the built in logger is optional, however if you decide to log from within your modules is a good idea to use the same provided logger.
 
-When you are initializing your modules, in the `init` function, you can access the logger using the `context.getLogger`
+**TIP**: When you are initializing your modules, in the `init` function, you can access the logger using the `context.getLogger`
 
+You can wrap the `console` so it has the same output as the regular logger output and also you can apply filters.
 
+You can have an active logger, so that only the log output of a given logger is shown.
+
+You can mute all output.
+
+options:
+* muteConsole: Uses [noop-console][noop-console] module.
+* wrapConsole
+* handlingExceptions
+
+You can set this values by default using the `./config/logger.js` configuration file or you can interact with the logger through the [REPL](#repl).
 
 ###### Configuration
 
@@ -387,7 +452,7 @@ The entry point file is named `index.js` by default/convention, but basically yo
 
 Configuration files located in the [`config/`](#configuration-loader) folder of projects will be merged together in a single object, which will be available at runtime on as a property of your application instance, i.e. `core.config`.
 
-The top-level keys on the `core.config` (i.e. `core.config.repl`) object correspond to a particular configuration file name under your `config/` directory (i.e. `config/repl.js`). Most individual configuration files are specific to a module, with the exception of `config/app.js`  which should hold options for your current application, i.e. application name.
+The top-level keys on the `core.config` (i.e. `core.config.repl`) object correspond to a particular configuration file name under your `config/` directory (i.e. `config/repl.js`). Most individual configuration files are specific to a module, with the exception of `config/app.js`  which should hold options for your current application, like the application's name, it's base directory, environment in run under, etc.
 
 The intention of these files is to provide modules with configuration options. When a module is loaded, it will be called with the application's instance and a `config` top-level key that matches the module's name.
 
@@ -497,8 +562,6 @@ You can reference strings or objects using two different syntaxes:
 * Object interpolation: `@{user}` or `@{user.address}`
 * String interpolation: `${user.name}` or `${user.address.city}`
 
-
-
 #### Logger
 
 options:
@@ -569,7 +632,16 @@ And it would render like this:
 
 #### REPL
 
-The built in REPL exposes the application context and you can access it as `app`, and through it you can access all the modules and the configuration object.
+**core.io** bundles a REPL module that enables remote interaction with your application over a terminal window. You get access to the application instance, models, and any functionality that you decide to expose.
+
+Some of the features:
+* firewall
+* basic auth
+* TLS
+
+You can learn more about the module at the repository, [poke-repl][poke].
+
+The built in REPL exposes the application context- you can access it if you type `app`- and through it you can access all the modules and the configuration object.
 
 You can expose properties and functions by extending the REPL instance.
 
@@ -601,6 +673,47 @@ You can customize the banner that is displayed in the console output during init
 
 There is an example [here][poke-repl-banner]
 
+You can customize the connection banner, the prompt, and more. A sample configuration file looks like this:
+
+```js
+'use strict';
+
+let header = require('fs').readFileSync('./config/repl-banner.txt', 'utf-8');
+
+module.exports = {
+    enabled: true,
+    metadata: {
+        name: '${app.name}',
+        version: '${package.version}',
+        environment: '${app.environment}',
+    },
+    firewall: {
+        rules: [
+            {ip: '', subnet: 14, rule: 'ACCEPT'}
+        ]
+    },
+    auth: {
+       enabled: true,
+       users:[{
+           username: 'admin',
+           password: 'secret!'
+       }]
+   },
+   tls: {
+       key:  './tls/client/private-key.pem',
+        cert: './tls/client/certificate.pem',
+        ca: [
+            './tls/server/certificate.pem'
+        ]
+   },
+    options: {
+        prompt: '\u001b[33m ${app.name} > \u001b[39m',
+        // header: header
+    },
+    port: process.env.NODE_REPL_PORT,
+};
+```
+
 #### Dispatcher
 
 The `dispatcher` module extends the `application-core` with two distinct behaviors:
@@ -621,8 +734,16 @@ After the application context is configured and wired it will fire the run `hook
 ##### Chained Events
 
 
+## External modules
 
+There is a list of modules that are not bundled by default but that provide great functionality albeit functionality that might not always be needed for every application.
 
+* [core.io-persistence][core-persistence]
+* [core.io-express-server][core-server]
+* [core.io-data-manager][core-data]
+* [core.io-filesync][core-sync]
+* [core.io-express-auth][core-auth]
+* [core.io-express-crud][core-crud]
 
 ## API
 
@@ -664,7 +785,16 @@ After all configuration files are [loaded](#configuration-loader) and it's [conf
 6) Initialize App Runtime
 
 
+[core-persistence]:https://github.com/goliatone/core.io-persistence
+[core-server]:https://github.com/goliatone/core.io-express-server
+[core-data]:https://github.com/goliatone/core.io-data-manager
+[core-sync]:https://github.com/goliatone/core.io-filesync
+[core-auth]:https://github.com/goliatone/core.io-express-auth
+[core-crud]:https://github.com/goliatone/core.io-crud
 
+[poke]:https://github.com/goliatone/poke-repl
+[noop-console]:https://github.com/goliatone/noop-console
+[scl]:https://github.com/goliatone/simple-config-loader
 [ioc]:https://en.wikipedia.org/wiki/Inversion_of_control
 [envset]:https://github.com/goliatone/envset
 [mixin]:https://www.joezimjs.com/javascript/javascript-mixins-functional-inheritance/
