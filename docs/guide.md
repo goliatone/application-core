@@ -215,7 +215,9 @@ module.exports = {
 };
 ```
 
-There is also the possibility of processing the contents of a configuration file after it has been merged and loaded. If you export a function named `afterSolver` it will be called after all dependencies have been resolved. The function will be called with the whole configuration object.
+There is also the possibility of processing the contents of a configuration file after it has been merged and loaded. Configuration files are regular JavaScript files, which means you can build different logic into them.
+
+If you export a function named `afterSolver` it will be called after all dependencies have been resolved. The function will be called with the whole configuration object.
 
 ```js
 module.exports.afterSolver = function(config) {
@@ -246,7 +248,7 @@ var app = new App({
 });
 ```
 
-#### Supporting Different Environment
+#### Supporting Different Environments
 
 Another aspect in which **core.io** tries to simplify the configuration process is by how it supports different development environments, like **staging**, **development**, **production**, etc.
 
@@ -749,7 +751,7 @@ There is a list of modules that are not bundled by default but that provide grea
 
 ### Application
 
-*
+**core.io** exposes an Application class which is intended to be used indirectly as exposed through the application's lifecycle.
 
 #### Configuration Options
 
