@@ -47,6 +47,24 @@ The generator will create a new folder for your application in your current dire
 **NOTE**:
 By default it will use the [core.io project starter][core.io-starter-template]. You can create and install your custom project templates. Read more in the documentation.
 
+### 3. Run project
+
+Last step is to run your project, which could be as simple as opening Terminal and typing the following command:
+
+```
+$ npm start
+```
+
+You should see the banner ASCII art followed by the logger output in your terminal.
+
+**TIP:** To manage different environments you can always use [envset][envset]:
+
+```
+$ envset development -- npm start
+```
+
+
+
 ### Structure of a project
 
 One of the main goals of **core.io** is to provide a consistent way to structure your projects. **core.io** organizes your code by placing them under predetermined directories that will group files with a similar role.
@@ -88,31 +106,6 @@ By default it will create three directories; config, modules, and commands. It w
 
 ### Configuration
 
-**core.io** configuration files can be found under the `./config` directory. A configuration file is a JavaScript file that exports an object. All files under the `./config` directory are loaded and all exported objects merged together into a single config object which will be available at runtime as a property of your application instance, i.e. `context.config`.
-
-The current behavior is to use the filename as the top-level key for the object inside the file. The top-level keys on `context.config` (i.e. `context.config.repl`) object correspond to a configuration file's name minus the extension found under the `./config` directory (i.e. `./config/repl.js`).
-
-The file `./config/repl.js` will be available at runtime as the `repl` attribute of the `config` object of your application instance, often referred to as `context`.
-
-Configuration files that have the same name as a module will automatically be made accessible to the module during the [module's instantiation phase][module-instantiation].
-
-The options for your current application will be in a configuration file named `app.js` (`./config/app.js`) which holds options like your application name, the ASCII banner used by the REPL tool, or application wide variables such as environment.
-
-Configuration files are regular JavaScript files, which means you can build different logic into them. Read more about [configuration][config-docs] in the documentation.
-
-### Modules
-
-
-
-## API
-
-### Application Core
-
-
-TODO:
-- [ ] Make a list of reserved words
-
-
 
 <!-- LINKS -->
 
@@ -123,6 +116,7 @@ TODO:
 [core-auth]:https://github.com/goliatone/core.io-express-auth
 [core-crud]:https://github.com/goliatone/core.io-crud
 
+[envset]:https://github.com/goliatone/envset
 [taskfile]:https://github.com/adriancooney/Taskfile
 [module-instantiation]:modules.md#module-instantiation
 [config-docs]:guide.md
