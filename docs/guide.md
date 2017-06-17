@@ -46,9 +46,9 @@ Following simple conventions on how files are named and where those files are pl
 
 A lot of the nomenclature in this document is being used rather loosely, instead of making up new words we try to reuse terms already in use elsewhere which might refer to similar enough concepts to provide context to those who are familiar with them. If you are learning be mindful that some concepts are stretched or directly misused to fit the narrative. Be warned.
 
-**core.io** prefers to be _pragmatic_ rather than _correct_, and often times takes the shortest path or a naive approach to solve problems as they come as opposed to engineer for imagined-future-problems. That is, all features part of **core.io** are there because they are being used extensively and provide a clear benefit by solving an specific problem.
+**core.io** prefers to be _pragmatic_ rather than _correct_, and often takes the shortest path or a naive approach to solve problems as they come as opposed to engineering for imagined-future-problems. That is, all features part of **core.io** are there because they are being used extensively and provide a clear benefit by solving a specific problem.
 
-**core.io** main goal is to **speed up development and to provide a solid platform to quickly build complex prototypes with the least amount of friction**. One way to achieve this is to promote code reuse by providing a plug-and-play module system.
+**core.io**'s main goal is to **speed up development and to provide a solid platform to quickly build complex prototypes with the least amount of friction**. One way to achieve this is to promote code reuse by providing a plug-and-play module system.
 
 The spirit is reminiscent of HMVC with Commands and a Front Controller.  
 
@@ -108,7 +108,7 @@ During the initialization phase of modules **core.io** will call the module's ex
 
 **core.io** intends to keep the global namespace unpolluted so modules should not have strong dependencies on **core.io** beyond the `init` function.
 
-This context acts a little bit like an [IOC][ioc] container in that is intended to make your code modular and provide a point to extend your application at runtime at the same time that it provides access to features added by other modules.
+This context acts a little bit like an [IOC][ioc] container in that it is intended to make your code modular and provide a point to extend your application at runtime at the same time that it provides access to features added by other modules.
 
 You will use this `context` to `resolve` dependencies at runtime, and to `provide` new capabilities to your application.
 
@@ -126,7 +126,7 @@ module.exports.init = function(context, config) {
 
 This module declares two dependencies; `persistence`, and `server`. Modules are  resolved asynchronously so the `then` code will be executed after both `persistence`, and `server` are available.
 
-`context.provide` will expose a `crud` property and make it available to toher parts of your code.
+`context.provide` will expose a `crud` property and make it available to other parts of your code.
 
 **NOTE**: Instead of the `"crud"` string we recommend you use `moduleId` which is part of the `config` object. You will learn later how to configure a module, but for now, know that if the configuration you provide does not include a `moduleId` property, then **core.io** will use the default name of the module.
 
@@ -139,7 +139,7 @@ The specific steps taken during the `register` call are:
 
 * Normalization of the module name: Name gets sanitized and if the module exposes an alias attribute it will be registered using the alias.
 * Call `init` function of the module. It passes any configuration object found with some defaults, `moduleid`, and a logger instance.
-* Register an error handler: If the module instnace is an EventEmitter, it will register an `error` listener to handle module errors.
+* Register an error handler: If the module instance is an EventEmitter, it will register an `error` listener to handle module errors.
 
 Once the process is completed, context will emit an event of type: `name` + `context.registerReadyEvent` i.e. `repl.registered`
 
@@ -149,7 +149,7 @@ Register a callback to get notfied once module <id> has been registered.
 
 Once a module is registered the application instance will fire an event with type `<moduleId>.registered`, `logger.registred` for the logger module.
 
-We can't guarantee the other in which modules are going to be loaded since it depends on dependency chain resolution. It might be the case that a module A depends on module B, module A loads after module B. Using `onceRegistered` module A would still get notified.
+We can't guarantee the order in which modules are going to be loaded since it depends on dependency chain resolution. It might be the case that a module A depends on module B, module A loads after module B. Using `onceRegistered` module A would still get notified.
 
 #### resolve
 `resolve` takes either a string or an Array of strings that represent a module name.
@@ -173,7 +173,7 @@ While the intention of **core.io** is to adhere to the idea of convention over c
 
 **core.io** configuration process is purportedly simple, a **core.io** application takes an options object with configuration parameters and overrides. **core.io** does not really care how you come up with that object.
 
-However, the `Application` class provides a helper static method to collect, merge, and resolve dependencies of configuration files that are located in the `./cofig` folder of a project.
+However, the `Application` class provides a helper static method to collect, merge, and resolve dependencies of configuration files that are located in the `./config` folder of a project.
 
 The resulting configuration object will be made available at runtime on the application context as `context.config`.
 
@@ -284,13 +284,13 @@ Configuration files are regular JavaScript files, which means you can build diff
 
 Under the hood **core.io** uses the [simple config loader][scl] package. You can read more in the packages repository.
 
-**core.io** provides a convenience method to collect this configuration files.
+**core.io** provides a convenience method to collect these configuration files.
 
 ```javascript
 var App = require('core.io').Application;
 
 /*
- * Autload and merge files inside
+ * Autoload and merge files inside
  * `config/`
  */
 var config = App.loadConfig({
@@ -319,7 +319,7 @@ A lot of the things that need to change on each environment are _secrets_ like s
 
 If you use the provided `Application.loadConfig` then your configuration files are javascript files which, obviously, can have logic in it. Meaning that you can check the value of `process.env.NODE_ENV` and export different objects based on that value.
 
-Another benefit of `Application.loadConfig` is that you can reference other parts of you configuration files and solve them at runtime, making your configuration files modular.
+Another benefit of `Application.loadConfig` is that you can reference other parts of your configuration files and solve them at runtime, making your configuration files modular.
 
 You can also make use of the `afterSolver` facility which gets access to the merged configuration object. In it you can access the `environment` key which holds the value of the current environment and modify your configuration file at runtime.
 
@@ -327,7 +327,7 @@ Case in point, you have options.
 
 Ideally your configuration files should be logic lightweight in order to reduce possible errors and keep things simple, but you are free to do as you please.
 
-You can also use an environment manger like [envset][envset] to dynamically populate your `process.env` variables. All you need is an `.envset` file where you define your environments, environment variables and their values:
+You can also use an environment manager like [envset][envset] to dynamically populate your `process.env` variables. All you need is an `.envset` file where you define your environments, environment variables and their values:
 
 ```
 [production]
@@ -383,14 +383,14 @@ For the most part, that's it. There are more options like exporting an `alias` o
 * moduleid: If no module id is provided in the configuration file, the sanitized name will be used.
 
 Conventions around modules names:
-* configuration file: matching configuration files will de passed to module
+* configuration file: matching configuration files will de passed to module.
 * child logger: receives the name of the module.
 
 #### Core Modules
 
 Core modules are optional and can be replaced by any module as long as it provides the same interface.
 
-Some are optional, like the REPL module. If you don't needed or don' want a REPL you can remove it from the list of `coremodules` using the configuration object that you pass to the application instance during the initialization of your program, in the entry point file.
+Some are optional, like the REPL module. If you don't need or don't want a REPL you can remove it from the list of `coremodules` using the configuration object that you pass to the application instance during the initialization of your program, in the entry point file.
 
 The most likely scenario is that you might want to enable it during development but not on production.
 
@@ -403,7 +403,7 @@ The most likely scenario is that you might want to enable it during development 
 * child loggers
 * filters
 * the ability to mute all output
-* the ability to have focus one child logger
+* the ability to have focus on child logger
 * it can optionally wrap the console so that it has the same format
 * it can disable `console` output
 
@@ -422,7 +422,7 @@ INFO  [23:28:48] ├── dispatcher   : Created logger "dispatcher"...
 DEBUG [23:28:48] ├── dispatcher   : Module "dispatcher" ready...
 ```
 
-Each application has at least two loggers; core and app. Using the built in logger is optional, however if you decide to log from within your modules is a good idea to use the same provided logger.
+Each application has at least two loggers; core and app. Using the built in logger is optional, however if you decide to log from within your modules it's a good idea to use the same provided logger.
 
 **TIP**: When you are initializing your modules, in the `init` function, you can access the logger using the `context.getLogger`
 
@@ -438,7 +438,7 @@ Options:
 * wrapConsole
 * handlingExceptions
 
-You can set this values by default using the `./config/logger.js` configuration file or you can interact with the logger through the [REPL](#repl).
+You can set these values by default using the `./config/logger.js` configuration file or you can interact with the logger through the [REPL](#repl).
 
 ###### Configuration
 
@@ -477,7 +477,7 @@ module.exports.init = function(context, config) {
 };
 ```
 
-**core.io** does not pollute the `global` namespace, the intended way to access the functionality is by keeping a reference of the `context` object if is necessary.
+**core.io** does not pollute the `global` namespace, the intended way to access the functionality is by keeping a reference of the `context` object if it's necessary.
 
 ### Dependencies
 If your module has dependencies most of the time **core.io** can handle those.
@@ -503,9 +503,9 @@ By default it will create three directories; config, modules, and commands. It w
 
 `package.json` is a standard **Node.js** file with no special properties.
 
-`taskfile` is a bash file that follows [the Taskfile specification][taskfile] and is used to provide simple tasks. Is provided as a convenience, some projects might warrant a more sophisticated- and complex!- task runner or bundler.
+`taskfile` is a bash file that follows [the Taskfile specification][taskfile] and is used to provide simple tasks. It's provided as a convenience, some projects might warrant a more sophisticated- and complex!- task runner or bundler.
 
-`index.js` is the application entry point, i.e. you could start your application by calling `node index.js`. You can extend you main `Application` instance here, however is recommended that you do so by leveraging modules instead.
+`index.js` is the application entry point, i.e. you could start your application by calling `node index.js`. You can extend your main `Application` instance here, however it's recommended that you do so by leveraging modules instead.
 
 ### Project Layout
 
@@ -539,13 +539,13 @@ The entry point file is named `index.js` by default/convention, but basically yo
 
 ### Configuration
 
-Configuration files located in the [`config/`](#configuration-loader) folder of projects will be merged together in a single object, which will be available at runtime on as a property of your application instance, i.e. `core.config`.
+Configuration files located in the [`config/`](#configuration-loader) folder of projects will be merged together in a single object, which will be available at runtime as a property of your application instance, i.e. `core.config`.
 
 The top-level keys on the `core.config` (i.e. `core.config.repl`) object correspond to a particular configuration file name under your `config/` directory (i.e. `config/repl.js`). Most individual configuration files are specific to a module, with the exception of `config/app.js`  which should hold options for your current application, like the application's name, it's base directory, environment in run under, etc.
 
 The intention of these files is to provide modules with configuration options. When a module is loaded, it will be called with the application's instance and a `config` top-level key that matches the module's name.
 
-Your configuration files can contain references to a value found in other configuration files  using special a simple syntax that will get resolved after merging all files into a single object.
+Your configuration files can contain references to a value found in other configuration files using a simple syntax that will get resolved after merging all files into a single object.
 
 As an example, `${moduleA.name}` will be resolved with `config.moduleA.name`:
 
@@ -565,13 +565,13 @@ module.exports = {
 };
 ```
 
-**core.io** provides a convenience method to collect this configuration files.
+**core.io** provides a convenience method to collect these configuration files.
 
 ```javascript
 var Application = require('kiko').Application;
 
 /*
- * Autload and merge files inside
+ * Autoload and merge files inside
  * `config/`
  */
 var config = Application.loadConfig({
@@ -592,7 +592,7 @@ The configuration process attaches two properties to the config object:
 
 * banner: String|Function
 
-The `./config/app.js` is different than other configuration files in that application will extend itself with the object like if it was a mixin.
+The `./config/app.js` is different than other configuration files in that the application will extend itself with the object like if it was a mixin.
 
 ### Modules
 
@@ -630,7 +630,7 @@ All files under the `./commands` directory will be `require`d and registered as 
 
 If you are using the [persistence][core-persistence] module, then all files under the `./models` directory will be registered as models.
 
-But mainly, all valid modules found in the `./modules` directory will be loaded and registered with the application context, meaning that to add a new module to your application you simple need to place it in the `./modules` directory and then **core.io** will do the rest.
+But mainly, all valid modules found in the `./modules` directory will be loaded and registered with the application context, meaning that to add a new module to your application you simply need to place it in the `./modules` directory and then **core.io** will do the rest.
 
 Note that the dependency solving cycle happens statically at runtime during the boot process of your application, so to detect a new module you need to stop and restart your application.
 
@@ -756,7 +756,7 @@ You can expose properties and functions by extending the REPL instance.
 ```js
 context.resolve('repl').then((repl) => {
     repl.context.myCustomCommand = function() {
-        console.log('TODO: We should really thing of a better example!');
+        console.log('TODO: We should really think of a better example!');
     };
 });
 ```
@@ -768,15 +768,16 @@ context.resolve('repl').then((repl) => {
 You can disable the REPL by setting the `enabled` property to `false`.
 
 ##### Banner
-You can customize the banner that is displayed in the console output during initialization of your application. Mostly is about aesthetics but you can use it to display some useful information regarding the connection.
+You can customize the banner that is displayed in the console output during initialization of your application. Mostly it's about aesthetics but you can use it to display some useful information regarding the connection.
 
 ```
-╔═════════════════════════════════════════════════════════════════════╗
-║                      poke-repl remote console √                    ║
-║                                                                    ║
-║              All connections are monitored and recorded            ║
-║      Disconnect \u001b[1mINMEDIATELY\u001b[22m if you are not an authorized user      ║
-╚════════════════════════════════════════════════════════════════════╝
+╔═══════════════════════════════════════════════════════════════════╗
+║                      poke-repl remote console √                   ║
+║                                                                   ║
+║             All connections are monitored and recorded            ║
+║              Disconnect \u001b[1mINMEDIATELY\u001b[22m            ║
+║                   if you are not an authorized user               ║
+╚═══════════════════════════════════════════════════════════════════╝
 ```
 
 There is an example [here][poke-repl-banner]
@@ -801,19 +802,19 @@ module.exports = {
         ]
     },
     auth: {
-       enabled: true,
-       users:[{
-           username: 'admin',
-           password: 'secret!'
-       }]
-   },
-   tls: {
-       key:  './tls/client/private-key.pem',
+        enabled: true,
+        users:[{
+            username: 'admin',
+            password: 'secret!'
+        }]
+    },
+    tls: {
+        key:  './tls/client/private-key.pem',
         cert: './tls/client/certificate.pem',
         ca: [
             './tls/server/certificate.pem'
         ]
-   },
+    },
     options: {
         prompt: '\u001b[33m ${app.name} > \u001b[39m',
         // header: header

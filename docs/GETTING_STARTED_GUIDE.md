@@ -3,7 +3,7 @@
 
 **core.io** is compromised of multiple modules each distributed as a Node.js package through [npm][npm] or other package managers.
 
-In order to develop **core.io** applications you need to have Node.js and npm installed. You can follow instructions in the [Node.js][node] website to download and install this dependencies in your computer.
+In order to develop **core.io** applications you need to have Node.js and npm installed. You can follow instructions in the [Node.js][node] website to download and install these dependencies on your computer.
 
 The fastest way to get up and running is by installing and using the [core CLI tool][core.io-cli] which enables you to create new projects using the command line. You can read more about the **core.io** CLI tool in it's [documentation][core.io-cli-docs] page.
 
