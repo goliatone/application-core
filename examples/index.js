@@ -23,7 +23,7 @@ app.onceRegistered('logger', () => {
 });
 
 app.once('run.complete', function(e) {
-    app.logger.debug('>> run.complete: ', e);
+    app.logger.debug('>> run.complete: ');
 });
 
 app.once('run.pre', function(e){
