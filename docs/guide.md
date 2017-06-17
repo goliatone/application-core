@@ -131,10 +131,41 @@ This module declares two dependencies; `persistence`, and `server`. Modules are 
 **NOTE**: Instead of the `"crud"` string we recommend you use `moduleId` which is part of the `config` object. You will learn later how to configure a module, but for now, know that if the configuration you provide does not include a `moduleId` property, then **core.io** will use the default name of the module.
 
 #### register
-#### resolve
-#### provide
-#### command
+We register modules with the application context to initialize, configure, and make the module available to the rest of the application.
+
+Internally, **core.io** manages dependencies of your modules and their load order is dictated by the dependency level, loading dependent modules first. However, at this point, the dependency chain has been already solved.
+
+The specific steps taken during the `register` call are:
+
+* Normalization of the module name: Name gets sanitized and if the module exposes an alias attribute it will be registered using the alias.
+* Call `init` function of the module. It passes any configuration object found with some defaults, `moduleid`, and a logger instance.
+* Register an error handler: If the module instnace is an EventEmitter, it will register an `error` listener to handle module errors.
+
+Once the process is completed, context will emit an event of type: `name` + `context.registerReadyEvent` i.e. `repl.registered`
+
 #### onceRegistered
+
+Register a callback to get notfied once module <id> has been registered.
+
+Once a module is registered the application instance will fire an event with type `<moduleId>.registered`, `logger.registred` for the logger module.
+
+We can't guarantee the other in which modules are going to be loaded since it depends on dependency chain resolution. It might be the case that a module A depends on module B, module A loads after module B. Using `onceRegistered` module A would still get notified.
+
+#### resolve
+`resolve` takes either a string or an Array of strings that represent a module name.
+
+Once the provided module id has been registered, the returned `Promise` is resolved.
+
+#### provide
+This will add `attr` to the application context and ensure that it does not get overwritten unnoticeably.
+
+If we really want to overwrite the given attribute, we can still do so, but explicitly using Object.defineProperty
+
+#### command
+
+Register a command for the given event type.
+
+Command handler functions get bound to the application context.
 
 ### Configuration
 
@@ -462,9 +493,6 @@ The **core.io** application context exposes a function to provide new functional
 context.provide(name, capability);
 ```
 
-
-https://nodejs.org/en/docs/guides/anatomy-of-an-http-transaction/
-
 ## Project Structure
 
 One of the main goals of **core.io** is to provide a consistent way to structure your projects. **core.io** organizes your code by placing them under predetermined directories that will group files with a similar role.
@@ -594,15 +622,34 @@ Here we removed the [monitoring](#monitoring-module) and the [REPL](#repl-module
 
 ### Autoloading
 
-Autoloading refers to the fact that **core.io** will take files placed in specific directories within your project directory and treat them
+Autoloading refers to a **core.io** feature which take files placed in specific directories within your project then _load_ and _wire_ the files into your project, or application context to be more precise.
+
+As an example, all files under `./config` can be autoloaded if you use the `Application.loadConfig` static method.
+
+All files under the `./commands` directory will be `require`d and registered as commands.
+
+If you are using the [persistence][core-persistence] module, then all files under the `./models` directory will be registered as models.
+
+But mainly, all valid modules found in the `./modules` directory will be loaded and registered with the application context, meaning that to add a new module to your application you simple need to place it in the `./modules` directory and then **core.io** will do the rest.
+
+Note that the dependency solving cycle happens statically at runtime during the boot process of your application, so to detect a new module you need to stop and restart your application.
 
 ##### Module Loader
+
+As explained earlier, all valid modules found in the `modules` directory will be required and then registered with the application context.
+
+A valid module is either a javascript file exporting an `init` function or a directory with an **index.js** file exporting an `init` function.
+
+
 
 ##### Commands Loader
 
 ##### Configuration Loader
 
+
+
 ###### Solving Configuration Dependencies
+
 Configuration files can have interpolated values where you reference the value of any attribute of the configuration object using the attribute's keypath.
 
 You reference objects or properties by their keypath. A keypath is a string representing the location of a piece of data.
@@ -848,9 +895,9 @@ After all configuration files are [loaded](#configuration-loader) and it's [conf
 
 
 
+https://nodejs.org/en/docs/guides/anatomy-of-an-http-transaction/
 
-
-
+<!-- LINKS -->
 
 [core-persistence]:https://github.com/goliatone/core.io-persistence
 [core-server]:https://github.com/goliatone/core.io-express-server
