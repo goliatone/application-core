@@ -23,13 +23,13 @@ $ core
 core.io CLI tool
 
 Usage:
-  core help                             Show this message
-  core --version                        Print out the latest released version of core
+  core help                             Show this message.
+  core --version                        Print out the latest released version of core.
   core install [template]               Download and install a [template] from github.
-  core new [project-name]               Create a new project
+  core new [project-name]               Create a new project.
 
 Example:
-  core new myProject                    Create a new project
+  core new myProject                    Create a new project.
 
 version:
   1.0.0
@@ -49,7 +49,7 @@ By default it will use the [core.io project starter][core.io-starter-template]. 
 
 ### 3. Run project
 
-Last step is to run your project, which could be as simple as opening Terminal and typing the following command:
+Last step is to run your project, which could be as simple as opening a terminal window and typing the following command:
 
 ```
 $ npm start
