@@ -771,13 +771,13 @@ You can disable the REPL by setting the `enabled` property to `false`.
 You can customize the banner that is displayed in the console output during initialization of your application. Mostly it's about aesthetics but you can use it to display some useful information regarding the connection.
 
 ```
-╔═══════════════════════════════════════════════════════════════════╗
-║                      poke-repl remote console √                   ║
-║                                                                   ║
-║             All connections are monitored and recorded            ║
-║              Disconnect \u001b[1mINMEDIATELY\u001b[22m            ║
-║                   if you are not an authorized user               ║
-╚═══════════════════════════════════════════════════════════════════╝
+╔════════════════════════════════════════════════════════════════════╗
+║                                                                    ║
+║                      poke-repl remote console √                    ║
+║                                                                    ║
+║              All connections are monitored and recorded            ║
+║      Disconnect IMMEDIATELY if you are not an authorized user      ║
+╚════════════════════════════════════════════════════════════════════╝
 ```
 
 There is an example [here][poke-repl-banner]

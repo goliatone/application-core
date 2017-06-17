@@ -24,6 +24,7 @@ app.onceRegistered('logger', () => {
 
 app.once('run.complete', function(e) {
     app.logger.debug('>> run.complete: ');
+    app.logger.debug('some info %s', JSON.stringify(app.config, null, 4));
 });
 
 app.once('run.pre', function(e){
