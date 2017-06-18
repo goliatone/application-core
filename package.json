@@ -43,7 +43,7 @@
     "gextend": "^0.3.0",
     "glob": "^7.0.5",
     "human-time": "0.0.1",
-    "in": "^0.10.*",
+    "in": "^0.11.*",
     "longjohn": "^0.2.12",
     "noop-console": "^0.4.0",
     "p-timeout": "^1.1.1",
