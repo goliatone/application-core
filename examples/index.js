@@ -1,11 +1,11 @@
 /*jshint esversion:6*/
 'use strict';
-var Application = require('..').Application;
+const Application = require('..').Application;
 
 //config here is a gkeypath Wrapper instance
-var config = Application.loadConfig({}, true);
+const config = Application.loadConfig({}, true);
 
-var app = new Application({config});
+const app = new Application({config});
 
 app.onceRegistered('dispatcher', ()=> {
     app.chainEvents(['run.pre', 'run'], ['error']).then(()=>{
