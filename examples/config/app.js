@@ -1,5 +1,5 @@
 
-const banner = require('fs').readFileSync('./config/banner.txt', 'utf-8');
+const banner = require('fs').readFileSync('./config/app.banner.txt', 'utf-8');
 
 module.exports = {
     banner,
