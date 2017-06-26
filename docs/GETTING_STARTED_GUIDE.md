@@ -63,6 +63,13 @@ You should see the banner ASCII art followed by the logger output in your termin
 $ envset development -- npm start
 ```
 
+
+## What to do next?
+
+* [Documentation](/documentation)
+* [Examples](/examples)
+* [Plugins](/plugins)
+
 <!-- LINKS -->
 
 [core-persistence]:https://github.com/goliatone/core.io-persistence
