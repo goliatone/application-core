@@ -17,9 +17,6 @@ const config = Application.loadConfig({
     loadModulesOptions: ['pubsub']
 }, true);
 
-console.log(Object.keys(config));
-console.log(config.coremodules);
-
 const app = new Application({config});
 
 app.once('run.complete', function(e) {
