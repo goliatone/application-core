@@ -8,8 +8,5 @@ module.exports = {
     loaders: {
         modules: './modules',
         commands: './commands'
-    },
-    loadModulesOptions: {
-        only: ['transform', 'pubsub']
     }
 };
