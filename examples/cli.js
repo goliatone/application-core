@@ -15,7 +15,7 @@ const config = Application.loadConfig({
      * them here.
      */
     app: {
-        coremodules: ['./logger'],
+        coremodules: ['./logger', './dispatcher'],
         loadModulesOptions: {
             only: ['pubsub']
         }
@@ -35,13 +35,14 @@ const config = Application.loadConfig({
     }
 }, true);
 
+
 const app = new Application({config});
 
-app.once('run.complete', function(e) {
-    app.logger.debug('>> run.complete: ');
-    app.logger.debug('some info %s', Object.keys(app.config));
+app.once('run.post', function(e) {
+    app.logger.warn('>> run.complete: ');
+    app.logger.warn('some info %s', Object.keys(app.config));
 });
 
-app.once('coreplugins.ready', ()=>{
+app.once('modules.ready', ()=>{
     app.run();
 });
