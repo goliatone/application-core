@@ -1,16 +1,18 @@
 ## core.io
 
-**core.io** provides a structure to quickly prototype Node.js applications of _any type_, providing a set of guidelines and conventions to ease development.
+**core.io** provides a structure to quickly prototype Node.js applications by providing an eco-system of packages alongside a set of guidelines and conventions to ease development.
 
-In a way **core.io** aims to be a workflow rather than a framework by providing a common application structure regardless if the application is web, desktop, or data focused.
+In a way **core.io** aims to be a workflow rather than a framework by providing a common application structure regardless if your project is web, desktop, terminal, or data focused.
 
-**core.io** provides basic building blocks which are useful in any context and help with command tasks like configuration management, logging, dependency management and more basic needs of most applications.
+**core.io** provides basic building blocks which are useful in any context and help with common tasks like configuration management, logging, dependency management and other basic needs of most applications.
 
-The heart of **core.io** is the [application context](#application-core), which you can extend directly with custom logic or indirectly with modules.
+The heart of **core.io** is the [application context](#application-core), which loads and manages a set of core modules and which you can extend directly with custom logic or indirectly with custom modules or community modules.
 
 Modules are intended to encapsulate code and make it portable. They also serve as glue to integrate libraries like Socket.IO or AMQP into your project.
 
-Following simple conventions on how files are named and where those files are placed **core.io** will auto-load, auto-configure, and auto-wire components always leaving you the choice to override defaults or create custom modules to replace core functionality.
+**core.io** will auto-load, auto-configure, and auto-wire components while leaving to the developer the choice of overriding default behaviors or create custom modules to replace core functionality.
+
+Following simple conventions on how files should be named and where those files should be placed.
 
 1. [Getting Started](#getting-started)
 2. [Reference](#reference)
@@ -18,6 +20,9 @@ Following simple conventions on how files are named and where those files are pl
 4. [Project Structure](#project-structure)
 
 ## Getting Started
+
+
+
 ### Installation
 ### Create Sample Application
 ### Run
