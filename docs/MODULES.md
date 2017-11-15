@@ -1,6 +1,10 @@
 ### Modules
 
-A module adds a specific feature to an existing application context, providing a means to extend your application with specific behavior for a given project in an encapsulated way, thus maximizing the amount of code you can reuse between applications.
+A module adds a specific feature to an existing application context, providing a means to extend your application with specific behavior for a given project in an encapsulated way.
+
+All modules are stored in the **modules** folder of your application project directory.
+
+ thus maximizing the amount of code you can reuse between applications.
 
 Modules follow a simple convention: they should export an init function that take an instance of the application `context` and a configuration object as arguments.
 
