@@ -65,7 +65,7 @@ If everything works as expected continue with step 2. Otherwise you could create
 Once you have the tool belt installed, you can create a project from your terminal.
 
 ```
-$ core generator new myProject 
+$ core generator new myProject
 ```
 
 The generator will create a new folder for your application in your current directory, set up an empty project and download all the necessary dependencies.
@@ -83,14 +83,13 @@ $ npm start
 
 You should see the banner ASCII art followed by the logger output in your terminal.
 
-**TIP:** To manage different environments you can always use [envset][envset]:
-
-```
-$ envset development -- npm start
-```
-
-
 ## What to do next?
+
+As it stands, our application doesn't do much, and that is by design. Out of the box it provides basic functionality like logging, module and command management, and an interactive REPL.
+
+The next step will be to learn about the [project layout][#project-layout]
+
+To learn more about **core.io** follow the links:
 
 * [Documentation](/documentation)
 * [Examples](/examples)
