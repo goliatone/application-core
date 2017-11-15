@@ -1,18 +1,18 @@
 ## core.io
 
-**core.io** provides a structure to quickly prototype Node.js applications by providing an eco-system of packages alongside a set of guidelines and conventions to ease development.
+**core.io** provides a structure to quickly prototype Node.js applications by providing an eco-system of packages alongside a set of guidelines and conventions to ease development and prototyping.
 
 In a way **core.io** aims to be a workflow rather than a framework by providing a common application structure regardless if your project is web, desktop, terminal, or data focused.
 
-**core.io** provides basic building blocks which are useful in any context and help with common tasks like configuration management, logging, dependency management and other basic needs of most applications.
+**core.io** provides basic building blocks which are useful in any context and help with common tasks like configuration management, logging, dependency management and basic needs of most applications.
 
 The heart of **core.io** is the [application context](#application-core), which loads and manages a set of core modules and which you can extend directly with custom logic or indirectly with custom modules or community modules.
 
+In a sense, the application context is the kernel around which your application will grow with custom features.
+
 Modules are intended to encapsulate code and make it portable. They also serve as glue to integrate libraries like Socket.IO or AMQP into your project.
 
-**core.io** will auto-load, auto-configure, and auto-wire components while leaving to the developer the choice of overriding default behaviors or create custom modules to replace core functionality.
-
-Following simple conventions on how files should be named and where those files should be placed.
+Following simple conventions on how files should be named and where those files should be placed **core.io** will auto-load, auto-configure, and auto-wire components while leaving to the developer the choice of overriding default behaviors. Developers can also create custom modules to replace functionality provided by core modules.
 
 1. [Getting Started](#getting-started)
 2. [Reference](#reference)
@@ -20,8 +20,6 @@ Following simple conventions on how files should be named and where those files 
 4. [Project Structure](#project-structure)
 
 ## Getting Started
-
-
 
 ### Installation
 ### Create Sample Application
@@ -49,17 +47,21 @@ Following simple conventions on how files should be named and where those files 
 
 ## Concepts
 
-A lot of the nomenclature in this document is being used rather loosely, instead of making up new words we try to reuse terms already in use elsewhere which might refer to similar enough concepts to provide context to those who are familiar with them. If you are learning be mindful that some concepts are stretched or directly misused to fit the narrative. Be warned.
+A lot of the nomenclature in this document is being used rather loosely, instead of making up new words we try to reuse terms already in use elsewhere which might refer to similar enough concepts to provide context to those who are familiar with them. If you are learning be mindful that some concepts are stretched or abused to fit the narrative. Be warned.
 
-**core.io** prefers to be _pragmatic_ rather than _correct_, and often takes the shortest path or a naive approach to solve problems as they come as opposed to engineering for imagined-future-problems. That is, all features part of **core.io** are there because they are being used extensively and provide a clear benefit by solving a specific problem.
+Rather than _correct_ **core.io** prefers to be _pragmatic_ , often taking the shortest path or a naive approach to solve problems as they come as opposed to engineering for theoretical-future-problems. That is, all features of **core.io** are being used extensively and provide a clear benefit by solving a specific problem.
 
 **core.io**'s main goal is to **speed up development and to provide a solid platform to quickly build complex prototypes with the least amount of friction**. One way to achieve this is to promote code reuse by providing a plug-and-play module system.
 
-The spirit is reminiscent of HMVC with Commands and a Front Controller.  
+The spirit is reminiscent of [HMVC][wiki-hmvc], [Command pattern][wiki-command-pattern], or [Front Controller][wiki-front] pattern.  
 
 Don't get too hung up on the terms and how they differ from the use by frameworks or languages you are familiar with.
 
-### Mixins and overrides
+## JavaScript patterns
+
+The following are patterns extensively used across **core.io**. A brief introduction for those not familiar with the concepts.
+
+#### Defaults, mixins and overrides
 
 Through most classes in **core.io** we follow this pragmatic convention:
 
@@ -86,9 +88,9 @@ MyClass.DEFAULTS = {
 };
 ```
 
-Generally speaking, things in `DEFAULTS` are intended to provide sane defaults but explicitly show what things are expected to be overriden by the developer.
+Generally speaking, properties in the `DEFAULTS` object are intended to provide sane defaults but explicitly show what things are expected to be overriden by the developer.
 
-You can also use the `options` object to extend the base object with new functions and variables.
+You can also use the constructor's `options` argument to extend the base object with new functions and variables.
 
 In the previous example, a new instance of `MyClass` will have a `getName` method made available to it.
 
@@ -98,18 +100,19 @@ let myInstance = new MyClass({
         console.log(this.name);
     }
 });
+
 myInstance.getName();
+
 myInstance.myCustomMethod();  
 ```
 
-This is simple, powerful, and can be somehow dangerous if you don't fully understand how it works.
+This is simple, powerful. However it can be somehow dangerous if you don't fully understand how it works and it's side effects.
 
 It's purpose is to give the developer total control over the behavior of `MyClass` with everything that it entails. Use with responsibility.
 
 ### Application Context
 
-During the initialization phase of modules **core.io** will call the module's exported
-`init` method with two arguments. The first argument is an instance of your application, this instance is called the application context and the convention through the source code, examples, and documentation is to name the argument `context`.
+During the initialization phase of modules **core.io** will call the module's exported `init` method with two arguments. The first argument is an instance of your application, this instance is called the application context and the convention through the source code, examples, and documentation is to name the argument `context`.
 
 **core.io** intends to keep the global namespace unpolluted so modules should not have strong dependencies on **core.io** beyond the `init` function.
 
@@ -544,9 +547,9 @@ The entry point file is named `index.js` by default/convention, but basically yo
 
 ### Configuration
 
-Configuration files located in the [`config/`](#configuration-loader) folder of projects will be merged together in a single object, which will be available at runtime as a property of your application instance, i.e. `core.config`.
+Configuration files located in the [`config/`](#configuration-loader) folder of projects will be merged together in a single object, which will be available at runtime as a property of your application instance, i.e. `context.config`.
 
-The top-level keys on the `core.config` (i.e. `core.config.repl`) object correspond to a particular configuration file name under your `config/` directory (i.e. `config/repl.js`). Most individual configuration files are specific to a module, with the exception of `config/app.js`  which should hold options for your current application, like the application's name, it's base directory, environment in run under, etc.
+The top-level keys on the `context.config` (i.e. `context.config.repl`) object correspond to a particular configuration file name under your `config/` directory (i.e. `config/repl.js`). Most individual configuration files are specific to a module, with the exception of `config/app.js`  which should hold options for your current application, like the application's name, it's base directory, environment in run under, etc.
 
 The intention of these files is to provide modules with configuration options. When a module is loaded, it will be called with the application's instance and a `config` top-level key that matches the module's name.
 
@@ -573,17 +576,17 @@ module.exports = {
 **core.io** provides a convenience method to collect these configuration files.
 
 ```javascript
-var Application = require('kiko').Application;
+const Application = require('application-core').Application;
 
 /*
  * Autoload and merge files inside
  * `config/`
  */
-var config = Application.loadConfig({
+const config = Application.loadConfig({
     //...default values
 }, true);
 
-var app = new Application({config});
+const app = new Application({config});
 ```
 
 #### Configuration Extra Properties
@@ -916,3 +919,6 @@ https://nodejs.org/en/docs/guides/anatomy-of-an-http-transaction/
 [npm-packages]:https://docs.npmjs.com/how-npm-works/packages
 [poke-repl-banner]:https://github.com/goliatone/poke-repl/tree/master/examples
 [ascii-art]:http://www.network-science.de/ascii/
+[wiki-hmvc]:https://en.wikipedia.org/wiki/Hierarchical_model%E2%80%93view%E2%80%93controller
+[wiki-command-pattern]:https://en.wikipedia.org/wiki/Command_pattern
+[wiki-front]:https://en.wikipedia.org/wiki/Front_controller
