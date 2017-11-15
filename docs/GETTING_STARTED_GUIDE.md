@@ -1,9 +1,9 @@
 
 ## Getting Started
 
-**core.io** is compromised of multiple modules each distributed as a Node.js package through [npm][npm] or other package managers.
+In order to develop **core.io** applications you will need to have Node.js and npm installed. You can follow instructions in the [Node.js][node] website to download and install these dependencies on your computer.
 
-In order to develop **core.io** applications you need to have Node.js and npm installed. You can follow instructions in the [Node.js][node] website to download and install these dependencies on your computer.
+**core.io** is compromised of multiple modules each distributed as a Node.js package through [npm][npm] or other package managers.
 
 The fastest way to get up and running is by installing and using the [core CLI tool][core.io-cli] which enables you to create new projects using the command line. You can read more about the **core.io** CLI tool in it's [documentation][core.io-cli-docs] page.
 
@@ -20,26 +20,52 @@ This will install **core.io-cli** and make the **core**  command available in yo
 ```
 $ core
 
-core.io CLI tool
+core 0.0.3 - core.io CLI toolbelt manager
 
-Usage:
-  core help                             Show this message.
-  core --version                        Print out the latest released version of core.
-  core install [template]               Download and install a [template] from github.
-  core new [project-name]               Create a new project.
+USAGE
 
-Example:
-  core new myProject                    Create a new project.
+  core <command> [options]
 
-version:
-  1.0.0
+COMMANDS
+
+  shuttle install                          Install all dependencies. Needs sudo
+  shuttle list                             List all local domains
+  shuttle open <domain>                    Open domain in default browser
+  shuttle share <project>                  Generate a shareable URL for a project
+  shuttle restart                          Restart Caddy and Dnsmasq services
+  shuttle stop                             Stop Caddy and Dnsmasq services
+  shuttle start                            Start Caddy and Dnsmasq services
+  shuttle serve <domain> <proxy>           Proxy a local domain and save it for quick access
+  shuttle update                           Update toolchain
+  generator add <source> [alias]           Add a project template from github or a local directory
+  generator list                           List available templates
+  generator new <template> [output]        Create a new project from a project template
+  generator link <source> [alias]          Link local template for development
+  schema collect [source] [output]         Collect metadata from waterline models and generates a JSON schema file
+  schema generate [source] [output]        Generate schema from model data
+  scaffold compile [source] [output]       Generate views from a GUI schema
+  scaffold generate [source] [output]      Generate views from a JSON schema
+  run [application] [environment]          Run a core.io application
+  repl                                     Open REPL window
+  help <command>                           Display help for a specific command
+
+GLOBAL OPTIONS
+
+  -h, --help         Display help
+  -V, --version      Display version
+  --no-color         Disable colors
+  --quiet            Quiet mode - only displays warn and error messages
+  -v, --verbose      Verbose mode - will also output debug messages
 ```
 
+If everything works as expected continue with step 2. Otherwise you could create an issue on [github][issues].
+
 ### 2. Create a project
+
 Once you have the tool belt installed, you can create a project from your terminal.
 
 ```
-$ core new myProject
+$ core generator new myProject 
 ```
 
 The generator will create a new folder for your application in your current directory, set up an empty project and download all the necessary dependencies.
