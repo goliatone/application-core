@@ -1,4 +1,4 @@
-## About core.io
+# About core.io
 
 **core.io** provides a structure to quickly prototype Node.js applications by providing an eco-system of packages alongside a set of guidelines and conventions to ease development.
 
@@ -18,10 +18,30 @@ The heart of **core.io** is the [application context](#application-core), which 
 
 Modules are intended to encapsulate code and make it portable. They also serve as glue to integrate libraries like Socket.IO or AMQP into your project.
 
+Many of the bundled modules are available to be used outside of **core.io**. Some of them might have up to date documentation and examples:
+
+* [poke-repl][poke-repl]
+* [simple-config-loader][simple-config-loader]
+* [waterline-crud][waterline-crud]
+* [waterline-to-json-schema][waterline-to-json-schema]
+
+You can find and search for modre modules in the [modules page][modules-page].
 
 ## Resources
 
-* [modules][core.io-modules-doc]
-* [core CLI tool belt][core.io-cli]
+You can look for inspiration in the following open-source applications that make use of **core.io**:
 
+* [Registry Service][core.io-registry-service]
+
+
+<!--
 ## F.A.Q.
+-->
+
+
+[poke-repl]:https://github.com/goliatone/poke-repl
+[simple-config-loader]:https://github.com/goliatone/simple-config-loader
+[waterline-crud]:https://github.com/goliatone/waterline-crud
+[waterline-to-json-schema]:https://github.com/goliatone/waterline-to-json-schema
+[modules-page]:https://node-core.io/modules
+[core.io-registry-service]:https://node-core.io/core.io-registry-service
