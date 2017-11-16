@@ -7,6 +7,8 @@ In order to develop **core.io** applications you will need to have Node.js and n
 
 The fastest way to get up and running is by installing and using the [core CLI tool][core.io-cli] which enables you to create new projects using the command line. You can read more about the **core.io** CLI tool in it's [documentation][core.io-cli-docs] page.
 
+Writing documentation is hard, and keeping it up to date is also hard. If you come across a step that does not work as expected you could create an issue on [github][issues].
+
 ### 1. Install core.io cli tool belt:
 
 Open a new terminal window and type the following command:
@@ -20,7 +22,7 @@ This will install **core.io-cli** and make the **core**  command available in yo
 ```
 $ core
 
-core 0.0.3 - core.io CLI toolbelt manager
+core 0.0.3 - core.io CLI tool belt manager
 
 USAGE
 
@@ -57,8 +59,6 @@ GLOBAL OPTIONS
   --quiet            Quiet mode - only displays warn and error messages
   -v, --verbose      Verbose mode - will also output debug messages
 ```
-
-If everything works as expected continue with step 2. Otherwise you could create an issue on [github][issues].
 
 ### 2. Create a project
 
@@ -117,3 +117,4 @@ To learn more about **core.io** follow the links:
 [scl]:https://github.com/goliatone/simple-config-loader
 [poke]:https://github.com/goliatone/poke-repl
 [noop-console]:https://github.com/goliatone/noop-console
+[issues]: https://github.com/goliatone/core.io-docs/issues
