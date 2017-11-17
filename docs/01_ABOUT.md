@@ -1,10 +1,23 @@
 # About core.io
 
-**core.io** provides a structure to quickly prototype Node.js applications by providing an eco-system of packages alongside a set of guidelines and conventions to ease development.
+**core.io** provides a structure to quickly prototype Node.js applications by providing an eco-system of packages alongside a set of guidelines and conventions to ease development and prototyping.
 
 In a way **core.io** aims to be a workflow rather than a framework by providing a common application structure regardless if your project is web, desktop, terminal, or data focused.
 
-**core.io** provides basic building blocks which are useful in any context and help with common tasks like configuration management, logging, dependency management and other basic needs of most applications.
+**core.io** provides basic building blocks which are useful in any context and help with common tasks like configuration management, logging, dependency management and basic needs of most applications.
+
+The heart of **core.io** is the [application context](#application-core), which loads and manages a set of core modules and which you can extend directly with custom logic or indirectly with custom modules or community modules.
+
+In a sense, the application context is the kernel around which your application will grow with custom features.
+
+Modules are intended to encapsulate code and make it portable. They also serve as glue to integrate libraries like Socket.IO or AMQP into your project.
+
+Following simple conventions on how files should be named and where those files should be placed **core.io** will auto-load, auto-configure, and auto-wire components while leaving to the developer the choice of overriding default behaviors. Developers can also create custom modules to replace functionality provided by core modules.
+
+1. [Getting Started](#getting-started)
+2. [Reference](#reference)
+3. [Concepts](#concepts)
+4. [Project Structure](#project-structure)
 
 ## Getting Started
 
