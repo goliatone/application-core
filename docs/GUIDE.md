@@ -1,25 +1,29 @@
-## core.io
 
-**core.io** provides a structure to quickly prototype Node.js applications by providing an eco-system of packages alongside a set of guidelines and conventions to ease development and prototyping.
+## Getting Started
 
-In a way **core.io** aims to be a workflow rather than a framework by providing a common application structure regardless if your project is a web, desktop, or terminal application.
+### Installation
+### Create Sample Application
+### Run
 
-**core.io** provides basic building blocks which are useful in any context and help with common tasks like configuration and dependency management, logging, and basic needs of most applications.
+## Reference
 
-The heart of **core.io** is the [application context](#application-core), which loads and manages a set of core modules and which you can extend directly with custom logic or indirectly with custom modules or community modules.
+### Application
+#### Application Context
+#### Application Lifecycle
 
-In a sense, the application context is the kernel around which your application will grow with custom features.
+### Configuration
 
-Modules are intended to encapsulate code and make it portable. They also serve as glue to integrate third party libraries like Waterline, Socket.IO or to add support for AMQP into your project.
+### Modules
+#### Core Modules
+#### Extended Modules
 
-Following simple conventions on how files should be named and where those files should be placed **core.io** will auto-load, auto-configure, and auto-wire components while leaving to the developer the choice of overriding default behaviors. Developers can also create custom modules to replace functionality provided by core modules.
+### Commands
 
-1. [Getting Started](#getting-started)
-2. [Reference](#reference)
-3. [Concepts](#concepts)
-4. [Project Structure](#project-structure)
-
-
+### Autoloading
+#### Module Loader
+#### Commands Loader
+#### Configuration Loader
+#### Model Loader
 
 ## Concepts
 
@@ -64,7 +68,7 @@ MyClass.DEFAULTS = {
 };
 ```
 
-Generally speaking, properties in the `DEFAULTS` object are intended to provide sane defaults but explicitly show what things are expected to be overridden by the developer.
+Generally speaking, properties in the `DEFAULTS` object are intended to provide sane defaults but explicitly show what things are expected to be overriden by the developer.
 
 You can also use the constructor's `options` argument to extend the base object with new functions and variables.
 
@@ -86,33 +90,7 @@ This is simple, powerful. However it can be somehow dangerous if you don't fully
 
 It's purpose is to give the developer total control over the behavior of `MyClass` with everything that it entails. Use with responsibility.
 
-### Application Context
 
-During the initialization phase of modules **core.io** will call the module's exported `init` method with two arguments. The first argument is an instance of your application, this instance is called the application context and the convention through the source code, examples, and documentation is to name the argument `context`.
-
-**core.io** intends to keep the global namespace unpolluted so modules should not have strong dependencies on **core.io** beyond the `init` function.
-
-This context acts a little bit like an [IOC][ioc] container in that it is intended to make your code modular and provide a point to extend your application at runtime at the same time that it provides access to features added by other modules.
-
-You will use this `context` to `resolve` dependencies at runtime, and to `provide` new capabilities to your application.
-
-An example of this would be the following hypothetical module:
-
-```js
-module.exports.init = function(context, config) {
-    const crud = new Crud(config);
-
-    return context.resolve('persistence', 'server').then(() => {
-        context.provide('crud', crud.initialize(context.server));
-    }).catch(context.handleModuleError.bind(true));
-};
-```
-
-This module declares two dependencies; `persistence`, and `server`. Modules are  resolved asynchronously so the `then` code will be executed after both `persistence`, and `server` are available.
-
-`context.provide` will expose a `crud` property and make it available to other parts of your code.
-
-**NOTE**: Instead of the `"crud"` string we recommend you use `moduleId` which is part of the `config` object. You will learn later how to configure a module, but for now, know that if the configuration you provide does not include a `moduleId` property, then **core.io** will use the default name of the module.
 
 #### register
 We register modules with the application context to initialize, configure, and make the module available to the rest of the application.
@@ -136,13 +114,11 @@ Once a module is registered the application instance will fire an event with typ
 We can't guarantee the order in which modules are going to be loaded since it depends on dependency chain resolution. It might be the case that a module A depends on module B, module A loads after module B. Using `onceRegistered` module A would still get notified.
 
 #### resolve
-
 `resolve` takes either a string or an Array of strings that represent a module name.
 
 Once the provided module id has been registered, the returned `Promise` is resolved.
 
 #### provide
-
 This will add `attr` to the application context and ensure that it does not get overwritten unnoticeably.
 
 If we really want to overwrite the given attribute, we can still do so, but explicitly using Object.defineProperty
@@ -153,76 +129,200 @@ Register a command for the given event type.
 
 Command handler functions get bound to the application context.
 
-
-
 ### CLI
 
-
-
-
-
 ### Autoloading
-
 ### Extending Application Context
-
 ### Environment Variables
-
 #### Envset
 
 ---
-## Main interface
 
-Much like [connect][connect] where you have a simple interface for all middleware, **core.io** modules all have to conform to a simple interface.
 
-Each module has to provide an `init` function which will take two arguments; `context`, and `config`.
+## Project Structure
 
-`context` is an instance of a core.io application, and `config` is the [configuration object](#configuration) for that module.
+One of the main goals of **core.io** is to provide a consistent way to structure your projects. **core.io** organizes your code by placing them under predetermined directories that will group files with a similar role.
 
-Inside the `init` function is where you would perform all the wiring needed for the module to integrate with your application. Some modules will extend the application by providing new functionality. See [extending context](#extending-context) for more information and examples.
+That is to say, all modules will live under a **modules** directory, all configuration files under a **config** directory, etc.
 
-`init` acts as a middle tier between **core.io** and external libraries.
+By default it will create three directories; config, modules, and commands. It will also create an **index.js** file, a **package.json** file, and a `taskfile` file.
 
-```js
-module.exports.init = function(context, config) {
-    const repl = require('poke-repl');
-    context.provide('repl', repl);
+`package.json` is a standard **Node.js** file with no special properties.
+
+`taskfile` is a bash file that follows [the Taskfile specification][taskfile] and is used to provide simple tasks. It's provided as a convenience, some projects might warrant a more sophisticated- and complex!- task runner or bundler.
+
+`index.js` is the application entry point, i.e. you could start your application by calling `node index.js`. You can extend your main `Application` instance here, however it's recommended that you do so by leveraging modules instead.
+
+### Project Layout
+
+```mark
+.
+├── config
+|    ├── app.banner.txt
+|    ├── app.js
+|    ├── logger.js
+|    ├── repl-banner.txt
+|    ├── repl.js
+|    ├── ...
+|    └── persistence.js (*)
+|
+├── modules
+|    ├── dashboard
+|    ├── admin
+|    └── persistence.js
+|
+├── commands
+|    ├── run.post.js
+|    ├── user.create.js
+|    └── seed.create.js
+|
+├── package.json
+├── taskfile
+└── index.js
+```
+
+The entry point file is named `index.js` by default/convention, but basically you can use anything that would work in a `npm start` script.
+
+### Configuration
+
+Configuration files located in the [`config/`](#configuration-loader) folder of projects will be merged together in a single object, which will be available at runtime as a property of your application instance, i.e. `context.config`.
+
+The top-level keys on the `context.config` (i.e. `context.config.repl`) object correspond to a particular configuration file name under your `config/` directory (i.e. `config/repl.js`). Most individual configuration files are specific to a module, with the exception of `config/app.js`  which should hold options for your current application, like the application's name, it's base directory, environment in run under, etc.
+
+The intention of these files is to provide modules with configuration options. When a module is loaded, it will be called with the application's instance and a `config` top-level key that matches the module's name.
+
+Your configuration files can contain references to a value found in other configuration files using a simple syntax that will get resolved after merging all files into a single object.
+
+As an example, `${moduleA.name}` will be resolved with `config.moduleA.name`:
+
+* `config/moduleA.js`:
+
+```javascript
+module.exports = {
+  name: 'ModuleA'
 };
 ```
 
-**core.io** does not pollute the `global` namespace, the intended way to access the functionality is by keeping a reference of the `context` object if it's necessary.
+*  `config/moduleB.js`:
 
-### Dependencies
-If your module has dependencies most of the time **core.io** can handle those.
-It can wait for dependencies
-
-#### Promises
-
-### Extending context
-
-The **core.io** application context exposes a function to provide new functionality through modules.
-
-```js
-context.provide(name, capability);
+```javascript
+module.exports = {
+  prompt: '${moduleA.name}'
+};
 ```
 
+**core.io** provides a convenience method to collect these configuration files.
 
+```javascript
+const Application = require('application-core').Application;
 
+/*
+ * Autoload and merge files inside
+ * `config/`
+ */
+const config = Application.loadConfig({
+    //...default values
+}, true);
 
+const app = new Application({config});
+```
+
+#### Configuration Extra Properties
+
+The configuration process attaches two properties to the config object:
+
+* package: contents of `package.json` file minus the **readme**
+* environment: value of `process.env.NODE_ENV`
+
+#### Application configuration file
+
+* banner: String|Function
+
+The `./config/app.js` is different than other configuration files in that the application will extend itself with the object like if it was a mixin.
 
 ### Modules
 
 * alias: if a module exports an alias property, it will be used to register the module instead of the default given name.
 
 
+#### Core modules
+
+This is the list of core modules bundled with **core.io**:
+
+* Logger
+* Errors
+* Monitoring
+* Dispatcher
+* REPL
+
+Core modules are loaded first and made available for all user modules. You can override this list using a `coremodules` key in the configuration object you initialize your instance with:
+
+```js
+var config = Application.loadConfig({
+    coremodules: ['./logger', './errors', './dispatcher']
+}, true);
+
+var app = new Application({config});
+```
+Here we removed the [monitoring](#monitoring-module) and the [REPL](#repl-module).
+
+### Autoloading
+
+Autoloading refers to a **core.io** feature which take files placed in specific directories within your project then _load_ and _wire_ the files into your project, or application context to be more precise.
+
+As an example, all files under `./config` can be autoloaded if you use the `Application.loadConfig` static method.
+
+All files under the `./commands` directory will be `require`d and registered as commands.
+
+If you are using the [persistence][core-persistence] module, then all files under the `./models` directory will be registered as models.
+
+But mainly, all valid modules found in the `./modules` directory will be loaded and registered with the application context, meaning that to add a new module to your application you simply need to place it in the `./modules` directory and then **core.io** will do the rest.
+
+Note that the dependency solving cycle happens statically at runtime during the boot process of your application, so to detect a new module you need to stop and restart your application.
+
+##### Module Loader
+
+As explained earlier, all valid modules found in the `modules` directory will be required and then registered with the application context.
+
+A valid module is either a javascript file exporting an `init` function or a directory with an **index.js** file exporting an `init` function.
+
+
+
+##### Commands Loader
+
+##### Configuration Loader
+
+
+
+###### Solving Configuration Dependencies
+
+Configuration files can have interpolated values where you reference the value of any attribute of the configuration object using the attribute's keypath.
+
+You reference objects or properties by their keypath. A keypath is a string representing the location of a piece of data.
+
+```js
+var data = {
+    user: {
+        name: 'Peperone',
+        address: {
+            city: 'New York'
+        }
+    }
+};
+```
+
+You can reference strings or objects using two different syntaxes:
+
+* Object interpolation: `@{user}` or `@{user.address}`
+* String interpolation: `${user.name}` or `${user.address.city}`
+
 #### Logger
 
 options:
-
 * muteConsole
 * wrapConsole
 
 #### Banner
-
 In development mode, when the application boots there is a banner that shows up in the output. You can customize it using any online ASCII generator [like this one][ascii-art].
 
 The banner can display any information using [configuration interpolated values](#solving-configuration-dependencies).
@@ -308,7 +408,6 @@ context.resolve('repl').then((repl) => {
 You can disable the REPL by setting the `enabled` property to `false`.
 
 ##### Banner
-
 You can customize the banner that is displayed in the console output during initialization of your application. Mostly it's about aesthetics but you can use it to display some useful information regarding the connection.
 
 ```
@@ -374,7 +473,6 @@ The `dispatcher` module extends the `application-core` with two distinct behavio
 Hooks provide lifecycle events
 
 ##### Hooks
-
 A `hook` is an event with a lifecycle to which you can attach listeners to.
 
 Core hooks and module hooks.
