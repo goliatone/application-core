@@ -1,3 +1,38 @@
+## Main interface
+
+Much like [connect][connect] where you have a simple interface for all middleware, **core.io** modules all have to conform to a simple interface.
+
+Each module has to provide an `init` function which will take two arguments; `context`, and `config`.
+
+`context` is an instance of a core.io application, and `config` is the [configuration object](#configuration) for that module.
+
+Inside the `init` function is where you would perform all the wiring needed for the module to integrate with your application. Some modules will extend the application by providing new functionality. See [extending context](#extending-context) for more information and examples.
+
+`init` acts as a middle tier between **core.io** and external libraries.
+
+```js
+module.exports.init = function(context, config) {
+    const repl = require('poke-repl');
+    context.provide('repl', repl);
+};
+```
+
+**core.io** does not pollute the `global` namespace, the intended way to access the functionality is by keeping a reference of the `context` object if it's necessary.
+
+### Dependencies
+If your module has dependencies most of the time **core.io** can handle those.
+It can wait for dependencies
+
+#### Promises
+
+### Extending context
+
+The **core.io** application context exposes a function to provide new functionality through modules.
+
+```js
+context.provide(name, capability);
+```
+
 ### Modules
 
 A Node.js package is a convenient way to organize, distribute and reuse source code between Node.js programs.
@@ -19,15 +54,24 @@ For the most part, that's it. There are more options like exporting an `alias` o
 
 #### Modules Names
 
-* sanitizeName: It ensures the resulting string is a valid JavaScript variable name.
+* `sanitizeName`: It ensures the resulting string is a valid JavaScript variable name.
 
-* alias: Modules can export an `alias` property that will be used instead of the filename.
+* `alias`: Modules can export an `alias` property that will be used instead of the filename.
 
-* moduleid: If no module id is provided in the configuration file, the sanitized name will be used.
+* `moduleid`: If no module id is provided in the configuration file, the sanitized name will be used.
 
 Conventions around modules names:
+
 * configuration file: matching configuration files will de passed to module.
 * child logger: receives the name of the module.
+
+#### Core Modules
+
+Core modules are optional and can be replaced by any module as long as it provides the same interface.
+
+Some are optional, like the REPL module. If you don't need or don't want a REPL you can remove it from the list of `coremodules` using the configuration object that you pass to the application instance during the initialization of your program, in the entry point file.
+
+The most likely scenario is that you might want to enable it during development but not on production.
 
 ### Modules
 
