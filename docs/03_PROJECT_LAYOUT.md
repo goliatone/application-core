@@ -119,6 +119,9 @@ You can read more about **core.io** modules in the [modules guide][modules-guide
 
 #### The commands directory
 
+#### Application entrypoint
+
+The entry point file is named `index.js` by default/convention, but basically you can use anything that would work in a `npm start` script.
 
 [config-guide]:#config-guide
 [guide-autoload]:#guide-autoload
