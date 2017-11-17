@@ -2,15 +2,15 @@
 
 **core.io** provides a structure to quickly prototype Node.js applications by providing an eco-system of packages alongside a set of guidelines and conventions to ease development and prototyping.
 
-In a way **core.io** aims to be a workflow rather than a framework by providing a common application structure regardless if your project is web, desktop, terminal, or data focused.
+In a way **core.io** aims to be a workflow rather than a framework by providing a common application structure regardless if your project is a web, desktop, or terminal application.
 
-**core.io** provides basic building blocks which are useful in any context and help with common tasks like configuration management, logging, dependency management and basic needs of most applications.
+**core.io** provides basic building blocks which are useful in any context and help with common tasks like configuration and dependency management, logging, and basic needs of most applications.
 
 The heart of **core.io** is the [application context](#application-core), which loads and manages a set of core modules and which you can extend directly with custom logic or indirectly with custom modules or community modules.
 
 In a sense, the application context is the kernel around which your application will grow with custom features.
 
-Modules are intended to encapsulate code and make it portable. They also serve as glue to integrate libraries like Socket.IO or AMQP into your project.
+Modules are intended to encapsulate code and make it portable. They also serve as glue to integrate third party libraries like Waterline, Socket.IO or to add support for AMQP into your project.
 
 Following simple conventions on how files should be named and where those files should be placed **core.io** will auto-load, auto-configure, and auto-wire components while leaving to the developer the choice of overriding default behaviors. Developers can also create custom modules to replace functionality provided by core modules.
 
@@ -19,31 +19,7 @@ Following simple conventions on how files should be named and where those files 
 3. [Concepts](#concepts)
 4. [Project Structure](#project-structure)
 
-## Getting Started
 
-### Installation
-### Create Sample Application
-### Run
-
-## Reference
-
-### Application
-#### Application Context
-#### Application Lifecycle
-
-### Configuration
-
-### Modules
-#### Core Modules
-#### Extended Modules
-
-### Commands
-
-### Autoloading
-#### Module Loader
-#### Commands Loader
-#### Configuration Loader
-#### Model Loader
 
 ## Concepts
 
@@ -88,7 +64,7 @@ MyClass.DEFAULTS = {
 };
 ```
 
-Generally speaking, properties in the `DEFAULTS` object are intended to provide sane defaults but explicitly show what things are expected to be overriden by the developer.
+Generally speaking, properties in the `DEFAULTS` object are intended to provide sane defaults but explicitly show what things are expected to be overridden by the developer.
 
 You can also use the constructor's `options` argument to extend the base object with new functions and variables.
 
@@ -681,10 +657,12 @@ You can reference strings or objects using two different syntaxes:
 #### Logger
 
 options:
+
 * muteConsole
 * wrapConsole
 
 #### Banner
+
 In development mode, when the application boots there is a banner that shows up in the output. You can customize it using any online ASCII generator [like this one][ascii-art].
 
 The banner can display any information using [configuration interpolated values](#solving-configuration-dependencies).
@@ -770,6 +748,7 @@ context.resolve('repl').then((repl) => {
 You can disable the REPL by setting the `enabled` property to `false`.
 
 ##### Banner
+
 You can customize the banner that is displayed in the console output during initialization of your application. Mostly it's about aesthetics but you can use it to display some useful information regarding the connection.
 
 ```
@@ -835,6 +814,7 @@ The `dispatcher` module extends the `application-core` with two distinct behavio
 Hooks provide lifecycle events
 
 ##### Hooks
+
 A `hook` is an event with a lifecycle to which you can attach listeners to.
 
 Core hooks and module hooks.
