@@ -1,0 +1,81 @@
+#!/bin/bash
+# https://github.com/adriancooney/Taskfile
+#Include npm installed binaries so we can call those
+#directly from the taskfile.
+PATH=./node_modules/.bin:$PATH
+
+# You could aliase taskfiles so you
+# can run them like: run <task>
+# echo alias run=./taskfile > .bashrc
+function docs-md {
+    documentation build lib/application.js -f md -o docs/api/application.md
+}
+
+function docs-html {
+    documentation build lib/application.js -f html -o docs/api/application
+}
+
+function docs-serve {
+    documentation serve lib/application.js
+}
+
+function docs-site {
+    node ./node_modules/.bin/mdoc -i docs -o out
+}
+
+
+function clean {
+  rm -r build dist
+}
+
+function build(){
+    echo "building $1"
+    webpack src/index.js --output-path build/
+}
+
+function build-all(){
+    # the <task> & followed by `wait` ensure those
+    # run in parallel
+    build web & build mobile &
+    wait
+}
+
+function minify {
+  uglify build/*.js dist/
+}
+
+function deploy {
+  clean && build && minify
+  scp dist/index.js sergey@google.com:/top-secret/index.js
+}
+
+function default {
+   build
+}
+
+function help {
+    echo "$0 <task> <args>"
+    echo "Tasks:"
+    # `compgen -A` bash built in, it
+    # will list the functions in this
+    # taskfile.
+    compgen -A function | cat -n
+}
+
+# This is a pass through:
+# `./taskfile build web`
+# `./taskfile build-all`
+#
+# If we call it without args
+# it will call default func.
+# `./taskfile`
+#
+# If you want to want to call
+# this taskfile from package.json
+# and `npm run` tasks, you can:
+# 1 - Aliase "test": "./taskfile test"
+# 2 - Use `--` to send args: `npm run build -- prod`
+
+TIMEFORMAT="Task completed in %3lR"
+
+time ${@:-default}
