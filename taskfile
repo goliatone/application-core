@@ -8,7 +8,7 @@ PATH=./node_modules/.bin:$PATH
 # can run them like: run <task>
 # echo alias run=./taskfile > .bashrc
 function docs-md {
-    documentation build lib/application.js -f md -o docs/api/application.md
+    documentation build lib/application.js -f md --shallow -o docs/api/application.md
 }
 
 function docs-html {
@@ -16,11 +16,15 @@ function docs-html {
 }
 
 function docs-serve {
-    documentation serve lib/application.js
+    documentation serve --shallow --watch lib/application.js
 }
 
 function docs-site {
-    node ./node_modules/.bin/mdoc -i docs -o out
+    node ./node_modules/.bin/mdoc -i docs -o mdoc-out
+}
+
+function docdown {
+   node ./node_modules/.bin/docdown ./lib/application.js docdown.md
 }
 
 
