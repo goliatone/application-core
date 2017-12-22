@@ -1,3 +1,9 @@
+---
+title: "About"
+date: "2017-12-20"
+template: "index"
+---
+
 # About core.io
 
 **core.io** provides a structure to quickly prototype Node.js applications by providing an eco-system of packages alongside a set of guidelines and conventions to ease development and prototyping.

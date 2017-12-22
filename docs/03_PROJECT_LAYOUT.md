@@ -1,3 +1,9 @@
+---
+title: "Project Layout"
+date: "2017-12-20"
+template: "index"
+---
+
 # Project Structure
 
 In this guide we learn how **core.io** applications are structured and the conventions around the different file loaders used to bootstrap your applications.
