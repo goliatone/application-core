@@ -12,6 +12,7 @@ function docs-md {
 }
 
 function docs-html {
+    #documentation build lib/application.js --theme ./node_modules/documentation-theme-griest -f html -o docs
     documentation build lib/application.js -f html -o docs/api/application
 }
 
