@@ -17,7 +17,7 @@ function docs-html {
 }
 
 function docs-serve {
-    documentation serve --shallow --watch lib/application.js
+    documentation serve --shallow --watch lib/
 }
 
 function docs-site {
