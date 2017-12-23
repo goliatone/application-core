@@ -2,7 +2,55 @@
 
 ### Table of Contents
 
--   [on](#on)
+-   [core/repl](#corerepl)
+    -   [init](#init)
+    -   [on](#on)
+
+## core/repl
+
+The repl module provides a REPL interface
+to your Application instance.
+
+### init
+
+-   **See: [Poke-REPL](http://github.com/goliatone/poke-repl)**
+
+This enables connecting to your application 
+using a terminal.
+
+Use poke-repl to create a TCP repl server,
+to which you can connect using a the 
+[poke-repl](http://github.com/goliatone/poke-repl) client.
+
+The REPL serer supports a rudimentary firewall and authentication
+mechanism.
+
+REPL header:
+
+    ╔═════════════════════════════════════════════════════════════════════╗
+    ║                      poke-repl remote console √                     ║
+    ║                                                                     ║
+    ║              All connections are monitored and recorded             ║
+    ║      Disconnect IMMEDIATELY if you are not an authorized user       ║
+    ╚═════════════════════════════════════════════════════════════════════╝
+
+**Parameters**
+
+-   `context` **Application** Application context.
+-   `config` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Configuration object.
+    -   `config.port` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** Port exposed by the REPL server. (optional, default `8989`)
+    -   `config.host` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Host of the REPL server. (optional, default `'localhost'`)
+    -   `config.enabled` **[Boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Should the REPL be enabled. (optional, default `false`)
+    -   `config.metadata` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Object passed to render the REPL banner. 
+                                        This depends on what the banner you use expects.
+        -   `config.metadata.name` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+        -   `config.metadata.version` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+        -   `config.metadata.environment` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+    -   `config.options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+        -   `config.options.prompt` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** This string will be the prompt
+                                                                 shown to clients on connect. 
+                                                                 Accepts ANSI colors (optional, default `'${app.name}'`)
+        -   `config.options.header` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** 
 
 ## on
 

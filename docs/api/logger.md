@@ -2,18 +2,22 @@
 
 ### Table of Contents
 
--   [init](#init)
--   [wrapConsole](#wrapconsole)
--   [restoreNativeConsole](#restorenativeconsole)
--   [setColorizer](#setcolorizer)
--   [setMessage](#setmessage)
--   [setTime](#settime)
--   [setLabel](#setlabel)
--   [setLevel](#setlevel)
--   [setFrom](#setfrom)
--   [enforceColumnWidth](#enforcecolumnwidth)
+-   [core/logger](#corelogger)
+    -   [Logger](#logger)
+    -   [init](#init)
+    -   [getLogger](#getlogger)
+    -   [mute](#mute)
+    -   [unmute](#unmute)
+    -   [silence](#silence)
 
-## init
+## core/logger
+
+### Logger
+
+Logger class providing extra functionality
+on top of [winston.Logger](https://github.com/winstonjs/winston).
+
+### init
 
 Logger moudle provides a wrapper around
 winston.
@@ -21,110 +25,58 @@ winston.
 Look into pino:
 <https://www.npmjs.com/package/pino>
 
-TODO: Have a `focused` mode, in which we mute the output
-      so we don't fill the sreen with noise but we collect
-      all messages, then using the REPL we selectively
-      output one thread or another by focusing one ore more
-      loggers. We need a buffer.
-TODO: Add utility for express morgan wrapper...
-      <https://gist.github.com/goliatone/6f624c8658af9e986f8949d165977747>
-
-TODO: Handle child loggers: update metadata, and build name as
-      parent.child => admin.auth
-
-TODO: breadcrumbs: group different logs into a single
-      transaction. I.E request -> auth -> orm -> command -> response
-
-TODO: integrate <https://github.com/sindresorhus/log-update>
-
-~TODO~: integrate <https://github.com/goliatone/noop-console>
-      so we can silence all other console logs
-      and use this one instead.
-
-TODO: Make app.logger behave both as a logger instance,
-      \-i.e. `app.logger.info()`- and as getLogger- i.e.
-      `app.logger('repl').info()`.
-
-TODO: Add filters and rewriters to remove sensitive data
-      from output.
-
 **Parameters**
 
--   `app` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Application context
+-   `app` **Application** Application context
 -   `config` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Configuration object for "logger"
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** winston instance
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Winston instance
 
-## wrapConsole
+## getLogger
 
-Wrap native console with a `logger` instance.
-
-**Parameters**
-
--   `app` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Application core instance.
--   `config` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Configuration object.
-
-Returns **void** 
-
-## restoreNativeConsole
-
-Add a restore function to app.
-
-Returns **void** 
-
-## setColorizer
+Get a Logger instance by name.
+If no Logger instance exists with the
+given name, a new one will be created.
+All calls to `getLogger` with 
+the same name will return the same instance.
 
 **Parameters**
 
--   `colorizer` **Colorizer** 
+-   `name` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** String identifying logger
+-   `config` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Metadata (optional, default `{}`)
 
-## setMessage
+Returns **Logger** Logger instance.
 
-**Parameters**
-
--   `message` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [undefined](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined))** 
-
-Returns **Message** 
-
-## setTime
+## mute
 
 **Parameters**
 
--   `timestamp` **([boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean) \| [function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function))** 
+-   `names` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** A list of names to mute
 
-Returns **Message** 
+**Examples**
 
-## setLabel
+```javascript
+`context.getLogger('core').mute('commands', 'modules');`
+```
 
-**Parameters**
+Returns **this** 
 
--   `label` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [undefined](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined))** 
+## unmute
 
-Returns **Message** 
-
-## setLevel
-
-**Parameters**
-
--   `level` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [undefined](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined))** 
-
-Returns **Message** 
-
-## setFrom
+Un-mute previously mute'd logger instances.
 
 **Parameters**
 
--   `from` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [undefined](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined))** 
+-   `names` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** A list of names of loggers
 
-Returns **Message** 
+Returns **this** 
 
-## enforceColumnWidth
+## silence
 
-Enforce a column width of length `length`
+Silence a given Logger instance.
 
 **Parameters**
 
--   `message` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Message string
--   `length` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** Column width (optional, default `90`)
+-   `name` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Logger instance name
+-   `silent` **[Boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)**  (optional, default `true`)
 
-Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** 

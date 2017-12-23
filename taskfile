@@ -7,20 +7,28 @@ PATH=./node_modules/.bin:$PATH
 # You could aliase taskfiles so you
 # can run them like: run <task>
 # echo alias run=./taskfile > .bashrc
-function docs-md {
+function docs:md {
     documentation build lib/application.js -f md --shallow -o docs/api/application.md
+    # documentation build lib/logger/index.js -f md --shallow -o docs/api/logger.md
+    # documentation build lib/repl.js -f md --shallow -o docs/api/repl.md
 }
 
-function docs-html {
+function docs:json {
+    documentation build lib/application.js -f json --shallow -o docs/api/application.json
+    # documentation build lib/logger/index.js -f md --shallow -o docs/api/logger.md
+    # documentation build lib/repl.js -f md --shallow -o docs/api/repl.md
+}
+
+function docs:html {
     #documentation build lib/application.js --theme ./node_modules/documentation-theme-griest -f html -o docs
-    documentation build lib/application.js -f html -o docs/api/application
+    documentation build lib/ -f html -o docs/api/
 }
 
-function docs-serve {
-    documentation serve --shallow --watch lib/
+function docs:serve {
+    documentation serve --shallow --config .documentation --watch --theme node_modules/documentation-theme-core.io  lib/
 }
 
-function docs-site {
+function docs:site {
     node ./node_modules/.bin/mdoc -i docs -o mdoc-out
 }
 
@@ -33,12 +41,12 @@ function clean {
   rm -r build dist
 }
 
-function build(){
+function build {
     echo "building $1"
     webpack src/index.js --output-path build/
 }
 
-function build-all(){
+function build:all {
     # the <task> & followed by `wait` ensure those
     # run in parallel
     build web & build mobile &
