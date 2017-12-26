@@ -20,8 +20,8 @@ function docs:json {
 }
 
 function docs:html {
-    #documentation build lib/application.js --theme ./node_modules/documentation-theme-griest -f html -o docs
-    documentation build lib/ -f html -o docs/api/
+    documentation build lib/ --theme ./node_modules/documentation-theme-core.io -f html -o docs/api
+    #documentation build lib/ -f html -o docs/api/
 }
 
 function docs:serve {
