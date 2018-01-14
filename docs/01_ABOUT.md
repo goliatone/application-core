@@ -14,7 +14,7 @@ In a way **core.io** aims to be a workflow rather than a framework by providing 
 
 It also provides a set of tools to ease development like the built in REPL which you can access remotely and execute commands or query data.
 
-The heart of **core.io** is the [application context](#application-core), which loads and manages a set of core modules and which you can extend directly with custom logic or indirectly with application specific or more generic community modules.
+The heart of **core.io** is the [application context](/documentation/api#application), which loads and manages a set of core modules and which you can extend directly with custom logic or indirectly with application specific or more generic community modules.
 
 In a sense, the application context is the kernel around which your application will grow with custom features.
 
@@ -26,7 +26,7 @@ The following sections would introduce you to different topics from which you ca
 
 ## Modules
 
-The heart of **core.io** is the [application context](#application-core), which loads and manages a set of core modules and which you can extend directly with custom logic or indirectly with application specific or community modules.
+The heart of **core.io** is the [application context](/documentation/api#application), which loads and manages a set of core modules and which you can extend directly with custom logic or indirectly with application specific or community modules.
 
 Modules are intended to encapsulate code and make it portable. They also serve as glue to integrate libraries like Socket.IO or AMQP into your project.
 
@@ -43,11 +43,11 @@ You can find and search for more modules in the [modules page][modules-page].
 
 In order to develop **core.io** applications you will need to have Node.js and npm installed. You can follow instructions in the [Node.js][node] website to download and install these dependencies on your computer.
 
-Make sure to go through the [getting started guide][#getting-started] to get a sense of what you can do with **core.io**.
+Make sure to go through the [getting started guide](/quickstart) to get a sense of what you can do with **core.io**.
 
 ## Resources
 
-1. [Getting Started](#getting-started)
+1. [Getting Started](/quickstart)
 2. [Reference](#reference)
 3. [Concepts](#concepts)
 4. [Project Structure](#project-structure)
@@ -56,10 +56,6 @@ Make sure to go through the [getting started guide][#getting-started] to get a s
 You can look for inspiration in the following open-source applications that make use of **core.io**:
 
 * [Registry Service][core.io-registry-service]
-
-<!--
-## F.A.Q.
--->
 
 
 [poke-repl]:https://github.com/goliatone/poke-repl
