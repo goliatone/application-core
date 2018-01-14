@@ -97,8 +97,8 @@ The next step will be to learn about the [project layout][#project-layout]
 To learn more about **core.io** follow the links:
 
 * [Documentation](/documentation)
-* [Examples](/examples)
-* [Plugins](/plugins)
+* [Examples](/documentation/examples)
+* [Modules](/modules)
 
 <!-- LINKS -->
 
