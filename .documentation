@@ -1,0 +1,12 @@
+toc:
+  - name: core/logger
+    children:
+      - Logger
+      - Message
+      - Filter
+  - name: core/dispatcher
+    description: |
+      Here are some helper functions for dispatching events.
+    children:
+      - emit
+      - on

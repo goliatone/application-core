@@ -1,4 +1,10 @@
-### Supporting Different Environments
+---
+title: "Environments"
+date: "2017-12-20"
+template: "index"
+---
+
+## Supporting Different Environments
 
 Another aspect in which **core.io** tries to simplify the configuration process is by _how_ it supports different development environments, like **staging**, **development**, **production**, etc.
 

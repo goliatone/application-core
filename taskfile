@@ -7,33 +7,84 @@ PATH=./node_modules/.bin:$PATH
 # You could aliase taskfiles so you
 # can run them like: run <task>
 # echo alias run=./taskfile > .bashrc
-function docs-md {
-    documentation build lib/application.js -f md -o docs/api/application.md
+
+##########################################
+# Documentation
+##########################################
+function docs:md {
+    documentation build lib/application.js -f md --shallow -o docs/api/application.md
+    # documentation build lib/logger/index.js -f md --shallow -o docs/api/logger.md
+    # documentation build lib/repl.js -f md --shallow -o docs/api/repl.md
 }
 
-function docs-html {
-    documentation build lib/application.js -f html -o docs/api/application
+function docs:json {
+    documentation build lib/application.js -f json --shallow -o docs/api/application.json
+    # documentation build lib/logger/index.js -f md --shallow -o docs/api/logger.md
+    # documentation build lib/repl.js -f md --shallow -o docs/api/repl.md
 }
 
-function docs-serve {
-    documentation serve lib/application.js
+function docs:html {
+    documentation build lib/ --theme ./node_modules/documentation-theme-core.io -f html -o docs/api
+    #documentation build lib/ -f html -o docs/api/
 }
 
-function docs-site {
-    node ./node_modules/.bin/mdoc -i docs -o out
+function docs:serve {
+    documentation serve --shallow --config .documentation --watch --theme node_modules/documentation-theme-core.io  lib/
 }
 
+function docs:site {
+    node ./node_modules/.bin/mdoc -i docs -o mdoc-out
+}
 
+function docdown {
+   node ./node_modules/.bin/docdown ./lib/application.js docdown.md
+}
+
+##########################################
+# Publish NPM/Github Tags
+##########################################
+
+function _publish:check {
+    if output=$(git status --untracked-files=no --porcelain) && [ -z "$output" ]; then
+        # Working directory clean
+        echo "Ready to publish..."    
+    else
+        red=`tput setaf 1`
+        reset=`tput sgr0`
+        echo "  ${red}Git working directory not clean."
+        echo "  Commit your changes and try again.${reset}"
+        exit 1
+    fi
+}
+
+function publish:major {
+    _publish:check
+    npm version major && npm publish && npm version patch && git push --tags && git push origin master
+}
+
+function publish:minor {
+    _publish:check
+    npm version minor && npm publish && npm version patch && git push --tags && git push origin master
+}
+
+function publish:patch {
+    _publish:check
+    npm version patch && npm publish && git push --tags && git push origin master
+}
+
+##########################################
+# Build
+##########################################
 function clean {
-  rm -r build dist
+    rm -r build dist
 }
 
-function build(){
+function build {
     echo "building $1"
     webpack src/index.js --output-path build/
 }
 
-function build-all(){
+function build:all {
     # the <task> & followed by `wait` ensure those
     # run in parallel
     build web & build mobile &
@@ -41,16 +92,16 @@ function build-all(){
 }
 
 function minify {
-  uglify build/*.js dist/
+    uglify build/*.js dist/
 }
 
 function deploy {
-  clean && build && minify
-  scp dist/index.js sergey@google.com:/top-secret/index.js
+    clean && build && minify
+    scp dist/index.js sergey@google.com:/top-secret/index.js
 }
 
 function default {
-   build
+   help
 }
 
 function help {
@@ -58,8 +109,9 @@ function help {
     echo "Tasks:"
     # `compgen -A` bash built in, it
     # will list the functions in this
-    # taskfile.
-    compgen -A function | cat -n
+    # taskfile. 
+    # Functions starting with '_' will be ignored.
+    compgen -A function | grep -v '^_' | cat -n
 }
 
 # This is a pass through:

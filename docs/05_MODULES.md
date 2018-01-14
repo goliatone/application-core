@@ -1,3 +1,9 @@
+---
+title: "Modules"
+date: "2017-12-20"
+template: "index"
+---
+
 ## Main interface
 
 Much like [connect][connect] where you have a simple interface for all middleware, **core.io** modules all have to conform to a simple interface.

@@ -1,4 +1,10 @@
-### Configuration
+---
+title: "Configuration"
+date: "2017-12-20"
+template: "index"
+---
+
+## Configuration
 
 While the intention of **core.io** is to adhere to the idea of convention over configuration, it still grants you, the developer, full control over most aspects of _your_ application by letting you override default values.
 
