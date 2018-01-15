@@ -1,0 +1,23 @@
+#!/usr/bin/env node
+
+const cluster = require('cluster');
+
+const APP_NAME = require('./package.json').name;
+
+if(cluster.isMaster) {
+    const cpus = require('os').cpus().length;
+    for(let i = 0; i < cpus; i++) {
+        cluster.fork();
+    }
+
+    cluster.on('online', function(server) {
+        console.log(APP_NAME, 'server', server.process.pid, 'online');
+    });
+
+    cluster.on('exit', (server)=>{
+        console.warn(APP_NAME, 'server', server.process.pid, 'died');
+    });
+
+} else {
+    require('./index.js');
+}
