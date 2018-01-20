@@ -8,5 +8,18 @@ module.exports = {
     loaders: {
         modules: './modules',
         commands: './commands'
+    },
+    registration: {
+        data: {
+            health: {
+                endpoint: 'tcp://localhost:${server.port}/api/health'
+            },
+            repl: {
+                port: '${repl.port}'
+            },
+            type: 'socket',
+            environment: '${app.environment}',
+            hostname: require('os').hostname() + process.env.NODE_ID
+        }
     }
 };

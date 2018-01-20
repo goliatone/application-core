@@ -11,7 +11,7 @@ module.exports = {
         prompt: '\u001b[33m ${app.name} > \u001b[39m',
         header: header
     },
-    port: 9090,
+    port: process.env.NODE_REPL_PORT ||  9090,
     // connectionBanner: connectionBanner
 };
 
