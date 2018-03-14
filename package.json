@@ -42,7 +42,7 @@
     "english-time-mirror": "0.0.9",
     "gextend": "^0.3.0",
     "gkeypath": "^0.7.0",
-    "glob": "^7.0.5",
+    "glob": "^7.1.2",
     "human-time": "0.0.1",
     "in": "^0.12.*",
     "longjohn": "^0.2.12",
