@@ -12,7 +12,7 @@ module.exports = {
     registration: {
         data: {
             health: {
-                endpoint: 'tcp://localhost:${server.port}/api/health'
+                endpoint: 'http://google.com'
             },
             repl: {
                 port: '${repl.port}'
