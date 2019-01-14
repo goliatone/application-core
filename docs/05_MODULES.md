@@ -104,6 +104,11 @@ Once all core plugins are loaded, the application emits the event `coreplugins.r
 
 #### Module autoloading
 
+##### Module commands
+
+If a module contains a directory named **commands** all files in the directory will be autoloaded and registered as commands.
+
+In order for this to work you need to set the property `autoloadModulesCommands` to `true` in the applications configuration file.
 
 #### Module instantiation
 
@@ -133,3 +138,4 @@ Configuration files located in the [`config/`](#configuration-loader) folder o
 The top-level keys on the `context.config` (i.e. `context.config.repl`) object correspond to a particular configuration file name under your `config/` directory (i.e. `config/repl.js`). Most individual configuration files are specific to a module, with the exception of `config/app.js`  which should hold options for your current application, like the application's name, it's base directory, environment in run under, etc.
 
 The intention of these files is to provide modules with configuration options. When a module is loaded, it will be called with the application's instance and a `config` top-level key that matches the module's name.
+
