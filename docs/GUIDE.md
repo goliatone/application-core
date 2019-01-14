@@ -258,11 +258,11 @@ This is the list of core modules bundled with **core.io**:
 Core modules are loaded first and made available for all user modules. You can override this list using a `coremodules` key in the configuration object you initialize your instance with:
 
 ```js
-var config = Application.loadConfig({
+const config = Application.loadConfig({
     coremodules: ['./logger', './errors', './dispatcher']
 }, true);
 
-var app = new Application({config});
+const app = new Application({config});
 ```
 Here we removed the [monitoring](#monitoring-module) and the [REPL](#repl-module).
 
@@ -301,7 +301,7 @@ Configuration files can have interpolated values where you reference the value o
 You reference objects or properties by their keypath. A keypath is a string representing the location of a piece of data.
 
 ```js
-var data = {
+let data = {
     user: {
         name: 'Peperone',
         address: {
@@ -394,7 +394,7 @@ The built in REPL exposes the application context- you can access it if you type
 You can expose properties and functions by extending the REPL instance.
 
 ```js
-context.resolve('repl').then((repl) => {
+context.resolve('repl').then(repl => {
     repl.context.myCustomCommand = function() {
         console.log('TODO: We should really think of a better example!');
     };
@@ -427,7 +427,7 @@ You can customize the connection banner, the prompt, and more. A sample configur
 ```js
 'use strict';
 
-let header = require('fs').readFileSync('./config/repl-banner.txt', 'utf-8');
+const header = require('fs').readFileSync('./config/repl-banner.txt', 'utf-8');
 
 module.exports = {
     enabled: true,
@@ -473,6 +473,7 @@ The `dispatcher` module extends the `application-core` with two distinct behavio
 Hooks provide lifecycle events
 
 ##### Hooks
+
 A `hook` is an event with a lifecycle to which you can attach listeners to.
 
 Core hooks and module hooks.
@@ -504,15 +505,19 @@ There is a list of modules that are not bundled by default but that provide grea
 
 Default values:
 
-* logger: console,
-* autorun: true,
-* autoinitialize: true,
-* exitOnError: true,
-* name: 'Application',
-* sanitizeName: sanitizeName,
-* registerReadyEvent: 'registered',
-* coremodules: ['./logger', './errors', './dispatcher', './monitoring', './repl'],
-* basepath: `process.cwd`
+* `logger`: console,
+* `autorun`: `true`,
+* `autoinitialize`: `true`,
+* `autoloadModulesCommands`: `false`
+* `enableLongStackTrackes`: `true`
+* `exitOnError`: `true`,
+* `name`: 'Application',
+* `sanitizeName`: 'sanitizeName',
+* `registerReadyEvent`: 'registered',
+* `coremodules`: ['./logger', './errors', './dispatcher', './monitoring', './repl'],
+* `basepath`: `process.cwd`
+* `resolveTimeout`: `40000`
+* `registerTimeout`: `10000`
 
 #### Lifecycle
 
