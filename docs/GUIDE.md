@@ -41,7 +41,7 @@ Don't get too hung up on the terms and how they differ from the use by framework
 
 The following are patterns extensively used across **core.io**. A brief introduction for those not familiar with the concepts.
 
-#### Defaults, mixins and overrides
+#### Defaults, Mixins And Overrides
 
 Through most classes in **core.io** we follow this pragmatic convention:
 
@@ -234,7 +234,7 @@ The configuration process attaches two properties to the config object:
 * package: contents of `package.json` file minus the **readme**
 * environment: value of `process.env.NODE_ENV`
 
-#### Application configuration file
+#### Application Configuration File
 
 * banner: String|Function
 
@@ -408,6 +408,7 @@ context.resolve('repl').then(repl => {
 You can disable the REPL by setting the `enabled` property to `false`.
 
 ##### Banner
+
 You can customize the banner that is displayed in the console output during initialization of your application. Mostly it's about aesthetics but you can use it to display some useful information regarding the connection.
 
 ```
@@ -545,23 +546,23 @@ https://nodejs.org/en/docs/guides/anatomy-of-an-http-transaction/
 
 <!-- LINKS -->
 
-[core-persistence]:https://github.com/goliatone/core.io-persistence
-[core-server]:https://github.com/goliatone/core.io-express-server
-[core-data]:https://github.com/goliatone/core.io-data-manager
-[core-sync]:https://github.com/goliatone/core.io-filesync
-[core-auth]:https://github.com/goliatone/core.io-express-auth
-[core-crud]:https://github.com/goliatone/core.io-crud
+* [core-persistence]:https://github.com/goliatone/core.io-persistence
+* [core-server]:https://github.com/goliatone/core.io-express-server
+* [core-data]:https://github.com/goliatone/core.io-data-manager
+* [core-sync]:https://github.com/goliatone/core.io-filesync
+* [core-auth]:https://github.com/goliatone/core.io-express-auth
+* [core-crud]:https://github.com/goliatone/core.io-crud
 
-[poke]:https://github.com/goliatone/poke-repl
-[noop-console]:https://github.com/goliatone/noop-console
-[scl]:https://github.com/goliatone/simple-config-loader
-[ioc]:https://en.wikipedia.org/wiki/Inversion_of_control
-[envset]:https://github.com/goliatone/envset
-[mixin]:https://www.joezimjs.com/javascript/javascript-mixins-functional-inheritance/
-[winston]:https://github.com/winstonjs/winston
-[npm-packages]:https://docs.npmjs.com/how-npm-works/packages
-[poke-repl-banner]:https://github.com/goliatone/poke-repl/tree/master/examples
-[ascii-art]:http://www.network-science.de/ascii/
-[wiki-hmvc]:https://en.wikipedia.org/wiki/Hierarchical_model%E2%80%93view%E2%80%93controller
-[wiki-command-pattern]:https://en.wikipedia.org/wiki/Command_pattern
-[wiki-front]:https://en.wikipedia.org/wiki/Front_controller
+* [poke]:https://github.com/goliatone/poke-repl
+* [noop-console]:https://github.com/goliatone/noop-console
+* [scl]:https://github.com/goliatone/simple-config-loader
+* [ioc]:https://en.wikipedia.org/wiki/Inversion_of_control
+* [envset]:https://github.com/goliatone/envset
+* [mixin]:https://www.joezimjs.com/javascript/javascript-mixins-functional-inheritance/
+* [winston]:https://github.com/winstonjs/winston
+* [npm-packages]:https://docs.npmjs.com/how-npm-works/packages
+* [poke-repl-banner]:https://github.com/goliatone/poke-repl/tree/master/examples
+* [ascii-art]:http://www.network-science.de/ascii/
+* [wiki-hmvc]:https://en.wikipedia.org/wiki/Hierarchical_model%E2%80%93view%E2%80%93controller
+* [wiki-command-pattern]:https://en.wikipedia.org/wiki/Command_pattern
+* [wiki-front]:https://en.wikipedia.org/wiki/Front_controller
