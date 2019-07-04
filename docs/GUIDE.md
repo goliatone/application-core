@@ -505,8 +505,8 @@ There is a list of modules that are not bundled by default but that provide grea
 
 Default values:
 
-* `logger`: console,
-* `autorun`: `true`,
+* `logger`: [noop-console](https://github.com/goliatone/noop-console) instance,
+* `autorun`: `false`,
 * `autoinitialize`: `true`,
 * `autoloadModulesCommands`: `false`
 * `enableLongStackTrackes`: `true`
