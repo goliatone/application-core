@@ -1,7 +1,10 @@
 var header = require('fs').readFileSync('./config/repl-banner.txt', 'utf-8');
 
+const cluster = require('cluster');
+
 module.exports = {
-    enabled: true,
+//    enabled: true,
+    enabled: cluster.isMaster,
     metadata:{
         name: 'application-core',
         version: '0.0.0',
