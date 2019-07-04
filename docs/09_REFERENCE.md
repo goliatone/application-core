@@ -96,7 +96,7 @@ It's more useful when you need to access a deeply nested object:
 let prompt = context.config.get('repl.options.prompt', 'poke-repl >');
 ```
 
-#### Module configuration
+#### Module Configuration
 
 When **core.io** registers a module, first it will `require` the module and then will look for a key in `context.config` that matches the module's [moduleId](#modules-names). It will then call `module.init` with a reference to the value of this key.
 
