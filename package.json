@@ -49,7 +49,7 @@
     "poke-repl": "^0.10.*",
     "request": "^2.81.0",
     "request-promise": "^4.2.1",
-    "simple-config-loader": "^0.10.*",
+    "simple-config-loader": "^0.11.*",
     "verror": "^1.10.0",
     "winston": "^2.2.0"
   },
