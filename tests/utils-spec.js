@@ -18,17 +18,17 @@ test('sanitizeName should remove initial digits from name', (t) => {
     t.end();
 });
 
-test('getModuleName given a path should return the name of a file', (t)=>{
+test('getModuleName given a path should return the name of a file', (t) => {
     t.equals(getModuleName('/path/to/filename.js'), 'filename', 'Correct filename');
     t.end();
 });
 
-test('getModuleName given a path should return the name of a file', (t)=>{
+test('getModuleName given a path should return the name of a file', (t) => {
     t.equals(getModuleName(''), '', 'Correct filename');
     t.end();
 });
 
-test('getPathToMain should return the path to main process file', (t)=>{
+test('getPathToMain should return the path to main process file', (t) => {
     t.ok(getPathToMain(), getPathToMain());
     t.end();
 });
