@@ -24,7 +24,8 @@
     "plusplus": false,
     "node": true,
     "esversion": 6,
-    "globals":{
+    "es6": true,
+    "globals": {
         "describe": true,
         "it": true
     }
