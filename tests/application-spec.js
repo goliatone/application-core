@@ -2,7 +2,7 @@
 const test = require('tape');
 const noopc = require('noop-console');
 const sinon = require('sinon');
-const proxyquire =  require('proxyquire');
+// const proxyquire =  require('proxyquire');
 
 const Application = require('..').Application;
 // Application.DEFAULTS.autoinitialize = false;
@@ -12,27 +12,26 @@ test('Application should expose DEFAULTS', (t) => {
     t.end();
 });
 
-test('Application instances extend Application.DEFAULTS', (t) =>{
+test('Application instances extend Application.DEFAULTS', (t) => {
     let app = new Application();
 
-    Object.keys(Application.DEFAULTS).map((key)=>{
+    Object.keys(Application.DEFAULTS).map((key) => {
         t.ok(app[key] !== undefined, 'match ' + key);
     });
     t.end();
 });
 
-test.skip('provide should throw in strict mode if we override', (t) =>{
-    let app = new Application({
-    });
+test.skip('provide should throw in strict mode if we override', (t) => {
+    let app = new Application({});
     app.provide('test', 1);
     app.provide('test', 2);
     t.pass('ok');
     t.end();
 });
 
-test('Init gets executed only once after calling all initializers', (t) =>{
+test('Init gets executed only once after calling all initializers', (t) => {
     let count = 0;
-    let NOOP = function(){count++;};
+    let NOOP = function() { count++; };
 
     let app = new Application({
         _registerListeners: NOOP,
@@ -47,8 +46,8 @@ test('Init gets executed only once after calling all initializers', (t) =>{
     t.end();
 });
 
-test('We can configure banner using the "banner" conf property', (t)=>{
-    let NOOP = function(){};
+test('We can configure banner using the "banner" conf property', (t) => {
+    let NOOP = function() {};
     let logger = noopc(console);
     let log = sinon.spy(console, 'log');
 
@@ -68,8 +67,8 @@ test('We can configure banner using the "banner" conf property', (t)=>{
     t.end();
 });
 
-test('Banner is not outputed during production', (t)=>{
-    let NOOP = function(){};
+test('Banner is not outputed during production', (t) => {
+    let NOOP = function() {};
     let log = sinon.spy(console, 'log');
 
     let app = new Application({
@@ -86,8 +85,8 @@ test('Banner is not outputed during production', (t)=>{
     t.end();
 });
 
-test('_showBanner should not be called by default', (t)=>{
-    let NOOP = function(){};
+test('_showBanner should not be called by default', (t) => {
+    let NOOP = function() {};
     var log = sinon.spy(console, 'log');
 
     let app = new Application({
@@ -102,8 +101,8 @@ test('_showBanner should not be called by default', (t)=>{
     t.end();
 });
 
-test('Banner can be a function, called with app instance and config object', (t)=>{
-    let NOOP = function(){};
+test('Banner can be a function, called with app instance and config object', (t) => {
+    let NOOP = function() {};
     let banner = sinon.spy();
 
     let app = new Application({
@@ -120,9 +119,9 @@ test('Banner can be a function, called with app instance and config object', (t)
     t.end();
 });
 
-test('_configure should extend the applciation instance with config.app', (t)=>{
-    let NOOP = function(){};
-    let expected = {name: 'TestApp', testing: true};
+test('_configure should extend the applciation instance with config.app', (t) => {
+    let NOOP = function() {};
+    let expected = { name: 'TestApp', testing: true };
 
     let app = new Application({
         _registerListeners: NOOP,
@@ -140,8 +139,8 @@ test('_configure should extend the applciation instance with config.app', (t)=>{
 });
 
 test('_configure should wrap "config" in Keypath utility', (t) => {
-    let NOOP = function(){};
-    let expected = {name: 'TestApp', testing: true};
+    let NOOP = function() {};
+    let expected = { name: 'TestApp', testing: true };
 
     let app = new Application({
         _registerListeners: NOOP,
@@ -159,8 +158,8 @@ test('_configure should wrap "config" in Keypath utility', (t) => {
     t.end();
 });
 
-test('_setupLongStackTraces should have no effects in production', (t)=> {
-    let NOOP = function(){};
+test('_setupLongStackTraces should have no effects in production', (t) => {
+    let NOOP = function() {};
 
     let app = new Application({
         environment: 'production',
@@ -174,8 +173,8 @@ test('_setupLongStackTraces should have no effects in production', (t)=> {
     t.end();
 });
 
-test('_setupLongStackTraces should have effects outside production', (t)=> {
-    let NOOP = function(){};
+test('_setupLongStackTraces should have effects outside production', (t) => {
+    let NOOP = function() {};
 
     let app = new Application({
         _registerListeners: NOOP,
@@ -188,8 +187,8 @@ test('_setupLongStackTraces should have effects outside production', (t)=> {
     t.end();
 });
 
-test('onceRegistered will call the handler immediately if the module is registered', (t)=>{
-    let NOOP = function(){};
+test('onceRegistered will call the handler immediately if the module is registered', (t) => {
+    let NOOP = function() {};
     let handler = sinon.spy();
 
     let app = new Application({
@@ -205,8 +204,8 @@ test('onceRegistered will call the handler immediately if the module is register
     t.end();
 });
 
-test('onceRegistered will call the handler once the module is registered', (t)=>{
-    let NOOP = function(){};
+test('onceRegistered will call the handler once the module is registered', (t) => {
+    let NOOP = function() {};
 
     let app = new Application({
         _registerListeners: NOOP,
@@ -216,7 +215,7 @@ test('onceRegistered will call the handler once the module is registered', (t)=>
         _mount: NOOP
     });
 
-    app.onceRegistered('test', ()=>{
+    app.onceRegistered('test', () => {
         t.pass('should be called once');
         t.end();
     });
@@ -225,8 +224,8 @@ test('onceRegistered will call the handler once the module is registered', (t)=>
 
 });
 
-test.skip('onErrorHandler will not exit if the Error is not critical', (t)=>{
-    let NOOP = function(){};
+test.skip('onErrorHandler will not exit if the Error is not critical', (t) => {
+    let NOOP = function() {};
 
     let app = new Application({
         _registerListeners: NOOP,
@@ -239,8 +238,8 @@ test.skip('onErrorHandler will not exit if the Error is not critical', (t)=>{
     t.end();
 });
 
-test('handleModuleError should throw an error', (t)=>{
-    let NOOP = function(){};
+test('handleModuleError should throw an error', (t) => {
+    let NOOP = function() {};
     // let logger = noopc({});
 
     let app = new Application({
@@ -252,15 +251,15 @@ test('handleModuleError should throw an error', (t)=>{
         _mount: NOOP
     });
 
-    t.throws(()=> {
+    t.throws(() => {
         app.handleModuleError('test', new Error('test'));
     });
 
     t.end();
 });
 
-test('handleModuleError should not throw an error it it was handled by the module', (t)=>{
-    let NOOP = function(){};
+test('handleModuleError should not throw an error it it was handled by the module', (t) => {
+    let NOOP = function() {};
     // let logger = noopc({});
 
     let app = new Application({
@@ -272,7 +271,7 @@ test('handleModuleError should not throw an error it it was handled by the modul
         _mount: NOOP
     });
 
-    t.doesNotThrow(()=> {
+    t.doesNotThrow(() => {
         let error = {};
         error.handledByModule = true;
         t.notOk(app.handleModuleError('test', error), 'all good');

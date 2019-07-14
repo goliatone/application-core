@@ -5,14 +5,14 @@ const Application = require('..').Application;
 //config here is a gkeypath Wrapper instance
 const config = Application.loadConfig({}, true);
 
-const app = new Application({config});
+const app = new Application({ config });
 
-app.onceRegistered('dispatcher', ()=> {
-    app.chainEvents(['run.pre', 'run'], ['error']).then(()=>{
+app.onceRegistered('dispatcher', () => {
+    app.chainEvents(['run.pre', 'run'], ['error']).then(() => {
         app.logger.error('A) RUN.PRE AND RUN DONE!');
     }).catch();
 
-    app.chainEvents(['run.pre', 'run', 'run.post'], ['error']).then(()=>{
+    app.chainEvents(['run.pre', 'run', 'run.post'], ['error']).then(() => {
         app.logger.error('B) RUN.PRE, RUN AND RUN.POST DONE!');
     });
 });
@@ -24,12 +24,12 @@ app.onceRegistered('logger', () => {
 
 app.once('run.complete', function(e) {
     app.logger.debug('>> run.complete: ');
-    app.logger.debug('some info %s', Object.keys(app.config));
+    // app.logger.debug('some info %s', Object.keys(app.config));
 });
 
-app.once('run.pre', function(e){
+app.once('run.pre', function(e) {
     app.logger.debug('run.pre: ', e);
-    app.logger.debug('TEST LOGGER: %s', e, {age:23, name:'Pepe Rone'});
+    app.logger.debug('TEST LOGGER: %s', e, { age: 23, name: 'Pepe Rone' });
 });
 
 app.once('run.post', function() {
@@ -47,7 +47,7 @@ app.once('run.post', function() {
 });
 
 
-app.once('coreplugins.ready', ()=>{
+app.once('coreplugins.ready', () => {
     app.run();
 });
 // app.run();
