@@ -60,3 +60,7 @@ npm-debug.log
 node_modules
 */.repl_history
 */.caretaker_*
+
+.tmp
+.envset
+
