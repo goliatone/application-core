@@ -64,12 +64,12 @@ test('The returned Promise should be "rejected" once any reject events is fired'
     emitter.emit('run');
     emitter.emit('end');
 
-    chain.then(() => {
+    chain.then(_ => {
         t.fail('Chain should not be resolved when a reject event is fired');
         t.end();
     });
 
-    chain.catch(() => {
+    chain.catch(_ => {
         t.pass('Chain should be rejected');
         t.end();
     });

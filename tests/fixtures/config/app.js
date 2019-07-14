@@ -1,4 +1,8 @@
-const banner = require('fs').readFileSync('./config/app.banner.txt', 'utf-8');
+'use strict';
+
+const { resolve, join } = require('path');
+const filepath = resolve(join(__dirname, 'app.banner.txt'));
+const banner = require('fs').readFileSync(filepath, 'utf-8');
 
 module.exports = {
     banner,
