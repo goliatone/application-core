@@ -51,6 +51,7 @@ lib-cov
 *.out
 *.pid
 *.gz
+*.tzg
 
 pids
 logs
@@ -60,3 +61,13 @@ npm-debug.log
 node_modules
 */.repl_history
 */.caretaker_*
+.tmp/*
+.travis.yml
+.documentation
+.envset
+.env 
+docs/*
+Gruntfile.js
+.git/index
+.jshintrc
+TODO.md 
