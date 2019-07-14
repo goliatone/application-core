@@ -240,10 +240,10 @@ test.skip('onErrorHandler will not exit if the Error is not critical', (t) => {
 
 test('handleModuleError should throw an error', (t) => {
     let NOOP = function() {};
-    // let logger = noopc({});
+    let logger = noopc({});
 
     let app = new Application({
-        // _logger: logger,
+        _logger: logger,
         _registerListeners: NOOP,
         _setupLongStackTraces: NOOP,
         _configure: NOOP,
@@ -251,19 +251,19 @@ test('handleModuleError should throw an error', (t) => {
         _mount: NOOP
     });
 
-    t.throws(() => {
+    t.throws(_ => {
         app.handleModuleError('test', new Error('test'));
-    });
+    }, 'Error thrown');
 
     t.end();
 });
 
 test('handleModuleError should not throw an error it it was handled by the module', (t) => {
     let NOOP = function() {};
-    // let logger = noopc({});
+    let logger = noopc({});
 
     let app = new Application({
-        // _logger: logger,
+        _logger: logger,
         _registerListeners: NOOP,
         _setupLongStackTraces: NOOP,
         _configure: NOOP,
@@ -271,10 +271,10 @@ test('handleModuleError should not throw an error it it was handled by the modul
         _mount: NOOP
     });
 
-    t.doesNotThrow(() => {
+    t.doesNotThrow(_ => {
         let error = {};
         error.handledByModule = true;
-        t.notOk(app.handleModuleError('test', error), 'all good');
+        t.notOk(app.handleModuleError('test', error), 'Modules can handle error and not crash app');
     });
 
     t.end();
