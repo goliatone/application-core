@@ -45,6 +45,7 @@
     "in": "^0.14.*",
     "longjohn": "^0.2.12",
     "noop-console": "*",
+    "nyc": "^14.1.1",
     "p-timeout": "^3.1.0",
     "poke-repl": "^0.10.*",
     "request": "^2.88.0",
