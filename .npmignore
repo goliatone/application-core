@@ -71,3 +71,6 @@ Gruntfile.js
 .git/index
 .jshintrc
 TODO.md 
+.git 
+.nyc_output/*
+.vscode
