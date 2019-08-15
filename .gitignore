@@ -64,3 +64,6 @@ node_modules
 .tmp
 .envset
 
+.nyc_output/
+TODO.md
+examples/.npmrc
