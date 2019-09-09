@@ -29,8 +29,9 @@
   },
   "scripts": {
     "patch": "npm version patch && npm publish && git push --tags && git push origin master",
-    "test": "bogota",
-    "dtest": "watch bogota test/"
+    "test": "./node_modules/.bin/bogota tests/*spec.js",
+    "test:run": "./node_modules/.bin/bogota tests/*spec.js",
+    "test:watch": "watch bogota tests/*spec.js"
   },
   "dependencies": {
     "ansi-color": "^0.2.1",
@@ -38,11 +39,11 @@
     "break-string": "git+https://git@github.com/goliatone/break-string.git",
     "debug": "^4.1.1",
     "english-time-mirror": "0.0.9",
-    "gextend": "^0.3.*",
-    "gkeypath": "^0.7.*",
+    "gextend": "^0.6.0",
+    "gkeypath": "^0.8.0",
     "glob": "^7.1.4",
     "human-time": "0.0.2",
-    "in": "^0.14.*",
+    "in": "^0.17.0",
     "longjohn": "^0.2.12",
     "noop-console": "*",
     "nyc": "^14.1.1",
