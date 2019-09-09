@@ -59,20 +59,21 @@ test('The returned Promise should be "rejected" once any reject events is fired'
 
     let chain = emitter.chainEvents(['start', 'run', 'end'], ['reject', 'error']);
 
-    emitter.emit('start');
-    emitter.emit('reject');
-    emitter.emit('run');
-    emitter.emit('end');
-
     chain.then(_ => {
         t.fail('Chain should not be resolved when a reject event is fired');
         t.end();
     });
 
-    chain.catch(_ => {
+    chain.catch(err => {
+        t.ok(err);
         t.pass('Chain should be rejected');
         t.end();
     });
+
+    emitter.emit('start');
+    emitter.emit('reject');
+    emitter.emit('run');
+    emitter.emit('end');
 });
 
 test('The returned "resolved" Promise should get all events', (t) => {
