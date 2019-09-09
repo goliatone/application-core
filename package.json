@@ -51,7 +51,7 @@
     "poke-repl": "^0.10.*",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
-    "simple-config-loader": "^0.11.*",
+    "simple-config-loader": "^0.12.0",
     "verror": "^1.10.0",
     "winston": "^2.4.4"
   },
