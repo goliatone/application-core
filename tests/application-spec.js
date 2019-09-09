@@ -47,28 +47,28 @@ test('Init gets executed only once after calling all initializers', (t) => {
 });
 
 test('We can configure banner using the "banner" conf property', (t) => {
-    let NOOP = function() {};
-    let logger = noopc(console);
-    let log = sinon.spy(console, 'log');
+
+    const NOOP = function() {};
+
+    const bannerOut = function(banner) {
+        t.equals(banner, 'test', 'should be called with expected text');
+        t.end();
+    };
 
     let app = new Application({
         banner: 'test',
+        bannerOut,
         _registerListeners: NOOP,
         _configure: NOOP,
         _setupLongStackTraces: NOOP,
         // _showBanner: NOOP,
         _mount: NOOP
     });
-
-    log.restore();
-    logger._restore();
-    t.equals(log.callCount, 1, 'should be called once');
-    t.equals(log.firstCall.args[0], 'test', 'should be called with expected text');
-    t.end();
 });
 
 test('Banner is not outputed during production', (t) => {
     let NOOP = function() {};
+
     let log = sinon.spy(console, 'log');
 
     let app = new Application({
