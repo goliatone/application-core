@@ -57,6 +57,8 @@ pids
 logs
 results
 
+examples/*
+tests/*
 npm-debug.log
 node_modules
 */.repl_history
