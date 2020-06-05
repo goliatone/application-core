@@ -43,7 +43,7 @@
     "gkeypath": "^0.8.0",
     "glob": "^7.1.4",
     "human-time": "0.0.2",
-    "in": "^0.18.0",
+    "in": "^0.18.*",
     "longjohn": "^0.2.12",
     "noop-console": "*",
     "p-timeout": "^3.1.0",
