@@ -58,6 +58,7 @@ logs
 results
 
 examples/*
+examples/*.js
 tests/*
 npm-debug.log
 node_modules
