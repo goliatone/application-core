@@ -49,7 +49,7 @@
     "longjohn": "^0.2.12",
     "noop-console": "*",
     "p-timeout": "^3.1.0",
-    "poke-repl": "^0.10.*",
+    "poke-repl": "^0.11.*",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
     "simple-config-loader": "^0.12.0",
