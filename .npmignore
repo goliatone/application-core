@@ -77,3 +77,9 @@ TODO.md
 .git 
 .nyc_output/*
 .vscode
+
+xdocs/*
+_site/*
+_documentation/*
+_docs.md 
+output.md
