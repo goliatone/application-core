@@ -91,18 +91,18 @@ If we are using events to hook into a command execution completion we can subscr
 To handle a response using an event listener:
 
 ```js
-context.once('hello.done', resp => {
-    console.info('message: %s', resp.message);
+context.once('hello.done', res => {
+    console.info('message: %s', res.message);
 });
 
-context.once('hello.error', resp => {
-    console.error('message: %s', resp.message);
+context.once('hello.error', res => {
+    console.error('message: %s', res.message);
 });
 
 context.emit('hello', {
     name: 'Peperone',
-    respondTo(resp) {
-        console.info('response: %s', resp.message);
+    respondTo(res, error) {
+        console.info('response: %s', res.message);
     }
 });
 ```
@@ -112,14 +112,15 @@ context.emit('hello', {
 
 If an event that triggers a command contains a `respondTo` field will use the field to automatically notify on command completion if the command execute handler returns a _truthy_ value.
 
+The `respondTo` callback takes two arguments, a `res` object that will be whatever the command returned during execution. It also takes an `error` object. If the command handler throws an error then the `res` argument is `undefined` and the `error` argument is set to the error thrown. Otherwise it will be `undefined`.
 
 To dispatch this command:
 
 ```js
 context.emit('hello', {
     name: 'Peperone',
-    respondTo: function(resp){
-        console.log('message: %s', resp.message);
+    respondTo: function(res, error) {
+        console.log('message: %s', res.message);
     }
 });
 ```
