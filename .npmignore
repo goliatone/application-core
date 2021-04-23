@@ -77,3 +77,13 @@ TODO.md
 .git 
 .nyc_output/*
 .vscode
+
+xdocs/*
+_site/*
+_site/package.json
+_site/bin/application-core
+_documentation/*
+examples/*
+examples/package.json
+_docs.md 
+output.md
