@@ -2,7 +2,7 @@
   "name": "application-core",
   "title": "Application Core",
   "description": "Application core skeleton",
-  "version": "0.19.3",
+  "version": "0.20.0",
   "homepage": "https://github.com/goliatone/application-core",
   "author": {
     "name": "goliatone",
