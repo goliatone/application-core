@@ -119,7 +119,7 @@ test('Banner can be a function, called with app instance and config object', (t)
     t.end();
 });
 
-test('_configure should extend the applciation instance with config.app', (t) => {
+test('_configure should extend the application instance with config.app', (t) => {
     let NOOP = function() {};
     let expected = { name: 'TestApp', testing: true };
 
@@ -138,7 +138,7 @@ test('_configure should extend the applciation instance with config.app', (t) =>
     t.end();
 });
 
-test('_configure should wrap "config" in Keypath utility', (t) => {
+test('_configure should wrap "config" in KeyPath utility', (t) => {
     let NOOP = function() {};
     let expected = { name: 'TestApp', testing: true };
 
