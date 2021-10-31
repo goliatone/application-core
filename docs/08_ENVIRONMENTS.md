@@ -14,7 +14,7 @@ To be more precise, **core.io** takes a very pragmatic stance and does not provi
 
 A lot of the things that need to change on each environment are _secrets_ like service tokens or user keys. We chose to manage those by using `process.env` and environment variables.
 
-If you use the provided `Application.loadConfig` then your configuration files are javascript files which, obviously, can have logic in it. Meaning that you can check the value of `process.env.NODE_ENV` and export different objects based on that value.
+If you use the provided `Application.loadConfig` then your configuration files are JavaScript files which, obviously, can have logic in it. Meaning that you can check the value of `process.env.NODE_ENV` and export different objects based on that value.
 
 Another benefit of `Application.loadConfig` is that you can reference other parts of your configuration files and solve them at runtime, making your configuration files modular.
 
@@ -56,3 +56,5 @@ Lastly but more importantly, you can **BYOS**- bring your own solution- and use 
 ```
 $ envset development -- npm start
 ```
+
+[envset]:https://github.com/goliatone/go-envset/
