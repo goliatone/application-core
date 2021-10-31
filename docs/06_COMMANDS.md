@@ -12,7 +12,7 @@ Commands are meant to encapsulate your business logic in a tightly bounded scope
 
 Commands are exposed as modules, so each command is mapped to a file. The module can expose the command as a function or as a class.
 
-Command handlers can be either sync that return a promise  or async functions. 
+Command handlers can be either sync that return a promise  or `async` functions. 
 
 Command exposed as a function :
 
