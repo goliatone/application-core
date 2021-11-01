@@ -8,6 +8,12 @@ const config = Application.loadConfig({}, true);
 
 const app = new Application({ config });
 
+app.resolve('repl').then(repl => {
+    repl.updateContext('myCustomCommand', function() {
+        console.log('TODO: We should really thing of a better example!');
+    });
+});
+
 app.onceRegistered('dispatcher', () => {
     app.chainEvents(['run.pre', 'run'], ['error']).then(() => {
         app.logger.error('A) RUN.PRE AND RUN DONE!');
