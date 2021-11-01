@@ -2,8 +2,10 @@
 
 class MediaUploadCommand {
 
-    execute(event){
-        event.context.getLogger('media').info('execute media upload command...');
+    execute(event) {
+        const logger = event.context.getLogger('media-upload');
+        logger.info('MediaListCommand execute...');
+        logger.info('execute media upload command...');
     }
 }
 

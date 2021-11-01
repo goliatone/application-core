@@ -6,13 +6,13 @@ template: "index"
 
 ## Commands
 
-Commands are meant to encapsulate your business logic in a tightly bounded scope and executed by triggering an event. Commands are placed in the `./commands` directory of your project and are autoloaded during the application boot sequence. To trigger a command you emit an event using the **core.io** context, if the event type matches a file name then the handler exposed by it's module will be executed.
+Commands are meant to encapsulate your business logic in a tightly bounded scope and executed by triggering an event. Commands are placed in the `./commands` directory of your project and are autoloaded during the application boot sequence. To trigger a command you dispatch an event using the **core.io** context, if the event type matches a file name then the handler exposed by it's module will be executed.
 
 ### Handler
 
 Commands are exposed as modules, so each command is mapped to a file. The module can expose the command as a function or as a class.
 
-Command handlers can be either sync that return a promise  or `async` functions. 
+Command handlers can be either sync that return a promise  or `async` functions.
 
 Command exposed as a function :
 
@@ -40,7 +40,7 @@ class GreetCommand {
         const context = event.context;
         const logger = context.getLogger('greet-cmd');
         logger.info('Executing greet command');
-    
+
         return {
             message: `Hello ${event.name}!`
         };
@@ -53,7 +53,7 @@ module.exports = HelloCommand;
 To dispatch this command:
 
 ```js
-context.emit('hello', {name: 'Peperone'});
+context.dispatch('hello', {name: 'Peperone'});
 ```
 
 ### Event
@@ -99,7 +99,7 @@ context.once('hello.error', res => {
     console.error('message: %s', res.message);
 });
 
-context.emit('hello', {
+context.dispatch('hello', {
     name: 'Peperone',
     respondTo(res, error) {
         console.info('response: %s', res.message);
@@ -117,7 +117,7 @@ The `respondTo` callback takes two arguments, a `res` object that will be whatev
 To dispatch this command:
 
 ```js
-context.emit('hello', {
+context.dispatch('hello', {
     name: 'Peperone',
     respondTo: function(res, error) {
         console.log('message: %s', res.message);

@@ -4,6 +4,7 @@ module.exports = {
     banner,
     name: 'App Kernel',
     environment: process.env.NODE_ENV || 'development',
+    autoloadModulesCommands: true,
     loaders: {
         modules: './modules',
         commands: './commands'
