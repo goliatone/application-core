@@ -46,11 +46,6 @@ app.once('run.post', function() {
     app.logger.debug(this.nicename);
     app.logger.debug('--------');
 
-    console.log('------------------');
-    console.log('here, here, here');
-    console.log('------------------');
-
-    // let err = new Error('This is a sample error!!!');
     // app.logger.error(err.stack);
     const watcher = require('chokidar');
 
@@ -68,8 +63,44 @@ app.once('run.post', function() {
     });
 });
 
-app.once('coreplugins.ready', () => {
+
+/**
+ * Once the application has bootstraped
+ * then we can start the application.
+ * - coreplugins.ready (commands and plugins not loaded)
+ * - modules.ready
+ * - commands.ready
+ */
+app.once('modules.ready', _ => {
+    app.logger.info('modules ready!');
     app.run();
+});
+
+app.once('coreplugins.ready', () => {
+    app.logger.info('core modules resolved!');
+});
+
+app.once('modules.resolved', _ => {
+    app.logger.info('modules resolved!');
+});
+
+app.once('context.ready', _ => {
+
+    app.logger.warn('----------------------');
+    app.logger.info('app running');
+    app.logger.warn('----------------------');
+});
+
+app.once('media.registered', _ => {
+    app.logger.warn('----------------------');
+    app.logger.info('media.registered');
+    app.logger.warn('----------------------');
+});
+
+app.once('service.registered', _ => {
+    app.logger.warn('----------------------');
+    app.logger.info('service.registered');
+    app.logger.warn('----------------------');
 });
 
 function requireUncached(mdl) {
