@@ -11,12 +11,30 @@ const {
 // Application.DEFAULTS.autoinitialize = false;
 
 test('sanitizeName should camel case strings', (t) => {
-    t.equals(sanitizeName('data-manager'), 'dataManager', 'String sanitized.');
+    t.equals(sanitizeName('data-manager'), 'dataManager', 'data-manager = dataManager.');
+    t.equals(sanitizeName('01.first-command'), 'firstCommand', '01.first-command = firstCommand');
+    t.equals(sanitizeName('01_first-command'), 'firstCommand', '01_first-command = firstCommand');
     t.end();
 });
 
-test('sanitizeName should remove initial digits from name', (t) => {
-    t.equals(sanitizeName('01.first-command'), 'firstCommand', 'String sanitized.');
+test('sanitizeName should not respect camel case words in LEGACY mode', (t) => {
+    const useLegacy = true;
+    t.equals(sanitizeName('dataManager', useLegacy), 'datamanager', 'legacy: dataManager = datamanager');
+    t.equals(sanitizeName('01_dataManager!', useLegacy), 'datamanager', 'legacy: 01_dataManager! = datamanager');
+    t.equals(sanitizeName('dataManager🚀', useLegacy), 'datamanager', 'legacy: dataManager🚀 = datamanager');
+    t.equals(sanitizeName('01.dataManager', useLegacy), 'datamanager', 'legacy: 01.dataManager = datamanager');
+    t.end();
+});
+
+
+//############# BREAKING CHANGE
+test('sanitizeName should respect camel case words', (t) => {
+
+    t.equals(sanitizeName('dataManager', false), 'dataManager', 'dataManager = dataManager');
+    t.equals(sanitizeName('dataManager🚀', false), 'dataManager', 'dataManager🚀 = dataManager');
+    t.equals(sanitizeName('01.dataManager', false), 'dataManager', '01.dataManager = dataManager');
+    t.equals(sanitizeName('01_dataManager!', false), 'dataManager', '01_dataManager! = dataManager');
+
     t.end();
 });
 
